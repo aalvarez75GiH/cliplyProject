@@ -103,26 +103,6 @@ app.post("/postTranscription", async (req, res) => {
     //   error.response?.data?.message || "Internal server error";
     return res.status(500).send(error.message || "Internal server error");
   }
-
-  // const transaction = receivingAndPreparingTransactionInfoFromRequest(req);
-  // console.log("TRANSACTION CREATED WITH TIME STAMP:", transaction);
-
-  // try {
-  //   const transaction_created = await transactionsController.createTransaction(
-  //     transaction
-  //   );
-  //   await updatingMostRecentTransactionToFalse(transaction_created);
-  //   console.log(
-  //     " TRANSACTION COMING FROM CONTROLLER AT PTWCDV:",
-  //     transaction_created
-  //   );
-  //   res.status(201).json(transaction_created);
-  // } catch (error) {
-  //   res.status(500).json({
-  //     status: "Failed",
-  //     msg: error.message,
-  //   });
-  // }
 });
 
 module.exports = app;
