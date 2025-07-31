@@ -1,39 +1,69 @@
 /* eslint-disable */
-const app = require("express")();
 
-const FormData = require("form-data");
+const express = require("express");
+const app = express();
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { Configuration, OpenAIApi } = require("openai");
 const axios = require("axios");
-require("dotenv").config({ path: "../../../functions/.env" });
+const FormData = require("form-data");
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
+const { Configuration, OpenAIApi } = require("openai");
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+ffmpeg.setFfmpegPath(ffmpegPath);
+
+const openai = new OpenAIApi(
+  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
+);
+
+app.use(express.raw({ type: ["audio/mp4", "audio/mpeg"], limit: "10mb" }));
 
 app.post("/postTranscription", async (req, res) => {
   try {
-    if (req.method !== "POST") {
-      return res.status(405).send("Method not allowed");
-    }
-
     const file = req.rawBody;
-    const contentType = req.get("content-type");
+    const contentType = req.get("content-type").toLowerCase().trim() || "";
 
-    if (!file || !contentType.includes("audio/")) {
-      return res.status(400).send("Audio file required");
+    if (!file || !["audio/m4a", "audio/mpeg"].includes(contentType)) {
+      return res.status(400).send("Audio file (MP4 or MP3) is required");
     }
 
-    // Save file to temp path
-    const tempFilePath = path.join(os.tmpdir(), "temp-audio.mp3");
-    fs.writeFileSync(tempFilePath, file);
+    const inputExtension = contentType.includes("mpeg") ? "mp3" : "m4a";
+    const inputFilePath = path.join(
+      os.tmpdir(),
+      `input-audio.${inputExtension}`
+    );
+    const m4aFilePath = path.join(os.tmpdir(), "converted-audio.m4a");
+
+    // Write incoming audio to input file
+    fs.writeFileSync(inputFilePath, file);
+
+    // Convert if input is MP3
+    if (inputExtension === "mp3") {
+      //   await new Promise((resolve, reject) => {
+      //     ffmpeg(inputFilePath)
+      //       .toFormat("m4a")
+      //       .on("end", resolve)
+      //       .on("error", reject)
+      //       .save(m4aFilePath);
+      //   });
+
+      await new Promise((resolve, reject) => {
+        ffmpeg(inputFilePath)
+          .audioCodec("aac") // Explicitly specify the AAC codec
+          .toFormat("ipod") // Use 'ipod' format for M4A compatibility
+          .on("end", resolve)
+          .on("error", reject)
+          .save(m4aFilePath);
+      });
+    }
+
+    const audioPathForWhisper =
+      inputExtension === "mp3" ? m4aFilePath : inputFilePath;
 
     // 1. Transcribe with Whisper
     const form = new FormData();
-    form.append("file", fs.createReadStream(tempFilePath));
+    form.append("file", fs.createReadStream(audioPathForWhisper));
     form.append("model", "whisper-1");
     form.append("response_format", "json");
 
@@ -50,24 +80,24 @@ app.post("/postTranscription", async (req, res) => {
 
     const transcriptionText = whisperResponse.data.text;
 
-    // 2. Translate and summarize with Chat API
+    // 2. Translate & summarize with GPT
     const prompt = `
-    Transcription: ${transcriptionText}
-    
-    Provide:
-    1. Transcription in Spanish
-    2. Transcription in English
-    3. A summary (<35 characters) in Spanish
-    4. A summary (<35 characters) in English
-    
-    Return JSON like:
-    {
-      "transcription_es": "...",
-      "transcription_en": "...",
-      "summary_es": "...",
-      "summary_en": "..."
-    }
-    `;
+Transcription: ${transcriptionText}
+
+Provide:
+1. Transcription in Spanish
+2. Transcription in English
+3. A summary (<35 characters) in Spanish
+4. A summary (<35 characters) in English
+
+Return JSON like:
+{
+  "transcription_es": "...",
+  "transcription_en": "...",
+  "summary_es": "...",
+  "summary_en": "..."
+}
+`;
 
     const chatResponse = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -76,31 +106,31 @@ app.post("/postTranscription", async (req, res) => {
           role: "system",
           content: "You are a translator and summarizer assistant.",
         },
-        {
-          role: "user",
-          content: prompt,
-        },
+        { role: "user", content: prompt },
       ],
     });
 
-    const jsonOutput = chatResponse.data.choices[0].message.content;
-
-    // Try to parse JSON result
     let finalResult;
     try {
-      finalResult = JSON.parse(jsonOutput);
+      finalResult = JSON.parse(chatResponse.data.choices[0].message.content);
     } catch (err) {
+      console.error("Parsing GPT response failed:", err);
       return res.status(500).send("Failed to parse GPT response");
     }
 
     return res.status(200).json({
-      transcription: finalResult,
       original_text: transcriptionText,
+      transcription: {
+        en: finalResult.transcription_en,
+        es: finalResult.transcription_es,
+      },
+      summary: {
+        en: finalResult.summary_en,
+        es: finalResult.summary_es,
+      },
     });
   } catch (error) {
     console.error("Error:", error);
-    // const errorMessage =
-    //   error.response?.data?.message || "Internal server error";
     return res.status(500).send(error.message || "Internal server error");
   }
 });
