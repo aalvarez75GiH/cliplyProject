@@ -65,26 +65,3 @@ module.exports = {
   createGlobalCategory,
   getAllGlobalCategories,
 };
-
-// const createGlobalCategory = async (category) => {
-//   const category_id = uuidv4();
-//   //   const global_categoryToCreate = {
-//   //     ...category,
-//   //     category_id,
-//   //   };
-//   await db
-//     .collection("global_categories")
-//     .doc(`/${category_id}/`)
-//     //   .create(global_categoryToCreate);
-//     .create({
-//       ...category,
-//       category_id,
-//       createdAt: new Date().toISOString(),
-//       updatedAt: new Date().toISOString(),
-//     });
-//   return category;
-// };
-
-// module.exports = {
-//   createGlobalCategory,
-// };
