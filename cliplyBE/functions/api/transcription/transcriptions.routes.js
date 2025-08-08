@@ -19,7 +19,7 @@ const openai = new OpenAIApi(
 
 app.use(express.raw({ type: ["audio/mp4", "audio/mpeg"], limit: "10mb" }));
 
-app.post("/postTranscription", async (req, res) => {
+app.post("/postTranscription_to_whisper", async (req, res) => {
   try {
     const file = req.rawBody;
     const contentType = req.get("content-type").toLowerCase().trim() || "";
@@ -40,14 +40,6 @@ app.post("/postTranscription", async (req, res) => {
 
     // Convert if input is MP3
     if (inputExtension === "mp3") {
-      //   await new Promise((resolve, reject) => {
-      //     ffmpeg(inputFilePath)
-      //       .toFormat("m4a")
-      //       .on("end", resolve)
-      //       .on("error", reject)
-      //       .save(m4aFilePath);
-      //   });
-
       await new Promise((resolve, reject) => {
         ffmpeg(inputFilePath)
           .audioCodec("aac") // Explicitly specify the AAC codec
@@ -89,13 +81,15 @@ Provide:
 2. Transcription in English
 3. A summary (<35 characters) in Spanish
 4. A summary (<35 characters) in English
+5. Detected language of the transcriptionText
 
 Return JSON like:
 {
   "transcription_es": "...",
   "transcription_en": "...",
   "summary_es": "...",
-  "summary_en": "..."
+  "summary_en": "...",
+  "language_detected": "ES" // or "EN"
 }
 `;
 
@@ -119,20 +113,32 @@ Return JSON like:
     }
 
     return res.status(200).json({
-      original_text: transcriptionText,
-      transcription: {
-        en: finalResult.transcription_en,
-        es: finalResult.transcription_es,
-      },
-      summary: {
-        en: finalResult.summary_en,
-        es: finalResult.summary_es,
-      },
+      original_message: transcriptionText,
+      message_en: finalResult.transcription_en,
+      message_es: finalResult.transcription_es,
+      summary_en: finalResult.summary_en,
+      summary_es: finalResult.summary_es,
+      language_detected: finalResult.language_detected || "unknown",
     });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send(error.message || "Internal server error");
   }
+  //     return res.status(200).json({
+  //       original_text: transcriptionText,
+  //       transcription: {
+  //         en: finalResult.transcription_en,
+  //         es: finalResult.transcription_es,
+  //       },
+  //       summary: {
+  //         en: finalResult.summary_en,
+  //         es: finalResult.summary_es,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     return res.status(500).send(error.message || "Internal server error");
+  //   }
 });
 
 module.exports = app;

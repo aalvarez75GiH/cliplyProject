@@ -2,13 +2,6 @@
 
 const express = require("express");
 const app = express();
-// const fs = require("fs");
-// const os = require("os");
-// const path = require("path");
-const axios = require("axios");
-// const FormData = require("form-data");
-// const ffmpeg = require("fluent-ffmpeg");
-// const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const { Configuration, OpenAIApi } = require("openai");
 
 const openai = new OpenAIApi(
@@ -26,14 +19,18 @@ Text received from user: ${textToOperate}
 2. Translate to Spanish if text is in english or to English if text is in Spanish
 3. Summarize the text (<35 characters) in both languages
 4. Return the result in JSON format with the following keys:
+5. Detected language of the textToOperate
 
 Return JSON like:
 {
   "translation_es": "...",
   "translation_en": "...",
   "summary_es": "...",
-  "summary_en": "..."
+  "summary_en": "...",
+  "language_detected": "ES" // or "EN"
 }
+
+
 `;
 
     const chatResponse = await openai.createChatCompletion({
@@ -61,16 +58,24 @@ Return JSON like:
     }
     console.log("Final result response:", JSON.stringify(finalResult, null, 2));
 
+    // return res.status(200).json({
+    //   original_text: textToOperate,
+    //   translation: {
+    //     en: finalResult.translation_en,
+    //     es: finalResult.translation_es,
+    //   },
+    //   summary: {
+    //     en: finalResult.summary_en,
+    //     es: finalResult.summary_es,
+    //   },
+    // });
     return res.status(200).json({
-      original_text: textToOperate,
-      translation: {
-        en: finalResult.translation_en,
-        es: finalResult.translation_es,
-      },
-      summary: {
-        en: finalResult.summary_en,
-        es: finalResult.summary_es,
-      },
+      original_message: textToOperate,
+      message_en: finalResult.translation_en,
+      message_es: finalResult.translation_es,
+      summary_en: finalResult.summary_en,
+      summary_es: finalResult.summary_es,
+      language_detected: finalResult.language_detected || "unknown",
     });
   } catch (error) {
     console.error("Error:", error);
