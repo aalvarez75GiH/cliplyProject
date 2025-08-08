@@ -20,7 +20,7 @@ const getAllGlobalCategories = async () => {
             updatedAt: doc.data().updatedAt,
             icon_name: doc.data().icon_name,
             type: doc.data().type,
-            preloaded_messages: doc.data().preloaded_messages,
+            stored_messages: doc.data().stored_messages,
             splitted_name: doc.data().splitted_name,
           };
           global_categories.push(selectedGlobalCategory);
