@@ -1,4 +1,6 @@
 /* eslint-disable */
+const express = require("express");
+const app = express();
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
@@ -8,12 +10,15 @@ const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const { Configuration, OpenAIApi } = require("openai");
 const { v4: uuidv4 } = require("uuid");
+const { user } = require("firebase-functions/v1/auth");
+const { getUserDataByUserID } = require("../../api/users/users.controllers");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const openai = new OpenAIApi(
   new Configuration({ apiKey: process.env.OPENAI_API_KEY })
 );
+app.use(express.raw({ type: ["audio/mp4", "audio/mpeg"], limit: "10mb" }));
 
 const transcription_of_audio_handler = async (req) => {
   try {
@@ -115,7 +120,14 @@ Return JSON like:
   }
 };
 
+const gettingUserData = async (user_id) => {
+  console.log("USER ID AT HANDLER:", user_id);
+  const userData = await getUserDataByUserID(user_id);
+  return userData;
+};
+
 module.exports = {
   transcription_of_audio_handler,
   translation_and_summary_of_audio_handler,
+  gettingUserData,
 };

@@ -2,6 +2,7 @@
 
 const { v4: uuidv4 } = require("uuid");
 const { db } = require("../../fb");
+const { user } = require("firebase-functions/v1/auth");
 
 // ** get Category data by user ID controller
 const getUserDataByUserID = async (user_id) => {
@@ -10,7 +11,6 @@ const getUserDataByUserID = async (user_id) => {
     .collection("users_data")
     .where(`user_id`, "==", user_id)
     .get()
-
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         found_userData.push(doc.data());
@@ -24,6 +24,11 @@ const createUser = async (user) => {
   const { user_id } = user;
   await db.collection("users").doc(`/${user_id}/`).create(user);
   return user;
+};
+
+const updateUserData = async (user_id, userData) => {
+  await db.collection("users_data").doc(user_id).update(userData);
+  return userData;
 };
 
 const createUserDataAfterUserCreation = async (
@@ -48,4 +53,5 @@ module.exports = {
   createUser,
   createUserDataAfterUserCreation,
   getUserDataByUserID,
+  updateUserData,
 };
