@@ -14,7 +14,6 @@ const { user } = require("firebase-functions/v1/auth");
 
 app.post("/postTranscription_to_whisper", async (req, res) => {
   const user_id = req.query.user_id;
-  // console.log("USER ID AT WHISPER END POINT:", user_id);
   try {
     // 1. Transcribe audio from audio file
     const transcriptionText = await transcription_of_audio_handler(req);
@@ -39,6 +38,8 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       language_detected: finalResult.language_detected || "unknown",
       used: 0,
       message_id: uuidv4(),
+      type: "created_by_user",
+      createdAt: new Date().toISOString(),
     };
 
     console.log(
@@ -74,7 +75,8 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       language_detected: finalResult.language_detected || "unknown",
       used: 0,
       message_id: uuidv4(),
-      type: "whisper",
+      type: "created_by_user",
+      createdAt: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error:", error);
@@ -103,8 +105,6 @@ Return JSON like:
   "summary_en": "...",
   "language_detected": "ES" // or "EN"
 }
-
-
 `;
 
     const chatResponse = await openai.createChatCompletion({
