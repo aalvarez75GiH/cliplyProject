@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const app = express();
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -29,7 +30,6 @@ Return JSON like:
   "summary_en": "...",
   "language_detected": "ES" // or "EN"
 }
-
 
 `;
 
@@ -69,6 +69,15 @@ Return JSON like:
     //     es: finalResult.summary_es,
     //   },
     // });
+    // return res.status(200).json({
+    //   original_message: textToOperate,
+    //   message_en: finalResult.translation_en,
+    //   message_es: finalResult.translation_es,
+    //   summary_en: finalResult.summary_en,
+    //   summary_es: finalResult.summary_es,
+    //   language_detected: finalResult.language_detected || "unknown",
+    // });
+
     return res.status(200).json({
       original_message: textToOperate,
       message_en: finalResult.translation_en,
@@ -76,6 +85,10 @@ Return JSON like:
       summary_en: finalResult.summary_en,
       summary_es: finalResult.summary_es,
       language_detected: finalResult.language_detected || "unknown",
+      used: 0,
+      message_id: uuidv4(),
+      type: "created_by_user",
+      createdAt: new Date().toISOString(),
     });
   } catch (error) {
     console.error("Error:", error);
