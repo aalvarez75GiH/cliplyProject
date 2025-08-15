@@ -38,7 +38,7 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       language_detected: finalResult.language_detected || "unknown",
       used: 0,
       message_id: uuidv4(),
-      type: "created_by_user",
+      type: "recent_created_by_user",
       createdAt: new Date().toISOString(),
     };
 
@@ -75,7 +75,7 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       language_detected: finalResult.language_detected || "unknown",
       used: 0,
       message_id: uuidv4(),
-      type: "created_by_user",
+      type: "recent_created_by_user",
       createdAt: new Date().toISOString(),
     });
   } catch (error) {
