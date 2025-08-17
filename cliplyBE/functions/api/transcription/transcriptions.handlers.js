@@ -90,25 +90,28 @@ Rules to follow:
 
 2. Eliminate all the uhms, ahhs, you knows, likes, yeahs, and other filler words.
 
-3. Detect when the transcriptionText is **specific** to certain situations.  
-   You must set the "specific" key to "specific" if the text includes **ANY** of the following:
-   - Mentions of specific people, names, family, friends, or loved ones  
-   - Mentions of departments in a company, specific events, or specific locations  
-   - Friendly or personal conversations  
-   - Mentions of specific products, brands, services, companies, or places  
-   If NONE of the above apply, set "specific" to "".  
-   You must always return the "specific" key with either "specific" or "".
+3. (specificity detection):  
 
-Examples for rule 3:
-- Input: "Hi baby, I am going to Kroger to buy some groceries."  
-  → "specific": "specific" (because it mentions a loved one and a brand/place)  
+Before producing the JSON, you must evaluate the transcription against this checklist:
+- Mentions a specific person, name, family, friend, or loved one?
+- Mentions a company, brand, service, product, or place?
+- Mentions a specific event, meeting, time, or schedule?
+- Is it a friendly/personal conversation? haves emotional/affectionate tone? words like
+  "love you", "miss you", "can't wait to see you", "so proud of you", "congratulations", 
+  "happy birthday", "happy anniversary", "Dude" etc.?
 
-- Input: "The meeting starts at 9am."  
-  → "specific": "specific" (because it mentions a specific event/time)  
+If ANY answer = yes → "specific": "specific"
+If ALL answers = no → "specific": ""
 
-- Input: "I like eating fruit."  
-  → "specific": "" (general, no brand, no personal/family/friend, no event)
 
+If the answer is YES to any of these, set "specific": "specific".  
+If the answer is NO to all, set "specific": "".  
+You must never leave "specific" out, and it must always be either "specific" or "".  
+
+"Example:  
+"Input: "Hi this is your driver, I will drop you off at Wells Fargo at 2 p.m." or
+"Input: "Dude, I can't wait to see you this weekend, it's been so long!"  
+Output: "specific": "specific" (because it mentions Wells Fargo and a specific time).
 This is what you are going to provide:
 1. Transcription in Spanish  
 2. Transcription in English  
@@ -117,7 +120,7 @@ This is what you are going to provide:
 5. Detected language of the transcriptionText  
 6. The "specific" key as explained above  
 
-Return JSON like:
+"Return JSON like;"
 {
   "transcription_es": "...",
   "transcription_en": "...",
