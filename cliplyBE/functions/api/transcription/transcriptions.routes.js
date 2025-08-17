@@ -22,13 +22,17 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
     const finalResult = await translation_and_summary_of_audio_handler(
       transcriptionText
     );
+    console.log(
+      "FINAL RESULT FROM HANDLER:",
+      JSON.stringify(finalResult, null, 2)
+    );
 
     // 3. Save the message and its translations/summaries to the user's recent messages collection
     const userData = await gettingUserData(user_id);
-    console.log(
-      "USER DATA AT WHISPER END POINT:",
-      JSON.stringify(userData, null, 2)
-    );
+    // console.log(
+    //   "USER DATA AT WHISPER END POINT:",
+    //   JSON.stringify(userData, null, 2)
+    // );
     const recent_message_to_add = {
       original_message: transcriptionText,
       message_en: finalResult.transcription_en,
@@ -36,9 +40,10 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       summary_en: finalResult.summary_en,
       summary_es: finalResult.summary_es,
       language_detected: finalResult.language_detected || "unknown",
+      specific: finalResult.specific,
       used: 0,
       message_id: uuidv4(),
-      type: "recent_created_by_user",
+      created_by: "user",
       createdAt: new Date().toISOString(),
     };
 
@@ -52,17 +57,17 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       ...userData[0].recent_messages,
     ];
 
-    console.log(
-      "UPDATED RECENT MESSAGES ARRAY:",
-      JSON.stringify(updated_recent_messages_array, null, 2)
-    );
+    // console.log(
+    //   "UPDATED RECENT MESSAGES ARRAY:",
+    //   JSON.stringify(updated_recent_messages_array, null, 2)
+    // );
 
     // Prepare the update object
     const updateData = {
       recent_messages: updated_recent_messages_array,
     };
     const response = await usersControllers.updateUserData(user_id, updateData);
-    console.log("RESPONSE:", JSON.stringify(response, null, 2));
+    // console.log("RESPONSE:", JSON.stringify(response, null, 2));
     // ******************* HERE WE WORK WITH STORING MESSAGE IN THE USER RECENT MESSAGES COLELCTION
 
     // 4. Return the result in JSON format with the following keys:
@@ -75,8 +80,9 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       language_detected: finalResult.language_detected || "unknown",
       used: 0,
       message_id: uuidv4(),
-      type: "recent_created_by_user",
+      created_by: "user",
       createdAt: new Date().toISOString(),
+      specific: finalResult.specific,
     });
   } catch (error) {
     console.error("Error:", error);
