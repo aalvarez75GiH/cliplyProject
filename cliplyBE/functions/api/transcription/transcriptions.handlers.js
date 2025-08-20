@@ -82,45 +82,40 @@ const translation_and_summary_of_audio_handler = async (transcriptionText) => {
   const prompt = `
   Transcription: ${transcriptionText}
 
-  Pre-task: You are receiving a transcription text that is coming from an audio file.  
-Your task is to translate it into Spanish and English, summarize it in both languages, and detect the language of the original transcription.
+  Pre-task: You are receiving a transcription text from an audio file.
+Your task is to:
 
-Rules to follow:
-1. Remember that a lot of non-American users have English as a second language, so sometimes the transcriptions may have grammar mistakes or unusual phrasings, but the meaning is still understandable. Take that into account when translating and summarizing. Use casual grammar but keep a respectful tone.
+1. Translate it into Spanish and English.
 
-2. Eliminate all the uhms, ahhs, you knows, likes, yeahs, and other filler words.
+2. Summarize it in both languages (max 35 characters).
 
-3. (specificity detection):  
+3. Detect the language of the original transcription.
 
-Before producing the JSON, you must evaluate the transcription against this checklist:
+4. Evaluate whether it is “specific” according to the checklist below.
+
+ Checklist for “specific” evaluation (Rule #3):
+
+
 - Mentions a specific person, name, family, friend, or loved one?
 - Mentions a company, brand, service, product, or place?
 - Mentions a specific event, meeting, time, or schedule?
-- Is it a friendly/personal conversation? haves emotional/affectionate tone? words like
-  "love you", "miss you", "can't wait to see you", "so proud of you", "congratulations", 
-  "happy birthday", "happy anniversary", "Dude" etc.?
+- Is it a friendly/personal conversation with an emotional/affectionate tone?
+(Words like: “love you”, “miss you”, “can’t wait to see you”, “so proud of you”,
+“congratulations”, “happy birthday”, “happy anniversary”, “Dude”, “my friend”, etc.)
 
-If ANY answer = yes → "specific": "specific"
-If ALL answers = no → "specific": ""
+Instructions for the “specific” key:
 
+- First, evaluate the transcription against each checklist item.
+- If any item is YES, then "specific": "specific".
+- If all items are NO, then "specific": "".
+- You must never omit the specific key.
 
-If the answer is YES to any of these, set "specific": "specific".  
-If the answer is NO to all, set "specific": "".  
-You must never leave "specific" out, and it must always be either "specific" or "".  
+Rules:
+1. Ignore filler words like “uh”, “ah”, “like”, “you know”, etc.
+2. Use casual grammar but keep a respectful tone.
 
-"Example:  
-"Input: "Hi this is your driver, I will drop you off at Wells Fargo at 2 p.m." or
-"Input: "Dude, I can't wait to see you this weekend, it's been so long!"  
-Output: "specific": "specific" (because it mentions Wells Fargo and a specific time).
-This is what you are going to provide:
-1. Transcription in Spanish  
-2. Transcription in English  
-3. A summary (<35 characters) in Spanish  
-4. A summary (<35 characters) in English  
-5. Detected language of the transcriptionText  
-6. The "specific" key as explained above  
+Output JSON format:
 
-"Return JSON like;"
 {
   "transcription_es": "...",
   "transcription_en": "...",
@@ -129,27 +124,22 @@ This is what you are going to provide:
   "language_detected": "ES" or "EN",
   "specific": "specific" or ""
 }
+  Example:
+
+Input: "Hi this is your driver, I will drop you off at Wells Fargo at 2 p.m."
+
+Output:
+
+{
+  "transcription_es": "Hola, soy tu conductor, te dejaré en Wells Fargo a las 2 p.m.",
+  "transcription_en": "Hi, this is your driver, I will drop you off at Wells Fargo at 2 p.m.",
+  "summary_es": "Entrega en Wells Fargo",
+  "summary_en": "Drop-off at Wells Fargo",
+  "language_detected": "EN",
+  "specific": "specific"
+}
 
   `;
-  //   const prompt = `
-  // Transcription: ${transcriptionText}
-
-  // Provide:
-  // 1. Transcription in Spanish
-  // 2. Transcription in English
-  // 3. A summary (<35 characters) in Spanish
-  // 4. A summary (<35 characters) in English
-  // 5. Detected language of the transcriptionText
-
-  // Return JSON like:
-  // {
-  //   "transcription_es": "...",
-  //   "transcription_en": "...",
-  //   "summary_es": "...",
-  //   "summary_en": "...",
-  //   "language_detected": "ES" // or "EN"
-  // }
-  // `;
 
   const chatResponse = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",

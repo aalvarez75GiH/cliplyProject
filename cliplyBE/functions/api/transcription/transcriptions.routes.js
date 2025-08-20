@@ -10,6 +10,7 @@ const {
   gettingUserData,
 } = require("./transcriptions.handlers");
 const usersControllers = require("../users/users.controllers");
+const users_dataControllers = require("../users_data/users_data.controllers");
 const { user } = require("firebase-functions/v1/auth");
 
 app.post("/postTranscription_to_whisper", async (req, res) => {
@@ -57,16 +58,11 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       ...userData[0].recent_messages,
     ];
 
-    // console.log(
-    //   "UPDATED RECENT MESSAGES ARRAY:",
-    //   JSON.stringify(updated_recent_messages_array, null, 2)
-    // );
-
     // Prepare the update object
     const updateData = {
       recent_messages: updated_recent_messages_array,
     };
-    const response = await usersControllers.updateUserData(user_id, updateData);
+    await users_dataControllers.updateUserData(user_id, updateData);
     // console.log("RESPONSE:", JSON.stringify(response, null, 2));
     // ******************* HERE WE WORK WITH STORING MESSAGE IN THE USER RECENT MESSAGES COLELCTION
 
