@@ -5,17 +5,21 @@ const { v4: uuidv4 } = require("uuid");
 const app = express();
 const { Configuration, OpenAIApi } = require("openai");
 
+const { gettingUserData } = require("../transcription/transcriptions.handlers");
+const users_dataControllers = require("../users_data/users_data.controllers");
+
 const openai = new OpenAIApi(
   new Configuration({ apiKey: process.env.OPENAI_API_KEY })
 );
 
 app.post("/postTypeMessage", async (req, res) => {
   const textToOperate = req.query.text_to_operate;
+  const user_id = req.query.user_id;
   try {
     const prompt = `
 Text received from user: ${textToOperate}
  instructions: You are receiving a text from user.
- What you have to do is:
+ What you have to do with that text: ${textToOperate} is:
 1. Detect language of the text received
 2. Translate to Spanish if text is in english or to English if text is in Spanish
 3. Summarize the text (<35 characters) in both languages
@@ -52,31 +56,48 @@ Return JSON like:
     let finalResult;
     try {
       finalResult = JSON.parse(chatResponse.data.choices[0].message.content);
+      // **************************************************************************
+      // 3. Save the message and its translations/summaries to the user's recent messages collection
+      const userData = await gettingUserData(user_id);
+      // console.log(
+      //   "USER DATA AT WHISPER END POINT:",
+      //   JSON.stringify(userData, null, 2)
+      // );
+      const recent_message_to_add = {
+        original_message: textToOperate,
+        message_en: finalResult.translation_en,
+        message_es: finalResult.translation_es,
+        summary_en: finalResult.summary_en,
+        summary_es: finalResult.summary_es,
+        language_detected: finalResult.language_detected || "unknown",
+        specific: "",
+        used: 0,
+        message_id: uuidv4(),
+        created_by: "user",
+        createdAt: new Date().toISOString(),
+      };
+
+      console.log(
+        "RECENT MESSAGE TO ADD:",
+        JSON.stringify(recent_message_to_add, null, 2)
+      );
+
+      const updated_recent_messages_array = [
+        recent_message_to_add,
+        ...userData[0].recent_messages,
+      ];
+
+      // Prepare the update object
+      const updateData = {
+        recent_messages: updated_recent_messages_array,
+      };
+      await users_dataControllers.updateUserData(user_id, updateData);
+      // ************************************************************************
     } catch (err) {
       console.error("Parsing GPT response failed:", err);
       return res.status(500).send("Failed to parse GPT response");
     }
     console.log("Final result response:", JSON.stringify(finalResult, null, 2));
-
-    // return res.status(200).json({
-    //   original_text: textToOperate,
-    //   translation: {
-    //     en: finalResult.translation_en,
-    //     es: finalResult.translation_es,
-    //   },
-    //   summary: {
-    //     en: finalResult.summary_en,
-    //     es: finalResult.summary_es,
-    //   },
-    // });
-    // return res.status(200).json({
-    //   original_message: textToOperate,
-    //   message_en: finalResult.translation_en,
-    //   message_es: finalResult.translation_es,
-    //   summary_en: finalResult.summary_en,
-    //   summary_es: finalResult.summary_es,
-    //   language_detected: finalResult.language_detected || "unknown",
-    // });
 
     return res.status(200).json({
       original_message: textToOperate,
@@ -85,6 +106,7 @@ Return JSON like:
       summary_en: finalResult.summary_en,
       summary_es: finalResult.summary_es,
       language_detected: finalResult.language_detected || "unknown",
+      specific: "",
       used: 0,
       message_id: uuidv4(),
       type: "created_by_user",
