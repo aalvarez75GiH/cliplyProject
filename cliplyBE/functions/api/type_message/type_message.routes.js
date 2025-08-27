@@ -6,6 +6,7 @@ const app = express();
 const { Configuration, OpenAIApi } = require("openai");
 
 const { gettingUserData } = require("../transcription/transcriptions.handlers");
+const { getUserDataByUserID } = require("../users_data/users_data.controllers");
 const users_dataControllers = require("../users_data/users_data.controllers");
 
 const openai = new OpenAIApi(
@@ -58,20 +59,38 @@ Return JSON like:
       finalResult = JSON.parse(chatResponse.data.choices[0].message.content);
       // **************************************************************************
       // 3. Save the message and its translations/summaries to the user's recent messages collection
-      const userData = await gettingUserData(user_id);
-      // console.log(
-      //   "USER DATA AT WHISPER END POINT:",
-      //   JSON.stringify(userData, null, 2)
-      // );
+      const userData = await getUserDataByUserID(user_id);
+      console.log(
+        "USER DATA AT WHISPER END POINT:",
+        JSON.stringify(userData, null, 2)
+      );
+      // const recent_message_to_add = {
+      //   original_message: textToOperate,
+      //   message_en: finalResult.translation_en,
+      //   message_es: finalResult.translation_es,
+      //   summary_en: finalResult.summary_en,
+      //   summary_es: finalResult.summary_es,
+      //   language_detected: finalResult.language_detected || "unknown",
+      //   specific: "",
+      //   used: 0,
+      //   message_id: uuidv4(),
+      //   created_by: "user",
+      //   createdAt: new Date().toISOString(),
+      // };
+
       const recent_message_to_add = {
         original_message: textToOperate,
-        message_en: finalResult.translation_en,
-        message_es: finalResult.translation_es,
-        summary_en: finalResult.summary_en,
-        summary_es: finalResult.summary_es,
+        body: {
+          en: finalResult.translation_en,
+          es: finalResult.translation_es,
+        },
+        summary: {
+          en: finalResult.summary_en,
+          es: finalResult.summary_es,
+        },
         language_detected: finalResult.language_detected || "unknown",
         specific: "",
-        used: 0,
+        usedCount: 0,
         message_id: uuidv4(),
         created_by: "user",
         createdAt: new Date().toISOString(),
@@ -84,7 +103,7 @@ Return JSON like:
 
       const updated_recent_messages_array = [
         recent_message_to_add,
-        ...userData[0].recent_messages,
+        ...userData.recent_messages,
       ];
 
       // Prepare the update object
@@ -101,15 +120,19 @@ Return JSON like:
 
     return res.status(200).json({
       original_message: textToOperate,
-      message_en: finalResult.translation_en,
-      message_es: finalResult.translation_es,
-      summary_en: finalResult.summary_en,
-      summary_es: finalResult.summary_es,
+      body: {
+        en: finalResult.translation_en,
+        es: finalResult.translation_es,
+      },
+      summary: {
+        en: finalResult.summary_en,
+        es: finalResult.summary_es,
+      },
       language_detected: finalResult.language_detected || "unknown",
       specific: "",
-      used: 0,
+      usedCount: 0,
       message_id: uuidv4(),
-      type: "created_by_user",
+      created_by: "user",
       createdAt: new Date().toISOString(),
     });
   } catch (error) {

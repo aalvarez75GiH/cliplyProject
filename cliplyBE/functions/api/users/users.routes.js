@@ -3,29 +3,8 @@ const { v4: uuidv4 } = require("uuid");
 const app = require("../../express")();
 
 const usersController = require("./users.controllers");
-const globalCategoriesController = require("../global_categories/global_categories.controllers");
+const globalOperationsController = require("../global_operations/global_operations.controllers");
 const { user } = require("firebase-functions/v1/auth");
-
-//** Getting Category Data by user ID
-app.get("/userDataByUserId", (req, res) => {
-  const user_id = req.query.user_id;
-  (async () => {
-    try {
-      const user_data_found = await usersController.getUserDataByUserID(
-        user_id
-      );
-      console.log("USER DATA AT ROUTE:", user_data_found);
-      user_data_found.length > 0
-        ? res.status(200).json(user_data_found)
-        : res.status(404).send({ status: "404", msg: "USER DATA NOT FOUND" });
-    } catch (error) {
-      return res.status(404).send({
-        status: "500",
-        msg: error,
-      });
-    }
-  })();
-});
 
 //******************** POSTS ****************************************
 app.post("/", (req, res) => {
@@ -50,13 +29,13 @@ app.post("/", (req, res) => {
       const newUser = await usersController.createUser(user);
 
       if (newUser) {
-        const messages_categories =
-          await globalCategoriesController.getAllGlobalCategories();
+        const global_operations =
+          await globalOperationsController.getAllGlobalOperations();
 
         const users_data_created =
           await usersController.createUserDataAfterUserCreation(
             newUser.user_id,
-            messages_categories
+            global_operations
           );
         console.log(
           "USERS DATA CREATED:",

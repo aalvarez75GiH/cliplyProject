@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 
-const globalCategoryController = require("./global_categories.controllers");
+const globalOperationController = require("./global_operations.controllers");
 
 // ********************************** GETS **********************************
 
@@ -10,14 +10,14 @@ const globalCategoryController = require("./global_categories.controllers");
 app.get("/", (req, res) => {
   (async () => {
     try {
-      await globalCategoryController
-        .getAllGlobalCategories()
-        .then((global_categories) => {
-          global_categories.length
-            ? res.status(200).json(global_categories)
+      await globalOperationController
+        .getAllGlobalOperations()
+        .then((global_operations) => {
+          global_operations.length
+            ? res.status(200).json(global_operations)
             : res.status(404).send({
                 status: "404",
-                msg: "GLOBAL CATEGORIES WERE NOT FOUND",
+                msg: "GLOBAL OPERATIONS WERE NOT FOUND",
               });
         });
     } catch (error) {
@@ -31,28 +31,28 @@ app.get("/", (req, res) => {
 
 // ********************************** POSTS **********************************
 
-app.post("/postGlobalCategories", async (req, res) => {
-  const global_categories = req.body.global_categories;
+app.post("/postGlobalOperations", async (req, res) => {
+  const global_operations = req.body.global_operations;
 
-  if (!global_categories || !Array.isArray(global_categories)) {
-    return res.status(400).json({ error: "Invalid global_categories format" });
+  if (!global_operations || !Array.isArray(global_operations)) {
+    return res.status(400).json({ error: "Invalid global_operations format" });
   }
 
   try {
     // Process each category asynchronously
     await Promise.all(
-      global_categories.map(async (category) => {
-        console.log("Processing category:", category);
+      global_operations.map(async (operation) => {
+        console.log("Processing operation:", operation);
         // Add your async logic here, e.g., saving to Firestore
-        await globalCategoryController.createGlobalCategory(category);
+        await globalOperationController.createGlobalOperation(operation);
       })
     );
 
     // Send response after all operations are completed
     res.status(200).json({
       status: "Success",
-      msg: "GLOBAL CATEGORIES ADDED",
-      global_categories,
+      msg: "GLOBAL OPERATIONS ADDED",
+      global_operations,
     });
   } catch (error) {
     // Handle errors and send a single response

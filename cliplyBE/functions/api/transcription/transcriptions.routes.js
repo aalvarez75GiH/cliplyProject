@@ -3,21 +3,38 @@
 const express = require("express");
 const app = express();
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const axios = require("axios");
+const FormData = require("form-data");
+const ffmpeg = require("fluent-ffmpeg");
+const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 
 const {
   transcription_of_audio_handler,
   translation_and_summary_of_audio_handler,
-  gettingUserData,
+  // getUserDataByUserID,
 } = require("./transcriptions.handlers");
+const { getUserDataByUserID } = require("../users_data/users_data.controllers");
 const usersControllers = require("../users/users.controllers");
 const users_dataControllers = require("../users_data/users_data.controllers");
-const { user } = require("firebase-functions/v1/auth");
+const { transcribeAudio } = require("./transcription_hanlder");
+
+ffmpeg.setFfmpegPath(ffmpegPath);
+
+app.use(express.raw({ type: ["audio/mp4", "audio/mpeg"], limit: "10mb" }));
 
 app.post("/postTranscription_to_whisper", async (req, res) => {
   const user_id = req.query.user_id;
+  const file = req.rawBody;
   try {
     // 1. Transcribe audio from audio file
-    const transcriptionText = await transcription_of_audio_handler(req);
+    // const transcriptionText = await transcription_of_audio_handler(file);
+
+    const contentType = req.get("content-type").toLowerCase().trim() || "";
+
+    const transcriptionText = await transcribeAudio(file, contentType);
 
     // 2. Translate & summarize with GPT
     const finalResult = await translation_and_summary_of_audio_handler(
@@ -27,26 +44,30 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
       "FINAL RESULT FROM HANDLER:",
       JSON.stringify(finalResult, null, 2)
     );
-
-    // 3. Save the message and its translations/summaries to the user's recent messages collection
-    const userData = await gettingUserData(user_id);
-    // console.log(
-    //   "USER DATA AT WHISPER END POINT:",
-    //   JSON.stringify(userData, null, 2)
-    // );
     const recent_message_to_add = {
       original_message: transcriptionText,
-      message_en: finalResult.transcription_en,
-      message_es: finalResult.transcription_es,
-      summary_en: finalResult.summary_en,
-      summary_es: finalResult.summary_es,
+      body: {
+        en: finalResult.transcription_en,
+        es: finalResult.transcription_es,
+      },
+      summary: {
+        en: finalResult.summary_en,
+        es: finalResult.summary_es,
+      },
       language_detected: finalResult.language_detected || "unknown",
       specific: finalResult.specific,
-      used: 0,
+      usedCount: 0,
       message_id: uuidv4(),
       created_by: "user",
       createdAt: new Date().toISOString(),
     };
+
+    // 3. Save the message and its translations/summaries to the user's recent messages collection
+    const userData = await getUserDataByUserID(user_id);
+    console.log(
+      "USER DATA AT WHISPER END POINT:",
+      JSON.stringify(userData, null, 2)
+    );
 
     console.log(
       "RECENT MESSAGE TO ADD:",
@@ -55,7 +76,7 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
 
     const updated_recent_messages_array = [
       recent_message_to_add,
-      ...userData[0].recent_messages,
+      ...userData.recent_messages,
     ];
 
     // Prepare the update object
@@ -67,19 +88,7 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
     // ******************* HERE WE WORK WITH STORING MESSAGE IN THE USER RECENT MESSAGES COLELCTION
 
     // 4. Return the result in JSON format with the following keys:
-    return res.status(200).json({
-      original_message: transcriptionText,
-      message_en: finalResult.transcription_en,
-      message_es: finalResult.transcription_es,
-      summary_en: finalResult.summary_en,
-      summary_es: finalResult.summary_es,
-      language_detected: finalResult.language_detected || "unknown",
-      used: 0,
-      message_id: uuidv4(),
-      created_by: "user",
-      createdAt: new Date().toISOString(),
-      specific: finalResult.specific,
-    });
+    return res.status(200).json(recent_message_to_add);
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send(error.message || "Internal server error");

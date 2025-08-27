@@ -4,21 +4,6 @@ const { v4: uuidv4 } = require("uuid");
 const { db } = require("../../fb");
 const { user } = require("firebase-functions/v1/auth");
 
-// ** get Category data by user ID controller
-const getUserDataByUserID = async (user_id) => {
-  let found_userData = [];
-  await db
-    .collection("users_data")
-    .where(`user_id`, "==", user_id)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        found_userData.push(doc.data());
-      });
-    });
-  return found_userData;
-};
-
 // ** Create a user - Http Request
 const createUser = async (user) => {
   const { user_id } = user;
@@ -26,21 +11,13 @@ const createUser = async (user) => {
   return user;
 };
 
-const updateUserData = async (user_id, userData) => {
-  await db.collection("users_data").doc(user_id).update(userData);
-  return userData;
-};
-
-const createUserDataAfterUserCreation = async (
-  user_id,
-  messages_categories
-) => {
+const createUserDataAfterUserCreation = async (user_id, global_operations) => {
   const user_data_to_create = {
     user_id,
     recent_messages: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-    messages_categories,
+    global_operations,
   };
   await db
     .collection("users_data")
@@ -52,6 +29,4 @@ const createUserDataAfterUserCreation = async (
 module.exports = {
   createUser,
   createUserDataAfterUserCreation,
-  getUserDataByUserID,
-  updateUserData,
 };

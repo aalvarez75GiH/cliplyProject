@@ -9,9 +9,9 @@ const FormData = require("form-data");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const { Configuration, OpenAIApi } = require("openai");
-const { v4: uuidv4 } = require("uuid");
-const { user } = require("firebase-functions/v1/auth");
-const { getUserDataByUserID } = require("../../api/users/users.controllers");
+const {
+  getUserDataByUserID,
+} = require("../../api/users_data/users_data.controllers");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -20,9 +20,8 @@ const openai = new OpenAIApi(
 );
 app.use(express.raw({ type: ["audio/mp4", "audio/mpeg"], limit: "10mb" }));
 
-const transcription_of_audio_handler = async (req) => {
+const transcription_of_audio_handler = async (file) => {
   try {
-    const file = req.rawBody;
     const contentType = req.get("content-type").toLowerCase().trim() || "";
 
     if (!file || !["audio/m4a", "audio/mpeg"].includes(contentType)) {
