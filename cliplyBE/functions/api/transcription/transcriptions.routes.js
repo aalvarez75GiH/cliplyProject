@@ -3,23 +3,16 @@
 const express = require("express");
 const app = express();
 const { v4: uuidv4 } = require("uuid");
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const axios = require("axios");
-const FormData = require("form-data");
+
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 
 const {
-  transcription_of_audio_handler,
   translation_and_summary_of_audio_handler,
-  // getUserDataByUserID,
-} = require("./transcriptions.handlers");
-const { getUserDataByUserID } = require("../users_data/users_data.controllers");
-const usersControllers = require("../users/users.controllers");
-const users_dataControllers = require("../users_data/users_data.controllers");
+} = require("./translation_and_prompt.handlers");
 const { transcribeAudio } = require("./transcription_hanlder");
+const { getUserDataByUserID } = require("../users_data/users_data.controllers");
+const users_dataControllers = require("../users_data/users_data.controllers");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
@@ -64,15 +57,6 @@ app.post("/postTranscription_to_whisper", async (req, res) => {
 
     // 3. Save the message and its translations/summaries to the user's recent messages collection
     const userData = await getUserDataByUserID(user_id);
-    console.log(
-      "USER DATA AT WHISPER END POINT:",
-      JSON.stringify(userData, null, 2)
-    );
-
-    console.log(
-      "RECENT MESSAGE TO ADD:",
-      JSON.stringify(recent_message_to_add, null, 2)
-    );
 
     const updated_recent_messages_array = [
       recent_message_to_add,

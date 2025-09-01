@@ -1,9 +1,11 @@
 /* eslint-disable */
 // const { v4: uuidv4 } = require("uuid");
 const app = require("../../express")();
+
 const users_dataController = require("./users_data.controllers");
 
-//** Getting all Category List
+// ************************ GETS ******************************
+//** Getting a user data by user ID
 app.get("/userDataByUserID", (req, res) => {
   const user_id = req.query.user_id;
   (async () => {
@@ -27,8 +29,54 @@ app.get("/userDataByUserID", (req, res) => {
   })();
 });
 
-// ******************* DELETEs **************************
+// ************************ POSTS ******************************
+//** Post a new message at user data by user ID
+app.post("/postNewMessageAtUserData", (req, res) => {
+  (async () => {
+    const new_message_to_add = req.body.new_message;
+    const user_id = req.body.user_id;
+    const operation_name = req.body.operation_name;
+    const status_name = req.body.status_name;
+    const updatedUserData =
+      await users_dataController.postNewMessageAtUserDataByUserId(
+        user_id,
+        operation_name,
+        status_name,
+        new_message_to_add
+      );
 
+    const userData = await users_dataController.getUserDataByUserID(user_id);
+    return res.status(201).send({
+      status: "Successfully",
+      msg: "New message was added",
+      userData: userData,
+    });
+  })();
+});
+// ************************ PUTS ******************************
+app.put("/updateStoredMessageUsedCount", (req, res) => {
+  (async () => {
+    const data_needed_to_update_message = {
+      user_id: req.body.user_id,
+      operation_id: req.body.operation_id,
+      status_name: req.body.status_name,
+      message_id: req.body.message_id,
+    };
+    const userDataUpdated = await users_dataController.updatingMessageUsedCount(
+      data_needed_to_update_message
+    );
+
+    // const userData = await users_dataController.getUserDataByUserID(user_id);
+    return res.status(201).send({
+      status: "Successfully",
+      msg: "Message usedCount was updated",
+      messageUpdatedData: userDataUpdated,
+    });
+  })();
+});
+
+// ******************* DELETEs **************************
+//** Delete one recent message by user ID and item ID
 app.delete("/deleteOneRecentMessageByUserID", async (req, res) => {
   try {
     const data_to_delete = req.body.data_to_delete;

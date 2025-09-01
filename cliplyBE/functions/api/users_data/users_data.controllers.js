@@ -16,9 +16,106 @@ const getUserDataByUserID = async (user_id) => {
   return found_userData;
 };
 
+const postNewMessageAtUserDataByUserId = async (
+  user_id,
+  operation_name,
+  status_name,
+  new_message_to_add
+) => {
+  try {
+    const userDataToWorkOn = await getUserDataByUserID(user_id);
+    // console.log(
+    //   "USER DATA TO WORK ON:",
+    //   JSON.stringify(userDataToWorkOn, null, 2)
+    // );
+    const ops = userDataToWorkOn.global_operations.map((op) => {
+      if (op.operation_name === operation_name) {
+        const updated_statuses = op.statuses.map((st) => {
+          if (st.status_name === status_name) {
+            console.log("STATUS TO UPDATE:", JSON.stringify(st, null, 2));
+            const updated_messages = [
+              new_message_to_add,
+              ...st.stored_messages,
+            ];
+            return { ...st, stored_messages: updated_messages };
+          }
+          return st;
+        });
+        return { ...op, statuses: updated_statuses };
+      }
+      return op;
+    });
+    const updatedUserData = {
+      ...userDataToWorkOn,
+      global_operations: ops,
+    };
+    await updateUserData(user_id, updatedUserData);
+    return updatedUserData;
+  } catch (error) {
+    console.error("Error in postNewMessageAtUserDataByUserId:", error);
+    throw error;
+  }
+};
+
 const updateUserData = async (user_id, userData) => {
   await db.collection("users_data").doc(user_id).update(userData);
   return userData;
+};
+
+const updatingMessageUsedCount = async (data_needed_to_update_message) => {
+  const { user_id, operation_id, status_name, message_id } =
+    data_needed_to_update_message;
+  try {
+    const userDataToWorkOn = await getUserDataByUserID(user_id);
+
+    // console.log("USER ID AT UPDATE MESSAGE USED COUNT:", user_id);
+    // console.log("OPERATION NAME AT UPDATE MESSAGE USED COUNT:", operation_name);
+    // console.log("OPERATION ID AT UPDATE MESSAGE USED COUNT:", operation_id);
+    // console.log("STATUS NAME AT UPDATE MESSAGE USED COUNT:", status_name);
+    // console.log("MESSAGE ID AT UPDATE MESSAGE USED COUNT:", message_id);
+
+    const ops = userDataToWorkOn.global_operations.map((op) => {
+      if (op.operation_id === operation_id) {
+        const updated_statuses = op.statuses.map((st) => {
+          if (st.status_name === status_name) {
+            console.log("STATUS TO UPDATE:", JSON.stringify(st, null, 2));
+            const message_to_update = st.stored_messages.find(
+              (msg) => msg.message_id === message_id
+            );
+            if (!message_to_update) {
+              throw new Error("Message to update not found");
+            }
+            const new_message_to_add = {
+              ...message_to_update,
+              usedCount: message_to_update.usedCount + 1,
+            };
+            const updated_stored_messages = st.stored_messages
+              .map((msg) =>
+                msg.message_id === message_id ? new_message_to_add : msg
+              )
+              .sort((a, b) => b.usedCount - a.usedCount); // Sort by usedCount in descending order
+
+            return {
+              ...st,
+              stored_messages: updated_stored_messages,
+            };
+          }
+          return st;
+        });
+        return { ...op, statuses: updated_statuses };
+      }
+      return op;
+    });
+    const updatedUserData = {
+      ...userDataToWorkOn,
+      global_operations: ops,
+    };
+    await updateUserData(user_id, updatedUserData);
+    return updatedUserData;
+  } catch (error) {
+    console.error("Error updating message used count:", error.message);
+    throw error;
+  }
 };
 
 const deleteRecentMessageByUserID = async (user_id, item_id) => {
@@ -58,4 +155,6 @@ module.exports = {
   deleteRecentMessageByUserID,
   getUserDataByUserID,
   updateUserData,
+  postNewMessageAtUserDataByUserId,
+  updatingMessageUsedCount,
 };
