@@ -45,11 +45,11 @@ app.post("/postNewMessageAtUserData", (req, res) => {
         new_message_to_add
       );
 
-    const userData = await users_dataController.getUserDataByUserID(user_id);
+    // const userData = await users_dataController.getUserDataByUserID(user_id);
     return res.status(201).send({
       status: "Successfully",
       msg: "New message was added",
-      userData: userData,
+      userData: updatedUserData,
     });
   })();
 });
@@ -70,7 +70,7 @@ app.put("/updateStoredMessageUsedCount", (req, res) => {
     return res.status(201).send({
       status: "Successfully",
       msg: "Message usedCount was updated",
-      messageUpdatedData: userDataUpdated,
+      userData: userDataUpdated,
     });
   })();
 });
