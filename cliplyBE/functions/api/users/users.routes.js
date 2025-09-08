@@ -18,8 +18,7 @@ app.post("/", (req, res) => {
     uid: req.body.uid,
     createdAt: req.body.createdAt,
     updatedAt: req.body.updatedAt,
-    diaplay_name: req.body.display_name,
-    phone_number: req.body.phone_number,
+    display_name: req.body.display_name,
     isFirstTime,
     user_id,
   };
