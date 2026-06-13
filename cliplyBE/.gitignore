@@ -67,3 +67,7 @@ node_modules/
 
 # service key
 googleServicesAccountKey.json
+
+# RSA keys
+functions/private.pem
+functions/public.pem
