@@ -84,7 +84,11 @@ app.delete("/deleteOneRecentMessageByUserID", async (req, res) => {
       "DATA TO DELETE AT DELETE RECENT MESSAGE:",
       JSON.stringify(data_to_delete, null, 2)
     );
-    if (!data_to_delete || !data_to_delete.user_id || !data_to_delete.item_id) {
+    if (
+      !data_to_delete ||
+      !data_to_delete.user_id ||
+      !data_to_delete.message_id
+    ) {
       return res.status(400).send({
         status: "Failed",
         msg: "Invalid request. 'user_id' and 'item_id' are required.",
@@ -92,14 +96,14 @@ app.delete("/deleteOneRecentMessageByUserID", async (req, res) => {
     }
 
     const user_id = data_to_delete.user_id;
-    const item_id = data_to_delete.item_id;
+    const message_id = data_to_delete.message_id;
 
     console.log("USER ID AT DELETE RECENT MESSAGE:", user_id);
-    console.log("ITEM ID AT DELETE RECENT MESSAGE:", item_id);
+    console.log("ITEM ID AT DELETE RECENT MESSAGE:", message_id);
 
     const result = await users_dataController.deleteRecentMessageByUserID(
       user_id,
-      item_id
+      message_id
     );
     if (!result || result.status !== "success") {
       return res.status(404).send({
@@ -122,6 +126,49 @@ app.delete("/deleteOneRecentMessageByUserID", async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting recent message:", error);
+    return res.status(500).send({
+      status: "Failed",
+      msg: "An error occurred while deleting the recent message.",
+    });
+  }
+});
+app.delete("/deleteStoredMessageByUserID", async (req, res) => {
+  try {
+    const data_of_message_to_delete = req.body.specificTextClipData;
+    console.log(
+      "DATA TO DELETE AT DELETE RECENT MESSAGE:",
+      JSON.stringify(data_of_message_to_delete, null, 2)
+    );
+    if (
+      !data_of_message_to_delete ||
+      !data_of_message_to_delete.user_id ||
+      !data_of_message_to_delete.message_id
+    ) {
+      return res.status(400).send({
+        status: "Failed",
+        msg: "Invalid request. 'user_id' and 'item_id' are required.",
+      });
+    }
+
+    const user_id = data_of_message_to_delete.user_id;
+    const message_id = data_of_message_to_delete.message_id;
+
+    console.log("USER ID AT DELETE STORED MESSAGE:", user_id);
+    console.log("ITEM ID AT DELETE STORED MESSAGE:", message_id);
+
+    const result = await users_dataController.deletingStoredMessage(
+      data_of_message_to_delete
+    );
+
+    if (result) {
+      console.log("Stored message deleted successfully.");
+      return res.status(200).send({
+        status: "Successfully",
+        msg: "Store message was deleted successfully.",
+      });
+    }
+  } catch (error) {
+    console.error("Error deleting stored message:", error);
     return res.status(500).send({
       status: "Failed",
       msg: "An error occurred while deleting the recent message.",

@@ -1,0 +1,57 @@
+{
+  "users": {
+    "user_123": {
+      "name": "Arnoldo",
+      "email": "arnoldo@email.com",
+      "language_preference": "en",
+      "recent_messages": [
+        {
+          "message_id": "msg_001",
+          "message_en": "I'm stuck in traffic.",
+          "message_es": "Estoy atrapado en el tr\u00e1fico.",
+          "summary_en": "Running late",
+          "summary_es": "Llegando tarde",
+          "original_message": "Sorry, there's too much traffic",
+          "language_detected": "en",
+          "created_at": "2025-08-07T23:00:00Z"
+        }
+      ]
+    }
+  },
+  "users/user_123/stored_messages": {
+    "msg_002": {
+      "category_id": "traffic_delay",
+      "message_en": "I\u2019ll be a bit late due to traffic.",
+      "message_es": "Llegar\u00e9 un poco tarde por el tr\u00e1fico.",
+      "summary_en": "Running late",
+      "summary_es": "Retraso",
+      "original_message": "I'm in traffic",
+      "language_detected": "en",
+      "created_at": "2025-08-07T23:02:00Z"
+    }
+  },
+  "categories": {
+    "traffic_delay": {
+      "name_en": "Traffic / Delay",
+      "name_es": "Tr\u00e1fico / Retraso",
+      "icon": "\ud83d\ude97",
+      "order": 1
+    },
+    "issues_at_store": {
+      "name_en": "Issues at Store",
+      "name_es": "Problemas en la tienda",
+      "icon": "\ud83c\udfea",
+      "order": 2
+    }
+  },
+  "categories/traffic_delay/preloaded_messages": {
+    "msg_traffic_001": {
+      "message_en": "Traffic is heavy, I\u2019ll be a few minutes late.",
+      "message_es": "Hay mucho tr\u00e1fico, llegar\u00e9 unos minutos tarde.",
+      "summary_en": "Running late",
+      "summary_es": "Retraso",
+      "original_message": "Sorry, traffic is heavy.",
+      "language_detected": "en"
+    }
+  }
+}

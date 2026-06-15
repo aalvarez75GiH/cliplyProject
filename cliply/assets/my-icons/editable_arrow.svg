@@ -1,0 +1,20 @@
+<!-- Curved arrow: arrowhead size fixed (userSpaceOnUse) -->
+<svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow-fixed" viewBox="0 0 20 20"
+            refX="18" refY="10"
+            markerWidth="10" markerHeight="10"
+            orient="auto"
+            markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 20 10 L 0 20 z" />
+    </marker>
+  </defs>
+
+  <!-- Path: change d to alter curvature -->
+  <path d="M30,110 C120,10 240,10 330,110"
+        fill="none"
+        stroke="#d62728"
+        stroke-width="4"
+        stroke-linecap="round"
+        marker-end="url(#arrow-fixed)"/>
+</svg>

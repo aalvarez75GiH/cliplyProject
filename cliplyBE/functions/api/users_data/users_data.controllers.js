@@ -68,12 +68,6 @@ const updatingMessageUsedCount = async (data_needed_to_update_message) => {
   try {
     const userDataToWorkOn = await getUserDataByUserID(user_id);
 
-    // console.log("USER ID AT UPDATE MESSAGE USED COUNT:", user_id);
-    // console.log("OPERATION NAME AT UPDATE MESSAGE USED COUNT:", operation_name);
-    // console.log("OPERATION ID AT UPDATE MESSAGE USED COUNT:", operation_id);
-    // console.log("STATUS NAME AT UPDATE MESSAGE USED COUNT:", status_name);
-    // console.log("MESSAGE ID AT UPDATE MESSAGE USED COUNT:", message_id);
-
     const ops = userDataToWorkOn.global_operations.map((op) => {
       if (op.operation_id === operation_id) {
         const updated_statuses = op.statuses.map((st) => {
@@ -118,10 +112,57 @@ const updatingMessageUsedCount = async (data_needed_to_update_message) => {
   }
 };
 
-const deleteRecentMessageByUserID = async (user_id, item_id) => {
+const deletingStoredMessage = async (data_needed_to_delete_message) => {
+  const { user_id, operation_id, status_name, message_id } =
+    data_needed_to_delete_message;
+  try {
+    const userDataToWorkOn = await getUserDataByUserID(user_id);
+
+    const ops = userDataToWorkOn.global_operations.map((op) => {
+      if (op.operation_id === operation_id) {
+        const updated_statuses = op.statuses.map((st) => {
+          if (st.status_name === status_name) {
+            console.log(
+              "STATUS TO DELETE MESSAGE FROM:",
+              JSON.stringify(st, null, 2)
+            );
+            const message_to_delete = st.stored_messages.find(
+              (msg) => msg.message_id === message_id
+            );
+            if (!message_to_delete) {
+              throw new Error("Message to delete not found");
+            }
+            const updated_stored_messages = st.stored_messages.filter(
+              (msg) => msg.message_id !== message_id
+            ); // Remove the message with the given message_id
+
+            return {
+              ...st,
+              stored_messages: updated_stored_messages,
+            };
+          }
+          return st;
+        });
+        return { ...op, statuses: updated_statuses };
+      }
+      return op;
+    });
+
+    const updatedUserData = {
+      ...userDataToWorkOn,
+      global_operations: ops,
+    };
+    await updateUserData(user_id, updatedUserData);
+    return updatedUserData;
+  } catch (error) {
+    console.error("Error deleting stored message:", error.message);
+    throw error;
+  }
+};
+const deleteRecentMessageByUserID = async (user_id, message_id) => {
   try {
     console.log("USER ID AT DELETE RECENT MESSAGE:", user_id);
-    console.log("ITEM ID AT DELETE RECENT MESSAGE:", item_id);
+    console.log("ITEM ID AT DELETE RECENT MESSAGE:", message_id);
 
     const userData = await getUserDataByUserID(user_id);
     if (!userData) {
@@ -133,7 +174,7 @@ const deleteRecentMessageByUserID = async (user_id, item_id) => {
     }
 
     const updatedRecentMessages = userData.recent_messages.filter(
-      (message) => message.message_id !== item_id
+      (message) => message.message_id !== message_id
     );
 
     await db
@@ -157,4 +198,5 @@ module.exports = {
   updateUserData,
   postNewMessageAtUserDataByUserId,
   updatingMessageUsedCount,
+  deletingStoredMessage,
 };

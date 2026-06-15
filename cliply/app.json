@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "cliply",
+    "slug": "cliply",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "uber",
+          "uberdriver",
+          "uber-partner",
+          "lyftdriver",
+          "lyft",
+          "doordash",
+          "dasher"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": ["expo-font", "expo-asset", "expo-secure-store"],
+    "extra": {
+      "eas": {
+        "projectId": "a51957cf-c0eb-4e59-8616-0b800b00ec5f"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a51957cf-c0eb-4e59-8616-0b800b00ec5f"
+    }
+  }
+}

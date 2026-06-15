@@ -26,23 +26,3 @@ module.exports = {
   getAuth,
   admin,
 };
-
-// const functions = require("firebase-functions");
-// require("dotenv").config();
-
-// const admin = require("firebase-admin");
-// const serviceAccount = require("./googleServicesAccountKey.json");
-// // const fcn = functions;
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-// });
-
-// const getAuth = admin.auth();
-// const db = admin.firestore();
-
-// module.exports = {
-//   db,
-//   getAuth,
-//   //   fcn,
-//   admin,
-// };
