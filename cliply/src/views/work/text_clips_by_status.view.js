@@ -19,7 +19,6 @@ export default function Text_Clips_by_Status_View({ route }) {
     operation_name,
     status_name
   );
-  const isFoodDelivery = operation_name === "food_delivery";
 
   const {
     renderStoredMessagesTile,
@@ -30,7 +29,6 @@ export default function Text_Clips_by_Status_View({ route }) {
 
   const { globalLanguage, userData } = useContext(GlobalContext);
   const [dataToRender, setDataToRender] = useState([]);
-  const [headers_caption, set_Headers_Caption] = useState("");
 
   useEffect(() => {
     const { global_operations } = userData;
@@ -68,7 +66,6 @@ export default function Text_Clips_by_Status_View({ route }) {
     // Cleanup function to set state when leaving the view
     return () => {
       setDataToRender([]); // Reset data or set any state you want
-      set_Headers_Caption(""); // Reset headers or perform other cleanup
       setSelectedItemId(null); // Clear selected item ID on exit
       setIntroAdded(false); // Reset intro added state
     };
@@ -82,34 +79,51 @@ export default function Text_Clips_by_Status_View({ route }) {
   const rs_close_to_passanger = require("../../../assets/illustrations/close to passenger.png");
   const rs_at_passenger = require("../../../assets/illustrations/at pickUp location.png");
 
-  const step_component_EN_or_ES = {
-    caption_1_FD_EN: "Heading to",
-    caption_1_FD_ES: "Iendo a",
-    caption_2_FD_EN: "pickup/shop",
-    caption_2_FD_ES: "recoger",
-    caption_1_RS_EN: "Heading to",
-    caption_1_RS_ES: "Iendo al",
-    caption_2_RS_EN: "passenger",
-    caption_2_RS_ES: "pasajero",
-  };
-
-  const statusImages = {
+  const statusImagesAndCaptions = {
     food_delivery: {
-      heading_to_pickup: fd_heading_to_pickup,
-      picking_up_shopping: fd_at_restaurant,
-      heading_to_drop_off: fd_heading_to_dropoff,
+      heading_to_pickup_shop: {
+        image: fd_heading_to_pickup,
+        caption_1: "Heading to",
+        caption_2: "pickup",
+      },
+      picking_up_shopping: {
+        image: fd_at_restaurant,
+        caption_1: "Picking Up",
+        caption_2: "",
+      },
+      heading_to_drop_off: {
+        image: fd_heading_to_dropoff,
+        caption_1: "Heading to",
+        caption_2: "drop-off",
+      },
     },
     ride_share: {
-      heading_to_passenger: rs_heading_to_passenger,
-      close_to_passenger: rs_close_to_passanger,
-      at_passenger_location: rs_at_passenger,
+      heading_to_passenger: {
+        image: rs_heading_to_passenger,
+        caption_1: "Heading to",
+        caption_2: "passenger",
+      },
+      close_to_passenger: {
+        image: rs_close_to_passanger,
+        caption_1: "Close to",
+        caption_2: "passenger",
+      },
+      at_passenger_location: {
+        image: rs_at_passenger,
+        caption_1: "I am",
+        caption_2: "here",
+      },
     },
   };
 
   const currentImage =
-    statusImages?.[operation_name]?.[status_name] || fd_heading_to_pickup;
+    statusImagesAndCaptions?.[operation_name]?.[status_name]?.image ||
+    fd_heading_to_pickup;
+  const currentCaption1 =
+    statusImagesAndCaptions?.[operation_name]?.[status_name]?.caption_1 || "";
+  const currentCaption2 =
+    statusImagesAndCaptions?.[operation_name]?.[status_name]?.caption_2 || "";
 
-  console.log("CURRENT IMAGE SOURCE: ", currentImage);
   return (
     <SafeArea background_color={theme.colors.bg.elements_bg}>
       <Container
@@ -131,24 +145,8 @@ export default function Text_Clips_by_Status_View({ route }) {
           <Operations_Status_Step_Component
             operation_name={operation_name}
             status_name={status_name}
-            caption_1={
-              isFoodDelivery && globalLanguage === "EN"
-                ? step_component_EN_or_ES.caption_1_FD_EN
-                : isFoodDelivery && globalLanguage === "ES"
-                ? step_component_EN_or_ES.caption_1_FD_ES
-                : !isFoodDelivery && globalLanguage === "EN"
-                ? step_component_EN_or_ES.caption_1_RS_EN
-                : step_component_EN_or_ES.caption_1_RS_ES
-            }
-            caption_2={
-              isFoodDelivery && globalLanguage === "EN"
-                ? step_component_EN_or_ES.caption_2_FD_EN
-                : isFoodDelivery && globalLanguage === "ES"
-                ? step_component_EN_or_ES.caption_2_FD_ES
-                : !isFoodDelivery && globalLanguage === "EN"
-                ? step_component_EN_or_ES.caption_2_RS_EN
-                : step_component_EN_or_ES.caption_2_RS_ES
-            }
+            caption_1={currentCaption1}
+            caption_2={currentCaption2}
             caption_3={globalLanguage === "EN" ? "Quickies" : "Rapiditos"}
             image_source_1={currentImage}
             step_indicator_color={theme.colors.ui.food_delivery_theme_color}

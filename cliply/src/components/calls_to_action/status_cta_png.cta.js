@@ -76,8 +76,10 @@ export const Status_CTA_PNG = ({
       >
         <Spacer position="bottom" size="medium" />
         <Spacer position="left" size="medium">
-          <Text variant="dm_sans_bold_14_white">{caption_1}</Text>
-          <Text variant="dm_sans_bold_14_white">{caption_2}</Text>
+          <Text variant="dm_sans_bold_18_white">{caption_1}</Text>
+          {caption_2 !== "" && (
+            <Text variant="dm_sans_bold_18_white">{caption_2}</Text>
+          )}
         </Spacer>
         <Spacer position="bottom" size="large" />
       </Container>
@@ -105,17 +107,12 @@ export const Status_CTA_PNG = ({
         direction="column"
         border_radius="10px"
       >
-        <Spacer position="bottom" size="medium" />
         <Spacer position="left" size="medium">
-          <Text variant="dm_sans_bold_14_white">{caption_1}</Text>
-          <Text variant="dm_sans_bold_14_white">{caption_2}</Text>
+          <Text variant="dm_sans_bold_18_white">{caption_1}</Text>
+          {caption_2 !== "" && (
+            <Text variant="dm_sans_bold_16_white">{caption_2}</Text>
+          )}
         </Spacer>
-        <Spacer position="bottom" size="large" />
-
-        {/* <Spacer position="left" size="medium">
-          <Text variant="dm_sans_bold_16_white">{caption_1}</Text>
-          <Text variant="dm_sans_bold_16_white">{caption_2}</Text>
-        </Spacer> */}
       </Container>
       <Container
         width="55%"

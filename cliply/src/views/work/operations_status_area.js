@@ -68,9 +68,9 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           {/* ******************* HEADING TO PICK UP STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
             // caption_1={"Heading to"}
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
+            caption_1={"Heading to"}
             // caption_2={"pickup/shop"}
-            caption_2={globalLanguage === "EN" ? "pickup/shop" : "recoger"}
+            caption_2={"pickup"}
             caption_3={"1"}
             image_source_1={image_source_1}
             step_indicator_color={theme.colors.ui.food_delivery_op_color}
@@ -81,7 +81,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
               };
               navigation.navigate("Text_Clips_by_Status_View", {
                 operation_name: "food_delivery",
-                status_name: "heading_to_pickup/shop",
+                status_name: "heading_to_pickup_shop",
                 specificTextClipData,
               });
             }}
@@ -93,8 +93,8 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
 
           {/* ******************* PICKING UP/SHOPPING STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Picking up" : "Recogiendo"}
-            caption_2={globalLanguage === "EN" ? "Shopping" : "comprando"}
+            caption_1={"Picking up"}
+            caption_2={""}
             caption_3={"2"}
             image_source_1={image_source_2}
             step_indicator_color={theme.colors.ui.food_delivery_op_color}
@@ -224,8 +224,8 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           {/* ******************* AT PICKUP LOCATION STATUS ****************************** */}
 
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "At Pickup" : "en el punto de"}
-            caption_2={globalLanguage === "EN" ? "location" : " recogida"}
+            caption_1={"I am"}
+            caption_2={"here"}
             caption_3={"3"}
             image_source_1={image_source_6}
             step_indicator_color={theme.colors.ui.ride_share_theme_color}

@@ -47,7 +47,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
         <Restart_flow_operation_status_process_header />
         {/* ******************* FOOD DELIVERY ***************************** */}
         {operation === "food_delivery" &&
-          status === "heading_to_pickup/shop" && (
+          status === "heading_to_pickup_shop" && (
             <Container
               width="100%"
               height="90%"
@@ -60,7 +60,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
                 data={heading_to_pickup_shop}
                 renderItem={renderQuickiesTile}
                 keyExtractor={(item, id) => {
-                  return item.quicky_id;
+                  return item.message_id;
                 }}
               />
               <Spacer position="top" size="medium" />
@@ -79,7 +79,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
               data={picking_up_shopping}
               renderItem={renderQuickiesTile}
               keyExtractor={(item, id) => {
-                return item.quicky_id;
+                return item.message_id;
               }}
             />
             <Spacer position="top" size="medium" />
@@ -98,7 +98,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
               data={heading_to_drop_off}
               renderItem={renderQuickiesTile}
               keyExtractor={(item, id) => {
-                return item.quicky_id;
+                return item.message_id;
               }}
             />
             <Spacer position="top" size="medium" />
@@ -118,7 +118,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
               data={heading_to_passenger}
               renderItem={renderQuickiesTile}
               keyExtractor={(item, id) => {
-                return item.quicky_id;
+                return item.message_id;
               }}
             />
             <Spacer position="top" size="medium" />
@@ -137,7 +137,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
               data={close_to_passenger}
               renderItem={renderQuickiesTile}
               keyExtractor={(item, id) => {
-                return item.quicky_id;
+                return item.message_id;
               }}
             />
             <Spacer position="top" size="medium" />
@@ -156,7 +156,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
               data={at_passenger_location}
               renderItem={renderQuickiesTile}
               keyExtractor={(item, id) => {
-                return item.quicky_id;
+                return item.message_id;
               }}
             />
             <Spacer position="top" size="medium" />

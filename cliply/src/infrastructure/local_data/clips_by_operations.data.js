@@ -590,13 +590,6 @@ export const quickies_ride_share = {
   ],
   at_passenger_location: [
     {
-      message_id: "QK_0017",
-      body: {
-        en: "At pickup location!",
-        es: "En el lugar de recogida!",
-      },
-    },
-    {
       message_id: "QK_0018",
       body: {
         en: "Here, hurry up.",
@@ -606,8 +599,15 @@ export const quickies_ride_share = {
     {
       message_id: "QK_0019",
       body: {
-        en: "Police is a little bit crazy here",
-        es: "La policía está un poco loca aquí",
+        en: "Can't stay long here",
+        es: "No puedo quedarme mucho tiempo aquí",
+      },
+    },
+    {
+      message_id: "QK_0017",
+      body: {
+        en: "Just 4 people please!",
+        es: "¡Solo 4 personas por favor!",
       },
     },
   ],
