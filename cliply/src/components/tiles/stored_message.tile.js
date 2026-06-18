@@ -52,44 +52,44 @@ export const Stored_Message_Tile = ({
 
   const copy_message_action = async (item) => {
     const { body, message_id } = item;
-    setIsLoading(true);
-    setTimeout(async () => {
-      await Clipboard.setStringAsync(
-        introAdded
-          ? `Hey, Your driver here. ${language === "EN" ? body.en : body.es}`
-          : language === "EN"
-          ? body.en
-          : body.es
-      );
 
-      showSuccessSnackbar("Message copied", uncopy_message_action, "Uncopy");
+    const messageToCopy = introAdded
+      ? `Hey, Your driver here. ${language === "EN" ? body.en : body.es}`
+      : language === "EN"
+      ? body.en
+      : body.es;
+
+    try {
+      await Clipboard.setStringAsync(messageToCopy);
+
+      onSelect(message_id);
+      setIntroAdded(false);
+
+      showSuccessSnackbar("Message copied", null, "");
 
       const usedCountDataForUpdate = {
         ...specificTextClipData,
-        message_id: message_id,
+        message_id,
       };
-      console.log("DATA TO UPDATE USED COUNT AT TILE:", usedCountDataForUpdate);
-      await updatingTextClipsUsedCount(usedCountDataForUpdate);
 
-      console.log(`Copied to clipboard: ${body.en}`);
-      //   setIsSelected(id);
-      onSelect(message_id);
-      setIsLoading(false);
-      setIntroAdded(false);
-    }, 300);
+      updatingTextClipsUsedCount(usedCountDataForUpdate).catch((error) => {
+        console.log("Failed to update used count:", error);
+      });
+    } catch (error) {
+      console.log("Failed to copy message:", error);
+    }
   };
 
-  const uncopy_message_action = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
+  const unCopy_message_action = async () => {
+    try {
       setLanguage(globalLanguage === "EN" ? "EN" : "ES");
       onSelect(null);
       await Clipboard.setStringAsync("");
-      setIsLoading(false);
       setIntroAdded(false);
-    }, 300);
+    } catch (error) {
+      console.log("Failed to uncopy message:", error);
+    }
   };
-
   const isSelected = selectedItemId === message_id;
   //   *******************************************************
 
@@ -266,52 +266,54 @@ export const Stored_Message_Tile = ({
               width="100%"
               height="30%"
               align="center"
-              justify="flex-end"
+              justify="flex-start"
               direction="row"
               color={theme.colors.bg.elements_bg}
               // color={"lightyellow"}
             >
               <Container
-                width="100%"
+                width="35%"
                 height="100%"
-                align="flex-end"
-                justify="flex-end"
-                direction="row"
+                justify="center"
+                align="center"
                 color={"transparent"}
-                //color={"lightblue"}
+                //color={"red"}
               >
                 <Action_Container
-                  width="30%"
-                  height="100%"
-                  onPress={() => uncopy_message_action(item)}
+                  width="100%"
+                  height="65%"
                   justify="center"
                   align="center"
+                  direction="row"
                   //color={theme.colors.ui.success}
                   color={"transparent"}
+                  onPress={() => unCopy_message_action(item)}
                 >
-                  <Text variant="dm_sans_bold_16">Uncopy</Text>
-                </Action_Container>
-                <Container width="50%" height="100%" color="transparent" />
-                <Action_Container
-                  width="20%"
-                  height="100%"
-                  onPress={() => uncopy_message_action(item)}
-                  justify="center"
-                  align="center"
-                  // color={theme.colors.ui.success}
-                  color={"transparent"}
-                >
-                  <SuccessIcon width="30px" height="30px" />
-                  {/* <Text variant="stages_ctas_white">Uncopy</Text> */}
+                  <Spacer position="left" size="large">
+                    <SuccessIcon width="20px" height="20px" />
+                  </Spacer>
+                  <Spacer position="left" size="medium">
+                    <Text
+                      variant="dm_sans_bold_16"
+                      style={{
+                        color: theme.colors.ui.success,
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      Last copied
+                    </Text>
+                  </Spacer>
                 </Action_Container>
               </Container>
+              <Container width="45%" height="100%" color="transparent" />
+              {/* </Container> */}
               <Snack_Bar_Component
                 snackbar={snackbar}
-                bottom_ios={-15}
+                bottom_ios={-25}
                 bottom_android={-45}
-                // duration={1500}
                 minHeight={60}
                 minWidth={"100%"}
+                duration={1000}
               />
             </Container>
           )}
