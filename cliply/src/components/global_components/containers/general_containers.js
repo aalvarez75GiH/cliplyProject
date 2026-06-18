@@ -36,9 +36,14 @@ export const Flexible_Container = styled(View)`
   flex: ${(props) => props.flex || 1};
 `;
 
-export const Action_Container = styled(TouchableOpacity)`
+export const Action_Container = styled(TouchableOpacity).attrs({
+  activeOpacity: 0.6,
+})`
   ${baseStyles};
 `;
+// export const Action_Container = styled(TouchableOpacity)`
+//   ${baseStyles};
+// `;
 
 export const Action_Flex_Container = styled(TouchableOpacity)`
   ${baseStyles};
