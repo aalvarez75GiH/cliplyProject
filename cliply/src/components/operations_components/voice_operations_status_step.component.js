@@ -3,13 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Status_CTA_PNG } from "../calls_to_action/status_cta_png.cta";
 import { theme } from "../../infrastructure/theme/index";
-import {
-  Container,
-  Action_Container,
-} from "../global_components/containers/general_containers";
+import { Container } from "../global_components/containers/general_containers";
 import { Spacer } from "../global_components/optimized.spacer.component.js";
-import RocketIcon from "../../../assets/my-icons/rocket_icon.svg";
-import { Text } from "../../infrastructure/typography/text.component";
 import { Circular_Step_Indicator } from "../global_components/small_circular_step_indicator.component.js";
 
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context";

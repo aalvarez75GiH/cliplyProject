@@ -30,7 +30,11 @@ export const Type_Message_ContextProvider = ({ children }) => {
         console.log("Failed to get a valid response:", response.status);
       }
     } catch (error) {
-      console.log("Error in type_message_request:", error);
+      setIsLoading(false);
+      setResponse(null);
+
+      console.log("Error in type_message_request:", error.response?.status);
+      console.log("Backend error data:", error.response?.data);
     }
   };
 

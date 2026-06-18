@@ -6,17 +6,25 @@ export const post_a_typed_message_Request = async (
   user_id
 ) => {
   const { typeMessageEndPoint } = environment;
-  //const { categoryListEndPoint } = environment;
-  console.log("TEXT ENCODED AT REQUEST:", text_to_operate_encoded);
 
-  return await axios
-    .post(
+  console.log("TEXT ENCODED AT REQUEST:", text_to_operate_encoded);
+  console.log("USER ID AT REQUEST:", user_id);
+  console.log(
+    "FULL TYPE MESSAGE URL:",
+    `${typeMessageEndPoint}/postTypeMessage?text_to_operate=${text_to_operate_encoded}&user_id=${user_id}`
+  );
+
+  try {
+    const response = await axios.post(
       `${typeMessageEndPoint}/postTypeMessage?text_to_operate=${text_to_operate_encoded}&user_id=${user_id}`
-    )
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => {
-      return error;
-    });
+    );
+
+    return response;
+  } catch (error) {
+    console.log("TYPE MESSAGE ERROR STATUS:", error.response?.status);
+    console.log("TYPE MESSAGE ERROR DATA:", error.response?.data);
+    console.log("TYPE MESSAGE ERROR MESSAGE:", error.message);
+
+    throw error;
+  }
 };

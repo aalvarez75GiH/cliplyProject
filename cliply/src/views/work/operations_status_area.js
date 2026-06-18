@@ -10,6 +10,7 @@ import { Flex_Container } from "../../components/global_components/containers/ge
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component";
 import { Operations_Status_Connector_Line } from "../../components/global_components/operations_status_connector_line.component";
 import { Voice_Operations_Status_Step_Component } from "../../components/operations_components/voice_operations_status_step.component";
+import { Operations_Status_Step_Component } from "../../components/operations_components/operations_status_step.component";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context";
 
@@ -66,10 +67,8 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
 
           {/* ******************* FOOD DELIVERY OPERATION ****************************** */}
           {/* ******************* HEADING TO PICK UP STATUS ****************************** */}
-          <Voice_Operations_Status_Step_Component
-            // caption_1={"Heading to"}
+          <Operations_Status_Step_Component
             caption_1={"Heading to"}
-            // caption_2={"pickup/shop"}
             caption_2={"pickup"}
             caption_3={"1"}
             image_source_1={image_source_1}
@@ -92,7 +91,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           <Operations_Status_Connector_Line side="right" />
 
           {/* ******************* PICKING UP/SHOPPING STATUS ****************************** */}
-          <Voice_Operations_Status_Step_Component
+          <Operations_Status_Step_Component
             caption_1={"Picking up"}
             caption_2={""}
             caption_3={"2"}
@@ -119,9 +118,9 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           <Operations_Status_Connector_Line side="left" />
 
           {/* ******************* HEADING TO DROP OFF STATUS ****************************** */}
-          <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
-            caption_2={globalLanguage === "EN" ? "drop off" : "entregar"}
+          <Operations_Status_Step_Component
+            caption_1={"Heading to"}
+            caption_2={"drop off"}
             caption_3={"3"}
             image_source_1={image_source_3}
             step_indicator_color={theme.colors.ui.food_delivery_theme_color}
@@ -172,9 +171,9 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           />
 
           {/* ******************* HEADING TO PASSENGER STATUS ****************************** */}
-          <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
-            caption_2={globalLanguage === "EN" ? "passenger" : "al pasajero"}
+          <Operations_Status_Step_Component
+            caption_1={"Heading to"}
+            caption_2={"passenger"}
             caption_3={"1"}
             image_source_1={image_source_4}
             step_indicator_color={theme.colors.ui.ride_share_theme_color}
@@ -197,9 +196,9 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
 
           <Operations_Status_Connector_Line side="right" />
           {/* ******************* CLOSE TO PASSENGER STATUS ****************************** */}
-          <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Close to" : "Cérca del"}
-            caption_2={globalLanguage === "EN" ? "passenger" : "pasajero"}
+          <Operations_Status_Step_Component
+            caption_1={"Close to"}
+            caption_2={"passenger"}
             caption_3={"2"}
             image_source_1={image_source_5}
             step_indicator_color={theme.colors.ui.ride_share_theme_color}
@@ -223,7 +222,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
           <Operations_Status_Connector_Line side="left" />
           {/* ******************* AT PICKUP LOCATION STATUS ****************************** */}
 
-          <Voice_Operations_Status_Step_Component
+          <Operations_Status_Step_Component
             caption_1={"I am"}
             caption_2={"here"}
             caption_3={"3"}

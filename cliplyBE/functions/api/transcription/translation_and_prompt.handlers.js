@@ -1,12 +1,13 @@
 /* eslint-disable */
 
 const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 
 // ffmpeg.setFfmpegPath(ffmpegPath);
 
-const openai = new OpenAIApi(
-  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
-);
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 const translation_and_summary_of_audio_handler = async (transcriptionText) => {
   const prompt = `
@@ -71,24 +72,31 @@ Output:
 
   `;
 
-  const chatResponse = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content: "You are a translator and summarizer assistant.",
-      },
-      { role: "user", content: prompt },
-    ],
-  });
-
-  let finalResult;
   try {
-    finalResult = JSON.parse(chatResponse.data.choices[0].message.content);
+    const chatResponse = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a translator and summarizer assistant.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.2,
+    });
+
+    const content = chatResponse.choices[0].message.content;
+
+    console.log("GPT RAW RESPONSE:", content);
+
+    const finalResult = JSON.parse(content);
     return finalResult;
   } catch (err) {
-    console.error("Parsing GPT response failed:", err);
-    return res.status(500).send("Failed to parse GPT response");
+    console.error("translation_and_summary_of_audio_handler error:", err);
+    throw err;
   }
 };
 

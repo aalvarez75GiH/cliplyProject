@@ -9,7 +9,7 @@ import { Scrollable_Container } from "../../../components/global_components/cont
 import { Flex_Container } from "../../../components/global_components/containers/general_containers";
 import { Loading_Spinner_area } from "../../../components/global_components/global_loading_spinner_area.component";
 import { Operations_Status_Connector_Line } from "../../../components/global_components/operations_status_connector_line.component";
-import { Operations_Status_Step_Component } from "../../../components/operations_components/operations_status_step.component";
+import { Operations_Status_Step_Component } from "../../../components/operations_components/old_operations_status_step.component";
 
 export const Operations_Status_Area = ({ operation, isLoading }) => {
   const navigation = useNavigation();

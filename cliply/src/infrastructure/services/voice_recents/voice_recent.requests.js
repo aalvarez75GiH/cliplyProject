@@ -23,23 +23,7 @@ export const post_a_voice_message_Request = async (audioBuffer, user_id) => {
       return error;
     });
 };
-// export const post_a_message_Request = async (user_id, new_message) => {
-//   const { transcriptionEndPoint } = environment;
 
-//   //const { categoryListEndPoint } = environment;
-//   return await axios
-//     .post(
-//       `${transcriptionEndPoint}/postTranscription?user_id=${user_id}`,
-//       new_message
-//     )
-//     .then((response) => {
-//       console.log("RESPONSE AT REQUEST:", response.data);
-//       return response;
-//     })
-//     .catch((error) => {
-//       return error;
-//     });
-// };
 export const post_a_message_Request = async (user_id, new_message) => {
   const { transcriptionEndPoint } = environment;
   console.log("NEW MESSAGE AT REQUEST:", new_message);

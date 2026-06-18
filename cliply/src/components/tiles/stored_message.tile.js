@@ -11,18 +11,21 @@ import {
 } from "../global_components/containers/general_containers.js";
 import CopyPaste_icon from "../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../infrastructure/theme/index.js";
+import SuccessIcon from "../../../assets/my-icons/success_icon.svg";
 
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 import { Spacer } from "../global_components/optimized.spacer.component.js";
+import { Snack_Bar_Component } from "../others/snack_bar.component.js";
 
-export const Stored_Clips_Tile = ({
+export const Stored_Message_Tile = ({
   item,
   globalLanguage,
   selectedItemId,
   onSelect,
   specificTextClipData,
   setSpecificTextClipData,
+  snackbar,
 }) => {
   //   *******************************************************
   const [language, setLanguage] = useState(globalLanguage);
@@ -59,7 +62,7 @@ export const Stored_Clips_Tile = ({
           : body.es
       );
 
-      showSuccessSnackbar("Message copied");
+      showSuccessSnackbar("Message copied", uncopy_message_action, "Uncopy");
 
       const usedCountDataForUpdate = {
         ...specificTextClipData,
@@ -125,7 +128,9 @@ export const Stored_Clips_Tile = ({
             justify="center"
             direction="row"
             color={
-              isSelected ? theme.colors.ui.success : theme.colors.bg.elements_bg
+              isSelected
+                ? theme.colors.bg.elements_bg
+                : theme.colors.bg.elements_bg
             }
           >
             <Action_Container
@@ -136,7 +141,7 @@ export const Stored_Clips_Tile = ({
               direction="row"
               color={
                 isSelected
-                  ? theme.colors.ui.success
+                  ? theme.colors.bg.elements_bg
                   : theme.colors.bg.elements_bg
               }
               onPress={() => (isSelected ? null : copy_message_action(item))}
@@ -145,7 +150,7 @@ export const Stored_Clips_Tile = ({
                 <Text
                   variant={
                     isSelected
-                      ? "dm_sans_bold_18_white_centered"
+                      ? "dm_sans_bold_18_centered"
                       : "dm_sans_bold_26_centered"
                   }
                 >
@@ -156,7 +161,7 @@ export const Stored_Clips_Tile = ({
                 <Text
                   variant={
                     isSelected
-                      ? "dm_sans_bold_18_white_centered"
+                      ? "dm_sans_bold_18_centered"
                       : "dm_sans_bold_28_centered"
                   }
                 >
@@ -175,7 +180,7 @@ export const Stored_Clips_Tile = ({
               direction="row"
               color={
                 isSelected
-                  ? theme.colors.ui.success
+                  ? theme.colors.bg.elements_bg
                   : theme.colors.bg.elements_bg
               }
             >
@@ -187,7 +192,7 @@ export const Stored_Clips_Tile = ({
                 direction="row"
                 color={
                   isSelected
-                    ? theme.colors.ui.success
+                    ? theme.colors.bg.elements_bg
                     : theme.colors.bg.elements_bg
                 }
               >
@@ -206,7 +211,7 @@ export const Stored_Clips_Tile = ({
                 direction="column"
                 color={
                   isSelected
-                    ? theme.colors.ui.success
+                    ? theme.colors.bg.elements_bg
                     : theme.colors.bg.elements_bg
                 }
                 onPress={() => {
@@ -233,7 +238,7 @@ export const Stored_Clips_Tile = ({
                 direction="row"
                 color={
                   isSelected
-                    ? theme.colors.ui.success
+                    ? theme.colors.bg.elements_bg
                     : theme.colors.bg.elements_bg
                 }
               >
@@ -263,27 +268,51 @@ export const Stored_Clips_Tile = ({
               align="center"
               justify="flex-end"
               direction="row"
-              color={theme.colors.ui.success}
+              color={theme.colors.bg.elements_bg}
+              // color={"lightyellow"}
             >
               <Container
-                width="30%"
-                height="65%"
+                width="100%"
+                height="100%"
                 align="flex-end"
                 justify="flex-end"
                 direction="row"
-                color={theme.colors.ui.success}
+                color={"transparent"}
+                //color={"lightblue"}
               >
                 <Action_Container
-                  width="100%"
+                  width="30%"
                   height="100%"
                   onPress={() => uncopy_message_action(item)}
                   justify="center"
                   align="center"
-                  color={theme.colors.ui.success}
+                  //color={theme.colors.ui.success}
+                  color={"transparent"}
                 >
-                  <Text variant="stages_ctas_white">Uncopy</Text>
+                  <Text variant="dm_sans_bold_16">Uncopy</Text>
+                </Action_Container>
+                <Container width="50%" height="100%" color="transparent" />
+                <Action_Container
+                  width="20%"
+                  height="100%"
+                  onPress={() => uncopy_message_action(item)}
+                  justify="center"
+                  align="center"
+                  // color={theme.colors.ui.success}
+                  color={"transparent"}
+                >
+                  <SuccessIcon width="30px" height="30px" />
+                  {/* <Text variant="stages_ctas_white">Uncopy</Text> */}
                 </Action_Container>
               </Container>
+              <Snack_Bar_Component
+                snackbar={snackbar}
+                bottom_ios={-15}
+                bottom_android={-45}
+                // duration={1500}
+                minHeight={60}
+                minWidth={"100%"}
+              />
             </Container>
           )}
         </Container>

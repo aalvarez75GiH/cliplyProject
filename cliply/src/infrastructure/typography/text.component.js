@@ -214,6 +214,12 @@ const dm_sans_bold_18_white_centered = (theme) => `
     color: ${theme.colors.text.secondary};
     text-align: center;
     `;
+const dm_sans_bold_18_centered = (theme) => `
+    font-size: ${theme.fontSizes.dm_sans_bold_18};
+    font-family: ${theme.fonts.bold};
+    color: ${theme.colors.text.primary};
+    text-align: center;
+    `;
 const dm_sans_bold_16 = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_16};
     font-family: ${theme.fonts.bold};
@@ -318,8 +324,10 @@ const variants = {
   dm_sans_regular_18,
   dm_sans_bold_18_white,
   dm_sans_bold_18_white_centered,
+  dm_sans_bold_18_centered,
   dm_sans_bold_16,
   dm_sans_regular_16,
+
   dm_sans_bold_16_white,
   dm_sans_bold_16_white_centered,
   dm_sans_bold_16_disable_not_active,

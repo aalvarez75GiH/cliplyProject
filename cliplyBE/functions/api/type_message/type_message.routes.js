@@ -3,14 +3,14 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 const app = express();
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 const { getUserDataByUserID } = require("../users_data/users_data.controllers");
 const users_dataControllers = require("../users_data/users_data.controllers");
-
-const openai = new OpenAIApi(
-  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
-);
 
 app.post("/postTypeMessage", async (req, res) => {
   const textToOperate = req.query.text_to_operate;
@@ -37,7 +37,7 @@ Return JSON like:
 
 `;
 
-    const chatResponse = await openai.createChatCompletion({
+    const chatResponse = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
         {
@@ -50,12 +50,12 @@ Return JSON like:
 
     console.log(
       "Chat response:",
-      JSON.stringify(chatResponse.data.choices[0].message.content, null, 2)
+      JSON.stringify(chatResponse.choices[0].message.content, null, 2)
     );
 
     let finalResult;
     try {
-      finalResult = JSON.parse(chatResponse.data.choices[0].message.content);
+      finalResult = JSON.parse(chatResponse.choices[0].message.content);
       // **************************************************************************
       // 3. Save the message and its translations/summaries to the user's recent messages collection
       const userData = await getUserDataByUserID(user_id);

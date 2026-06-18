@@ -11,7 +11,7 @@ import {
 import { Text } from "../../../infrastructure/typography/text.component";
 import { Restart_flow_operation_status_process_header } from "../../../components/headers/restart_flow_operation_status_process.header";
 // import { Add_intro_CTA } from "../../../components/calls_to_action/add_intro.cta";
-import { Operations_Status_Step_Component } from "../../../components/operations_components/operations_status_step.component";
+import { Operations_Status_Step_Component } from "../../../components/operations_components/old_operations_status_step.component";
 // import { Shared_logic } from "../../../infrastructure/services/home/shared_logic";
 
 import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context";

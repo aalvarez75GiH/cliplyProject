@@ -29,6 +29,8 @@ import { Whole_Screen_Loading_Spinner_Component } from "../../../components/glob
 import { get_User_Data_Request } from "../home/text_clips.requests";
 import { deleteRecentTextClipRequest } from "../voice_recents/voice_recent.requests";
 import { delete_Stored_Text_Clip_Request } from "../../services/global/global.requests";
+import { theme } from "../../theme/index";
+
 // Create Global Context
 export const GlobalContext = createContext();
 
@@ -95,7 +97,14 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   const [emailError, setEmailError] = useState(null);
   const [errorInAuthentication, setErrorInAuthentication] = useState(null);
   const [errorInUpdatingPIN, setErrorInUpdatingPIN] = useState(null);
-  console.log("NEW PIN AT GLOBAL CONTEXT:", new_pin);
+
+  const [snackbar, setSnackbar] = useState({
+    visible: false,
+    message: "",
+    actionLabel: "OK",
+    onAction: null,
+    bgColor: theme.colors.ui.primary,
+  });
 
   useEffect(() => {
     const checkingAuthenticationAndLoggingAsyncStorage = async () => {
@@ -864,6 +873,52 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     }
   };
 
+  //********** logic to control Snackbar from global context (for error handling and user feedback) **********/
+
+  const showSnackbar = ({
+    message,
+    actionLabel = "OK",
+    onAction = null,
+    bgColor = theme.colors.ui.primary,
+  }) => {
+    setSnackbar({
+      visible: true,
+      message,
+      actionLabel,
+      onAction,
+      bgColor,
+    });
+  };
+
+  const hideSnackbar = () => {
+    setSnackbar((prev) => ({
+      ...prev,
+      visible: false,
+    }));
+  };
+
+  const showErrorSnackbar = (message, onAction = hideSnackbar) => {
+    showSnackbar({
+      message,
+      actionLabel: "OK",
+      bgColor: theme.colors.ui.error,
+      onAction,
+    });
+  };
+
+  const showSuccessSnackbar = (
+    message,
+    onAction = hideSnackbar,
+    action_label = "Ok"
+  ) => {
+    showSnackbar({
+      message,
+      actionLabel: action_label,
+      bgColor: theme.colors.ui.success,
+      onAction,
+    });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -919,6 +974,10 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         setDeletedStatus,
         deleteStoredTextClip,
         setIsAuthenticated,
+        showErrorSnackbar,
+        showSuccessSnackbar,
+        snackbar,
+        hideSnackbar,
       }}
     >
       {children}

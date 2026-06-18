@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { FlatList } from "react-native-gesture-handler";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import { SafeArea } from "../../components/global_components/safe-area.component";
 import { theme } from "../../infrastructure/theme/index";
@@ -7,12 +8,15 @@ import { Spacer } from "../../components/global_components/optimized.spacer.comp
 import { Container } from "../../components/global_components/containers/general_containers";
 import { Text } from "../../infrastructure/typography/text.component";
 import { Restart_flow_operation_status_process_header } from "../../components/headers/restart_flow_operation_status_process.header";
-import { Operations_Status_Step_Component } from "../../components/operations_components/operations_status_step.component";
+import { Operations_Status_Step_Component } from "../../components/operations_components/old_operations_status_step.component";
+import { Snack_Bar_Component } from "../../components/others/snack_bar.component";
 
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context";
 import { GlobalContext } from "../../infrastructure/services/global/global.context";
 
 export default function Text_Clips_by_Status_View({ route }) {
+  const tabBarHeight = useBottomTabBarHeight();
+
   const { operation_name, status_name, specificTextClipData } = route.params;
   console.log(
     "OPERATION AND STATUS PARAMS IN CLIPS BY STATUS VIEW: ",
@@ -27,7 +31,7 @@ export default function Text_Clips_by_Status_View({ route }) {
     setSpecificTextClipData,
   } = useContext(TextClipsContext);
 
-  const { globalLanguage, userData } = useContext(GlobalContext);
+  const { globalLanguage, userData, snackbar } = useContext(GlobalContext);
   const [dataToRender, setDataToRender] = useState([]);
 
   useEffect(() => {
@@ -94,7 +98,7 @@ export default function Text_Clips_by_Status_View({ route }) {
       heading_to_drop_off: {
         image: fd_heading_to_dropoff,
         caption_1: "Heading to",
-        caption_2: "drop-off",
+        caption_2: "drop off",
       },
     },
     ride_share: {
@@ -131,7 +135,7 @@ export default function Text_Clips_by_Status_View({ route }) {
         height={"100%"}
         color={theme.colors.bg.screens_bg}
       >
-        <Restart_flow_operation_status_process_header />
+        <Restart_flow_operation_status_process_header snackbar={snackbar} />
         <Spacer position="top" size="small" />
         <Container
           width="100%"
@@ -183,7 +187,13 @@ export default function Text_Clips_by_Status_View({ route }) {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               data={dataToRender}
-              renderItem={renderStoredMessagesTile}
+              renderItem={({ item }) =>
+                renderStoredMessagesTile({
+                  item,
+                  snackbar,
+                })
+              }
+              // renderItem={() => renderStoredMessagesTile(snackbar)}
               keyExtractor={(item, id) => {
                 return item.message_id;
               }}
@@ -192,6 +202,13 @@ export default function Text_Clips_by_Status_View({ route }) {
           <Spacer position="top" size="large" />
         </Container>
       </Container>
+      {/* <Snack_Bar_Component
+        snackbar={snackbar}
+        bottom_ios={5}
+        bottom_android={80}
+        duration={1500}
+        minHeight={40}
+      /> */}
     </SafeArea>
   );
 }

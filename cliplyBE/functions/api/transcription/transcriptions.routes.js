@@ -4,7 +4,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const { v4: uuidv4 } = require("uuid");
-const { Configuration, OpenAIApi } = require("openai");
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
@@ -20,10 +19,6 @@ const {
 const { transcribeAudio } = require("./transcription_hanlder");
 const { getUserDataByUserID } = require("../users_data/users_data.controllers");
 const users_dataControllers = require("../users_data/users_data.controllers");
-
-const openai = new OpenAIApi(
-  new Configuration({ apiKey: process.env.OPENAI_API_KEY })
-);
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 

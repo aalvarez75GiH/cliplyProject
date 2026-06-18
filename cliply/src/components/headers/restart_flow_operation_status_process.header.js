@@ -7,6 +7,7 @@ import {
 } from "../global_components/containers/general_containers.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import MicIcon from "../../../assets/my-icons/micIcon.svg";
+import { Snack_Bar_Component } from "../others/snack_bar.component.js";
 
 import { Spacer } from "../global_components/optimized.spacer.component.js";
 import { Outlined_CTA } from "../calls_to_action/outlined.cta.js";
@@ -14,7 +15,7 @@ import { Outlined_CTA } from "../calls_to_action/outlined.cta.js";
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export const Restart_flow_operation_status_process_header = () => {
+export const Restart_flow_operation_status_process_header = ({ snackbar }) => {
   const { setSelectedItemId } = useContext(TextClipsContext);
 
   const { globalLanguage } = useContext(GlobalContext);
@@ -74,6 +75,14 @@ export const Restart_flow_operation_status_process_header = () => {
           }}
         />
       </Container>
+      {/* <Snack_Bar_Component
+        snackbar={snackbar}
+        bottom_ios={-15}
+        bottom_android={-45}
+        duration={1500}
+        minHeight={60}
+        minWidth={"100%"}
+      /> */}
     </Container>
   );
 };

@@ -16,7 +16,10 @@ import { GlobalContext } from "../../infrastructure/services/global/global.conte
 export default function Delete_Item_View({ route }) {
   const { dataNeededToDeleteTextClip, item_to_delete_label, coming_from } =
     route.params;
-
+  console.log(
+    "DATA NEEDED TO DELETE TEXT CLIP IN DELETE ITEM VIEW: ",
+    JSON.stringify(dataNeededToDeleteTextClip, null, 2)
+  );
   const {
     delete_one_recent_clip,
     deleteStoredTextClip,
@@ -40,7 +43,7 @@ export default function Delete_Item_View({ route }) {
           // color={theme.colors.bg.elements_bg}
           color={theme.colors.bg.screens_bg}
         >
-          <ExitHeader />
+          <ExitHeader action={() => navigation.goBack()} />
 
           <Container
             color={theme.colors.bg.elements_bg}

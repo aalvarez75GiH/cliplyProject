@@ -10,7 +10,7 @@ import { Scrollable_Container } from "../../components/global_components/contain
 import { Flex_Container } from "../../components/global_components/containers/general_containers";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component";
 import { Operations_Status_Connector_Line } from "../../components/global_components/operations_status_connector_line.component";
-import { Operations_Status_Step_Component } from "../../components/operations_components/operations_status_step.component";
+import { Operations_Status_Step_Component } from "../../components/operations_components/old_operations_status_step.component";
 import { Voice_Operations_Status_Step_Component } from "../../components/operations_components/voice_operations_status_step.component";
 import { Two_Rounded_Ctas_Belt } from "../../components/belts/two_semi_rounded_ctas_belt.component";
 
@@ -95,10 +95,9 @@ export const Voice_Operations_Status_Area = ({
           {/* ******************* FOOD DELIVERY OPERATION ****************************** */}
           {/* ******************* HEADING TO PICK UP STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
-            // caption_1={"Heading to"}
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
-            // caption_2={"pickup/shop"}
-            caption_2={globalLanguage === "EN" ? "pickup/shop" : "recoger"}
+            caption_1={"Heading to"}
+            caption_2={"pickup"}
+            // caption_2={globalLanguage === "EN" ? "pickup/shop" : "recoger"}
             caption_3={"1"}
             image_source_1={image_source_1}
             step_indicator_color={theme.colors.ui.food_delivery_op_color}
@@ -106,14 +105,11 @@ export const Voice_Operations_Status_Area = ({
               setTextClip_data_to_upload((prev) => ({
                 ...prev,
                 operation_name: "food_delivery",
-                status_name: "heading_to_pickup/shop",
+                status_name: "heading_to_pickup_shop",
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Food Delivery",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "Heading to pickup/shop"
-                    : "Iendo a recoger",
+                status_label: "Heading to pickup",
               });
             }}
             status="heading_to_pickup_shop"
@@ -125,8 +121,8 @@ export const Voice_Operations_Status_Area = ({
           {/* ******************* PICKING UP/SHOPPING STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
             // caption_1={"Picking up"}
-            caption_1={globalLanguage === "EN" ? "Picking up" : "Recogiendo"}
-            caption_2={globalLanguage === "EN" ? "Shopping" : "comprando"}
+            caption_1={"Picking up"}
+            caption_2={""}
             caption_3={"2"}
             image_source_1={image_source_2}
             step_indicator_color={theme.colors.ui.food_delivery_op_color}
@@ -135,14 +131,11 @@ export const Voice_Operations_Status_Area = ({
               setTextClip_data_to_upload((prev) => ({
                 ...prev,
                 operation_name: "food_delivery",
-                status_name: "picking_up/shopping",
+                status_name: "picking_up_shopping",
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Food Delivery",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "Picking up shopping"
-                    : "Recoger o comprar",
+                status_label: "Picking up",
               });
             }}
             status="picking_up_shopping"
@@ -153,8 +146,8 @@ export const Voice_Operations_Status_Area = ({
 
           {/* ******************* HEADING TO DROP OFF STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
-            caption_2={globalLanguage === "EN" ? "drop off" : "entregar"}
+            caption_1={"Heading to"}
+            caption_2={"drop off"}
             caption_3={"3"}
             image_source_1={image_source_3}
             step_indicator_color={theme.colors.ui.food_delivery_theme_color}
@@ -166,10 +159,7 @@ export const Voice_Operations_Status_Area = ({
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Food Delivery",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "Heading to drop off"
-                    : "Iendo a entregar",
+                status_label: "Heading to drop off",
               });
             }}
             status="heading_to_drop_off"
@@ -208,8 +198,8 @@ export const Voice_Operations_Status_Area = ({
 
           {/* ******************* HEADING TO PASSENGER STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Heading to" : "Iendo a"}
-            caption_2={globalLanguage === "EN" ? "passenger" : "al pasajero"}
+            caption_1={"Heading to"}
+            caption_2={"passenger"}
             caption_3={"1"}
             image_source_1={image_source_4}
             step_indicator_color={theme.colors.ui.ride_share_op_color}
@@ -221,10 +211,7 @@ export const Voice_Operations_Status_Area = ({
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Ride Share",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "Heading to Passenger"
-                    : "Iendo al pasajero",
+                status_label: "Heading to Passenger",
               });
             }}
             status="heading_to_passenger"
@@ -234,8 +221,8 @@ export const Voice_Operations_Status_Area = ({
           <Operations_Status_Connector_Line side="right" />
           {/* ******************* CLOSE TO PASSENGER STATUS ****************************** */}
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "Close to" : "Cérca del"}
-            caption_2={globalLanguage === "EN" ? "passenger" : "pasajero"}
+            caption_1={"Close to"}
+            caption_2={"passenger"}
             caption_3={"2"}
             image_source_1={image_source_5}
             step_indicator_color={theme.colors.ui.ride_share_op_color}
@@ -247,10 +234,7 @@ export const Voice_Operations_Status_Area = ({
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Ride Share",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "Close to Passenger"
-                    : "Cérca del pasajero",
+                status_label: "Close to Passenger",
               });
             }}
             status="close_to_passenger"
@@ -261,8 +245,8 @@ export const Voice_Operations_Status_Area = ({
           {/* ******************* AT PICKUP LOCATION STATUS ****************************** */}
 
           <Voice_Operations_Status_Step_Component
-            caption_1={globalLanguage === "EN" ? "At Pickup" : "en el punto de"}
-            caption_2={globalLanguage === "EN" ? "location" : " recogida"}
+            caption_1={"I am"}
+            caption_2={"here"}
             caption_3={"3"}
             image_source_1={image_source_6}
             step_indicator_color={theme.colors.ui.ride_share_op_color}
@@ -274,10 +258,7 @@ export const Voice_Operations_Status_Area = ({
               }));
               navigation.navigate("Uploading_text_clip", {
                 operation_label: "Ride Share",
-                status_label:
-                  globalLanguage === "EN"
-                    ? "At pickup location"
-                    : "en el punto de recogida",
+                status_label: "I am here",
               });
             }}
             status="at_passenger_location"
