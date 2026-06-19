@@ -3,12 +3,13 @@ import { useRoute } from "@react-navigation/native";
 
 import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Transcripted_Clips_Tile } from "../../components/tiles/transcripted_clip.tile.js";
+import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
 
 import { theme } from "../../infrastructure/theme/index.js";
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
 
-export const Transcripted_Text_Clip_View = ({
+export const Transcripted_Message_View = ({
   message_en,
   message_es,
   language_detected,
@@ -36,7 +37,7 @@ export const Transcripted_Text_Clip_View = ({
           align="center"
           justify="flex-end"
         >
-          <Transcripted_Clips_Tile
+          <Transcripted_Message_Tile
             message_en={message_en}
             message_es={message_es}
             language_detected={language_detected}

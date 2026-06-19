@@ -16,7 +16,9 @@ export const colors = {
     highlight_color: "#FFBA08",
     highlight_color_2: "#FFE8AD",
     food_delivery_theme_color: "#0A7346",
+    food_delivery_gradient_color: "#F2F7F0",
     ride_share_theme_color: "#265697",
+    ride_share_gradient_color: "#E9F1FC",
   },
   bg: {
     screens_bg: "#F5F4F4",

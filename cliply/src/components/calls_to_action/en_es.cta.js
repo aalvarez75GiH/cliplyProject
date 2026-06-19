@@ -17,7 +17,8 @@ export const EN_ES_CTA_component = ({ language, action, isSelected }) => {
       height={"100%"}
       justify="center"
       align="center"
-      color={isSelected ? theme.colors.ui.success : theme.colors.bg.elements_bg}
+      // color={isSelected ? theme.colors.ui.success : theme.colors.bg.elements_bg}
+      color={theme.colors.bg.elements_bg}
       onPress={action}
     >
       <Container

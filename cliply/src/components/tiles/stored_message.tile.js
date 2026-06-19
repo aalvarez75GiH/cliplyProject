@@ -30,6 +30,8 @@ export const Stored_Message_Tile = ({
   //   *******************************************************
   const [language, setLanguage] = useState(globalLanguage);
   const [isLoading, setIsLoading] = useState(false);
+  const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
+    useState(false);
   const { summary, body, message_id } = item;
 
   const { introAdded, setIntroAdded, updatingTextClipsUsedCount } =
@@ -42,14 +44,42 @@ export const Stored_Message_Tile = ({
     "SPECIFIC TEXT CLIP DATA AT STORED CLIP TILE:",
     specificTextClipData
   );
+  // const toggleLanguage = async () => {
+  //   setIsLoading(true);
+  //   await Clipboard.setStringAsync(messageToCopy);
+  //   showSuccessSnackbar("Message copied", null, "");
+  //   setTimeout(async () => {
+  //     setLanguage((prevLanguage) => (prevLanguage === "EN" ? "ES" : "EN"));
+  //     setIsLoading(false);
+  //   }, 300);
+  // };
   const toggleLanguage = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      setLanguage((prevLanguage) => (prevLanguage === "EN" ? "ES" : "EN"));
-      setIsLoading(false);
-    }, 300);
-  };
+    const newLanguage = language === "EN" ? "ES" : "EN";
 
+    const messageToCopy = introAdded
+      ? `Hey, Your driver here. ${newLanguage === "EN" ? body.en : body.es}`
+      : newLanguage === "EN"
+      ? body.en
+      : body.es;
+
+    try {
+      setLanguage(newLanguage);
+
+      await Clipboard.setStringAsync(messageToCopy);
+
+      onSelect(message_id);
+      setShowRegularFooterAfterCopy(false);
+      setIntroAdded(false);
+
+      showSuccessSnackbar("Message copied", null, "");
+
+      setTimeout(() => {
+        setShowRegularFooterAfterCopy(true);
+      }, 1000);
+    } catch (error) {
+      console.log("Failed to toggle and copy message:", error);
+    }
+  };
   const copy_message_action = async (item) => {
     const { body, message_id } = item;
 
@@ -63,9 +93,14 @@ export const Stored_Message_Tile = ({
       await Clipboard.setStringAsync(messageToCopy);
 
       onSelect(message_id);
+      setShowRegularFooterAfterCopy(false);
       setIntroAdded(false);
 
       showSuccessSnackbar("Message copied", null, "");
+
+      setTimeout(() => {
+        setShowRegularFooterAfterCopy(true);
+      }, 1000);
 
       const usedCountDataForUpdate = {
         ...specificTextClipData,
@@ -171,7 +206,7 @@ export const Stored_Message_Tile = ({
             </Action_Container>
           </Container>
           {/* ***************** FOOTER 1 ************************** */}
-          {!isSelected && (
+          {(!isSelected || showRegularFooterAfterCopy) && (
             <Container
               width={Platform.OS === "ios" ? "410px" : "100%"}
               height="30%"
@@ -190,11 +225,7 @@ export const Stored_Message_Tile = ({
                 align="flex-start"
                 justify="flex-start"
                 direction="row"
-                color={
-                  isSelected
-                    ? theme.colors.bg.elements_bg
-                    : theme.colors.bg.elements_bg
-                }
+                color={theme.colors.bg.elements_bg}
               >
                 <EN_ES_CTA_component
                   language={language === "EN" ? "ES" : "EN"}
@@ -209,11 +240,7 @@ export const Stored_Message_Tile = ({
                 align="center"
                 justify="center"
                 direction="column"
-                color={
-                  isSelected
-                    ? theme.colors.bg.elements_bg
-                    : theme.colors.bg.elements_bg
-                }
+                color={theme.colors.bg.elements_bg}
                 onPress={() => {
                   const updatedSpecificTextClipData = {
                     ...specificTextClipData,
@@ -236,20 +263,12 @@ export const Stored_Message_Tile = ({
                 align="flex-end"
                 justify="flex-end"
                 direction="row"
-                color={
-                  isSelected
-                    ? theme.colors.bg.elements_bg
-                    : theme.colors.bg.elements_bg
-                }
+                color={theme.colors.bg.elements_bg}
               >
                 <Action_Container
                   width="65px"
                   onPress={() => copy_message_action(item)}
-                  color={
-                    isSelected
-                      ? theme.colors.ui.success
-                      : theme.colors.bg.elements_bg
-                  }
+                  color={theme.colors.bg.elements_bg}
                 >
                   <CopyPaste_icon
                     width="30px"
@@ -261,7 +280,7 @@ export const Stored_Message_Tile = ({
             </Container>
           )}
           {/* ***************** FOOTER 2 ************************** */}
-          {isSelected && (
+          {isSelected && !showRegularFooterAfterCopy && (
             <Container
               width="100%"
               height="30%"
@@ -279,7 +298,7 @@ export const Stored_Message_Tile = ({
                 color={"transparent"}
                 //color={"red"}
               >
-                <Action_Container
+                {/* <Action_Container
                   width="100%"
                   height="65%"
                   justify="center"
@@ -303,10 +322,19 @@ export const Stored_Message_Tile = ({
                       Last copied
                     </Text>
                   </Spacer>
-                </Action_Container>
+                </Action_Container> */}
               </Container>
               <Container width="45%" height="100%" color="transparent" />
               {/* </Container> */}
+            </Container>
+          )}
+          {isSelected && (
+            <>
+              <Container
+                width="100%"
+                height="5%"
+                color={theme.colors.ui.success}
+              />
               <Snack_Bar_Component
                 snackbar={snackbar}
                 bottom_ios={-25}
@@ -315,7 +343,7 @@ export const Stored_Message_Tile = ({
                 minWidth={"100%"}
                 duration={1000}
               />
-            </Container>
+            </>
           )}
         </Container>
       )}

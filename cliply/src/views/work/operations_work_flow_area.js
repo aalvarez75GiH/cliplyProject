@@ -62,7 +62,10 @@ export default function Operations_Work_Flow_Area({ navigation }) {
         <Two_Rounded_Ctas_Belt
           action_1={togglingOperation}
           action_2={togglingOperation}
-          cta_active_color={theme.colors.ui.primary}
+          // cta_active_color={theme.colors.ui.primary}
+          cta_active_color={
+            operation === "food_delivery" ? "#0A7346" : "#0D54A5"
+          }
           cta_not_active_color={theme.colors.ctas.tertiary}
           cta_caption_active_variant="dm_sans_bold_14_white"
           cta_caption_not_active_variant="dm_sans_bold_14_disable_not_active"

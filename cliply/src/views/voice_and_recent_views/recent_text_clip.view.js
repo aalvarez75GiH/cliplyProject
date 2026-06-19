@@ -3,6 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Transcripted_Clips_Tile } from "../../components/tiles/transcripted_clip.tile.js";
+import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
+import { Stored_Message_Tile } from "../../components/tiles/stored_message.tile.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
@@ -54,7 +56,7 @@ export const Recent_Text_Clip_View = (route) => {
             align="center"
             justify="center"
           >
-            <Transcripted_Clips_Tile
+            <Transcripted_Message_Tile
               message_en={item.body.en}
               message_es={item.body.es}
               language_detected={language_detected}

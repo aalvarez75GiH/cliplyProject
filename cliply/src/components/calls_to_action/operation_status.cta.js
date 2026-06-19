@@ -33,8 +33,8 @@ export const Operation_Status_CTA = ({
       align="center"
       color={
         isFoodDelivery
-          ? theme.colors.ui.food_delivery_theme_color
-          : theme.colors.ui.ride_share_theme_color
+          ? theme.colors.ui.food_delivery_gradient_color
+          : theme.colors.ui.ride_share_gradient_color
       }
       direction="row"
       onPress={action}
@@ -76,9 +76,27 @@ export const Operation_Status_CTA = ({
       >
         <Spacer position="bottom" size="medium" />
         <Spacer position="left" size="medium">
-          <Text variant="dm_sans_bold_20_white">{caption_1}</Text>
+          <Text
+            variant="dm_sans_bold_20_white"
+            style={{
+              color: isFoodDelivery
+                ? theme.colors.ui.food_delivery_theme_color
+                : theme.colors.ui.ride_share_theme_color,
+            }}
+          >
+            {caption_1}
+          </Text>
           {caption_2 !== "" && (
-            <Text variant="dm_sans_bold_20_white">{caption_2}</Text>
+            <Text
+              variant="dm_sans_bold_20_white"
+              style={{
+                color: isFoodDelivery
+                  ? theme.colors.ui.food_delivery_theme_color
+                  : theme.colors.ui.ride_share_theme_color,
+              }}
+            >
+              {caption_2}
+            </Text>
           )}
         </Spacer>
         <Spacer position="bottom" size="large" />
@@ -92,8 +110,8 @@ export const Operation_Status_CTA = ({
       align="center"
       color={
         isFoodDelivery
-          ? theme.colors.ui.food_delivery_theme_color
-          : theme.colors.ui.ride_share_theme_color
+          ? theme.colors.ui.food_delivery_gradient_color
+          : theme.colors.ui.ride_share_gradient_color
       }
       direction="row"
       onPress={action}
@@ -109,9 +127,27 @@ export const Operation_Status_CTA = ({
       >
         <Spacer position="bottom" size="medium" />
         <Spacer position="left" size="medium">
-          <Text variant="dm_sans_bold_20_white">{caption_1}</Text>
+          <Text
+            variant="dm_sans_bold_20_white"
+            style={{
+              color: isFoodDelivery
+                ? theme.colors.ui.food_delivery_theme_color
+                : theme.colors.ui.ride_share_theme_color,
+            }}
+          >
+            {caption_1}
+          </Text>
           {caption_2 !== "" && (
-            <Text variant="dm_sans_bold_20_white">{caption_2}</Text>
+            <Text
+              variant="dm_sans_bold_20_white"
+              style={{
+                color: isFoodDelivery
+                  ? theme.colors.ui.food_delivery_theme_color
+                  : theme.colors.ui.ride_share_theme_color,
+              }}
+            >
+              {caption_2}
+            </Text>
           )}
         </Spacer>
         <Spacer position="bottom" size="large" />

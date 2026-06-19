@@ -17,7 +17,7 @@ import { Spacer } from "../global_components/optimized.spacer.component.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export const Transcripted_Clips_Tile = ({
+export const Transcripted_Message_Tile = ({
   message_en,
   message_es,
   language_detected,
@@ -34,6 +34,8 @@ export const Transcripted_Clips_Tile = ({
   const [language, setLanguage] = useState(globalLanguage);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
+  const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
+    useState(false);
 
   useEffect(() => {
     setLanguage(globalLanguage);
@@ -49,7 +51,12 @@ export const Transcripted_Clips_Tile = ({
 
       await Clipboard.setStringAsync(messageToCopy);
       setCopiedMessage(true);
-      showSuccessSnackbar("Just paste it on your chat", onAction, "Ok");
+      setShowRegularFooterAfterCopy(false);
+      showSuccessSnackbar("Copied, Paste it on your chat", onAction, "Ok");
+
+      setTimeout(() => {
+        setShowRegularFooterAfterCopy(true);
+      }, 1000);
     };
 
     autoCopyMessage();
@@ -65,32 +72,31 @@ export const Transcripted_Clips_Tile = ({
   };
 
   const toggleLanguage = async () => {
-    setIsLoading(true);
-    // setLanguageIsToggled(!languageIsToggled);
-    setTimeout(async () => {
-      setLanguage((prevLanguage) => (prevLanguage === "EN" ? "ES" : "EN"));
-      //   setLanguage(!language);
-      await Clipboard.setStringAsync(
-        language === "EN" ? message_es : message_en
-      );
-      setIsLoading(false);
-    }, 300);
+    const newLanguage = language === "EN" ? "ES" : "EN";
+
+    const messageToCopy = newLanguage === "EN" ? message_en : message_es;
+
+    try {
+      setLanguage(newLanguage);
+
+      await Clipboard.setStringAsync(messageToCopy);
+
+      setShowRegularFooterAfterCopy(false);
+
+      showSuccessSnackbar("Copied, Paste it on your chat", null, "");
+
+      setTimeout(() => {
+        setShowRegularFooterAfterCopy(true);
+      }, 1000);
+    } catch (error) {
+      console.log("Failed to toggle and copy message:", error);
+    }
   };
 
   const copy_message_action = async () => {
     setCopiedMessage(true);
     await Clipboard.setStringAsync(language === "EN" ? message_en : message_es);
-    showSuccessSnackbar("Message copied", null, "");
-  };
-
-  const unCopy_message_action = async () => {
-    setCopiedMessage(false);
-    // setIsLoading(true);
-    // setTimeout(async () => {
-    await Clipboard.setStringAsync("");
-    setLanguage(language_detected);
-    // setIsLoading(false);
-    // }, 300);
+    showSuccessSnackbar("Copied, Paste it on your chat", null, "");
   };
 
   const routes_names_to_hide_delete_option = [
@@ -140,14 +146,13 @@ export const Transcripted_Clips_Tile = ({
         >
           <Action_Container
             width="100%"
-            height="70%"
+            height={showRegularFooterAfterCopy ? "65%" : "70%"}
             align="center"
             justify="center"
             direction="row"
             color={theme.colors.bg.elements_bg}
             onPress={() => copy_message_action()}
           >
-            {/* ***************** MESSAGE CONTENT  *********** */}
             {
               <Container
                 width="90%"
@@ -170,7 +175,7 @@ export const Transcripted_Clips_Tile = ({
             }
           </Action_Container>
           {/* ***************** FOOTER 1 *********** */}
-          {!copiedMessage && (
+          {showRegularFooterAfterCopy && (
             <Container
               width="100%"
               height="30%"
@@ -256,7 +261,7 @@ export const Transcripted_Clips_Tile = ({
             </Container>
           )}
           {/* ***************** FOOTER 2 *********** */}
-          {copiedMessage && (
+          {!showRegularFooterAfterCopy && (
             <Container
               width="100%"
               height="30%"
@@ -274,7 +279,7 @@ export const Transcripted_Clips_Tile = ({
                 color={"transparent"}
                 //color={"red"}
               >
-                <Action_Container
+                {/* <Action_Container
                   width="100%"
                   height="65%"
                   justify="center"
@@ -298,20 +303,28 @@ export const Transcripted_Clips_Tile = ({
                       Copied
                     </Text>
                   </Spacer>
-                </Action_Container>
+                </Action_Container> */}
               </Container>
               <Container width="45%" height="100%" color="transparent" />
-              {/* </Container> */}
-              <Snack_Bar_Component
-                snackbar={snackbar}
-                bottom_ios={-25}
-                bottom_android={-45}
-                minHeight={60}
-                minWidth={"100%"}
-                // duration={1000}
-              />
             </Container>
           )}
+          <Snack_Bar_Component
+            snackbar={snackbar}
+            bottom_ios={-25}
+            bottom_android={-45}
+            minHeight={60}
+            minWidth={"100%"}
+            duration={1000}
+          />
+          <Container
+            width="100%"
+            height="5%"
+            color={
+              showRegularFooterAfterCopy
+                ? theme.colors.ui.success
+                : "transparent"
+            }
+          />
         </Container>
       )}
     </>

@@ -56,12 +56,21 @@ export const Snack_Bar_Component = ({
           color={theme.colors.ui.success}
           width="auto"
           onPress={() => {
-            if (snackbar.onAction) {
-              snackbar.onAction();
-            } else {
-              hideSnackbar();
-            }
+            hideSnackbar();
+
+            setTimeout(() => {
+              if (snackbar.onAction) {
+                snackbar.onAction();
+              }
+            }, 100);
           }}
+          // onPress={() => {
+          //   if (snackbar.onAction) {
+          //     snackbar.onAction();
+          //   } else {
+          //     hideSnackbar();
+          //   }
+          // }}
         >
           <Text
             variant="dm_sans_bold_16_white"

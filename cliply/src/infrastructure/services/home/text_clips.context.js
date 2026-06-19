@@ -5,7 +5,6 @@ import "react-native-get-random-values";
 import { GlobalContext } from "../global/global.context.js";
 
 import { Spacer } from "../../../components/global_components/optimized.spacer.component.js";
-import { Stored_Clips_Tile } from "../../../components/tiles/stored_clip.tile.js";
 import { Stored_Message_Tile } from "../../../components/tiles/stored_message.tile.js";
 import { Quickies_Tile } from "../../../components/tiles/quickies.tile.js";
 import { update_Text_Clips_Used_Count_Request } from "./text_clips.requests.js";
