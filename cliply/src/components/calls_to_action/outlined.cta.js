@@ -23,22 +23,17 @@ export const Outlined_CTA = ({
       justify="center"
       align="center"
       color={theme.colors.bg.elements_bg}
-      // color={theme.colors.ui.success}
-      // color={theme.colors.bg.elements_bg}
-      border_radius={border_radius}
+      border_radius_top_left={10}
+      border_radius_top_right={10}
+      border_radius_bottom_left={10}
+      border_radius_bottom_right={10}
       border_width={border_width}
       border_style="solid"
       border_color={theme.colors.ui.primary}
       onPress={action}
+      style={{ overflow: "hidden" }}
     >
-      <Text
-        variant={label_variant}
-        // style={{
-        //   textDecorationLine: "underline",
-        // }}
-      >
-        {label}
-      </Text>
+      <Text variant={label_variant}>{label}</Text>
     </Action_Container>
   );
 };

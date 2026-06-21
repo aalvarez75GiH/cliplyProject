@@ -16,24 +16,28 @@ const baseStyles = css`
   border-width: ${(props) => props.border_width || "0px"};
   border-color: ${(props) => props.border_color || "transparent"};
   border-style: ${(props) => props.border_style || "solid"};
-  border-radius: ${(props) => props.border_radius || "0px"};
+
+  /* border-radius: ${(props) => props.border_radius || "0px"}; */
+
   border-top-left-radius: ${(props) =>
-    props.border_radius_top_left || props.border_radius || "0px"};
+    props.border_radius_top_left || props.border_top_left_radius || "0px"};
+
   border-top-right-radius: ${(props) =>
-    props.border_radius_top_right || props.border_radius || "0px"};
+    props.border_radius_top_right || props.border_top_right_radius || "0px"};
+
   border-bottom-left-radius: ${(props) =>
-    props.border_radius_bottom_left || props.border_radius || "0px"};
+    props.border_radius_bottom_left ||
+    props.border_bottom_left_radius ||
+    "0px"};
+
   border-bottom-right-radius: ${(props) =>
-    props.border_radius_bottom_right || props.border_radius || "0px"};
+    props.border_radius_bottom_right ||
+    props.border_bottom_right_radius ||
+    "0px"};
 `;
 
-export const Container = styled(View)`
+export const Container = styled(View).attrs((props) => ({}))`
   ${baseStyles};
-`;
-
-export const Flexible_Container = styled(View)`
-  ${baseStyles};
-  flex: ${(props) => props.flex || 1};
 `;
 
 export const Action_Container = styled(TouchableOpacity).attrs({
@@ -41,9 +45,10 @@ export const Action_Container = styled(TouchableOpacity).attrs({
 })`
   ${baseStyles};
 `;
-// export const Action_Container = styled(TouchableOpacity)`
-//   ${baseStyles};
-// `;
+export const Flexible_Container = styled(View)`
+  ${baseStyles};
+  flex: ${(props) => props.flex || 1};
+`;
 
 export const Action_Flex_Container = styled(TouchableOpacity)`
   ${baseStyles};

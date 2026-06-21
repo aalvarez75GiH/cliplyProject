@@ -75,6 +75,10 @@ export default function Quick_Voice_Text_Clip() {
                 align="center"
                 direction="row"
                 onPress={() => stopRecording()}
+                border_radius_top_left={100}
+                border_radius_top_right={100}
+                border_radius_bottom_left={100}
+                border_radius_bottom_right={100}
               >
                 <StopRecordingIcon
                   width="25px"
@@ -123,7 +127,11 @@ export default function Quick_Voice_Text_Clip() {
                 height="130px"
                 //color={theme.colors.ui.ctas_bg_dark}
                 color={theme.colors.ui.success}
-                border_radius="100px"
+                // border_radius="100px"
+                border_radius_top_left={100}
+                border_radius_top_right={100}
+                border_radius_bottom_left={100}
+                border_radius_bottom_right={100}
                 onPress={() => startRecording()}
                 style={{
                   shadowColor: "#000", // iOS shadow color
@@ -228,38 +236,6 @@ export default function Quick_Voice_Text_Clip() {
                     : " Nota: este mensaje se guardó en recientes"}
                 </Text>
               </Container>
-              {/* <Container
-                width={"100%"}
-                height={"93%"}
-                color={theme.colors.bg.screens_bg}
-                //color={"purple"}
-                align="center"
-                justify="center"
-              >
-                <Transcripted_Clips_Tile
-                  message_en={response.body.en}
-                  message_es={response.body.es}
-                  language_detected={response.language_detected}
-                  width="95%"
-                  height="45%"
-                  globalLanguage={globalLanguage}
-                />
-              </Container>
-              <Squared_action_CTA_component
-                label="Exit"
-                width="95%"
-                height={"7%"}
-                color={theme.colors.ui.highlight_color}
-                text_variant={"dm_sans_bold_16"}
-                icon_visible={false}
-                action={() => {
-                  setResponse(null);
-                  navigation.goBack();
-                }}
-              />
-              <Spacer position="bottom" size="small" />
-              <Spacer position="bottom" size="small" />
-              <Spacer position="bottom" size="small" /> */}
             </>
           )}
         </Container>

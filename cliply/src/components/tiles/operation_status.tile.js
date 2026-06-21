@@ -23,12 +23,18 @@ export const Operations_Status_Tile = ({
   return (
     <>
       <Container
-        width={"100%"}
+        width={"95%"}
         height={Platform.OS === "ios" ? "30%" : "20%"}
         justify="flex-start"
         color={theme.colors.bg.elements_bg}
         align="center"
         direction="row"
+        border_radius_top_left={24}
+        border_radius_top_right={24}
+        border_radius_bottom_left={24}
+        border_radius_bottom_right={24}
+        overflow="hidden"
+        // style={{ overflow: "hidden" }}
       >
         <Operation_Status_CTA
           caption_1={caption_1}

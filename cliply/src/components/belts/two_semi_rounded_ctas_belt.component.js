@@ -36,7 +36,11 @@ export const Two_Rounded_Ctas_Belt = ({
             ? cta_active_color
             : cta_not_active_color
         }
-        border_radius={border_radius}
+        border_radius_top_left={24}
+        border_radius_top_right={24}
+        border_radius_bottom_left={24}
+        border_radius_bottom_right={24}
+        // border_radius={border_radius}
         onPress={action_1}
       >
         {/* <Text variant="dm_sans_bold_14_white">Food Delivery</Text> */}
@@ -57,8 +61,12 @@ export const Two_Rounded_Ctas_Belt = ({
         color={
           operation === "ride_share" ? cta_active_color : cta_not_active_color
         }
-        border_radius={border_radius}
+        // border_radius={border_radius}
         onPress={action_2}
+        border_radius_top_left={24}
+        border_radius_top_right={24}
+        border_radius_bottom_left={24}
+        border_radius_bottom_right={24}
       >
         <Text
           variant={

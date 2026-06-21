@@ -36,10 +36,12 @@ export const Main_mic_CTA_component = ({
           <Action_Container
             width="75px"
             height="75px"
-            //color={theme.colors.ui.ctas_bg_dark}
             color={theme.colors.ui.success}
             border_radius={"100px"}
-            border_radius_top_left={"100px"}
+            border_radius_top_left={100}
+            border_radius_top_right={100}
+            border_radius_bottom_left={100}
+            border_radius_bottom_right={100}
             onPress={action1}
             style={{
               shadowColor: "#000", // iOS shadow color

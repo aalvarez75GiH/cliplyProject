@@ -38,6 +38,11 @@ export const Operation_Status_CTA = ({
       }
       direction="row"
       onPress={action}
+      style={{ overflow: "hidden" }}
+      border_radius_top_left={24}
+      border_radius_top_right={24}
+      border_radius_bottom_left={24}
+      border_radius_bottom_right={24}
     >
       <Container
         width="50%"
@@ -48,6 +53,10 @@ export const Operation_Status_CTA = ({
         //color="red"
         direction="row"
         style={{ overflow: "hidden" }}
+        border_radius_top_left={24}
+        border_radius_top_right={0}
+        border_radius_bottom_left={24}
+        border_radius_bottom_right={0}
       >
         <Image
           source={image_source}
@@ -55,7 +64,7 @@ export const Operation_Status_CTA = ({
             width: "120%",
             height: "100%",
             // aspectRatio,
-            aspectRatio: 800 / 550,
+            aspectRatio: 750 / 550,
             borderRadius: radius,
             borderRadiusTopLeft: 0,
             borderRadiusBottomLeft: 0,
@@ -115,6 +124,11 @@ export const Operation_Status_CTA = ({
       }
       direction="row"
       onPress={action}
+      border_radius_top_left={24}
+      border_radius_top_right={0}
+      border_radius_bottom_left={24}
+      border_radius_bottom_right={0}
+      overflow="hidden"
     >
       <Container
         width="50%"
@@ -124,6 +138,11 @@ export const Operation_Status_CTA = ({
         color="transparent"
         //color="pink"
         direction="colum"
+        border_radius_top_left={24}
+        border_radius_top_right={0}
+        border_radius_bottom_left={24}
+        border_radius_bottom_right={0}
+        overflow="hidden"
       >
         <Spacer position="bottom" size="medium" />
         <Spacer position="left" size="medium">
@@ -160,7 +179,7 @@ export const Operation_Status_CTA = ({
         align="center"
         //color="red"
         direction="row"
-        style={{ overflow: "hidden" }}
+        overflow="hidden"
       >
         <Image
           source={image_source}

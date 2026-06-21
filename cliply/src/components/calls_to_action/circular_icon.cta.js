@@ -23,11 +23,14 @@ export const Circular_Icon_CTA = ({
       color={theme.colors.bg.screens_bg}
       //color={"red"}
       onPress={action}
-      border_radius={"100px"}
     >
       <Container
         width={"52%"}
         height={"67%"}
+        border_radius_top_left={100}
+        border_radius_top_right={100}
+        border_radius_bottom_left={100}
+        border_radius_bottom_right={100}
         color={
           recordingStatus === "transcribing"
             ? theme.colors.ui.disabled
@@ -35,7 +38,6 @@ export const Circular_Icon_CTA = ({
             ? "#E93F2E"
             : theme.colors.ui.primary
         }
-        border_radius={"60px"}
         direction="row"
         align="center"
         justify="center"

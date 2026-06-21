@@ -60,12 +60,13 @@ export const Restart_flow_operation_status_process_header = ({ snackbar }) => {
         color={theme.colors.bg.elements_bg}
         justify="center"
         align="center"
+        border_radius={100}
       >
         <Outlined_CTA
           width={"60%"}
           height={"45%"}
           label={globalLanguage === "EN" ? "Back" : "Atrás"}
-          border_radius="10px"
+          // border_radius={100}
           border_width="2px"
           label_variant="dm_sans_bold_14"
           action={() => {
@@ -75,14 +76,6 @@ export const Restart_flow_operation_status_process_header = ({ snackbar }) => {
           }}
         />
       </Container>
-      {/* <Snack_Bar_Component
-        snackbar={snackbar}
-        bottom_ios={-15}
-        bottom_android={-45}
-        duration={1500}
-        minHeight={60}
-        minWidth={"100%"}
-      /> */}
     </Container>
   );
 };
