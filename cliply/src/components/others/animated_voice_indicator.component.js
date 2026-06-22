@@ -26,7 +26,7 @@ const Pill = styled(Animated.View)`
 `;
 
 export const Animated_Voice_Indicator = ({ recordingStatus }) => {
-  const bars = Array.from({ length: 30 });
+  const bars = Array.from({ length: 20 });
 
   const animations = useRef(bars.map(() => new Animated.Value(0.3))).current;
 

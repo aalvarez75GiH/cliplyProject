@@ -11,46 +11,40 @@ import {
 } from "../global_components/containers/general_containers.js";
 import CopyPaste_icon from "../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../infrastructure/theme/index.js";
+import SuccessIcon from "../../../assets/my-icons/success_icon.svg";
 import { Snack_Bar_Component } from "../others/snack_bar.component.js";
+import { Spacer } from "../global_components/optimized.spacer.component.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export const Transcripted_Message_Tile = ({
+export const Double_Transcripted_Message_Tile = ({
+  message,
   message_en,
   message_es,
   language_detected,
   width = "95%",
+  height = "45%",
   message_id = null,
   globalLanguage,
   route_name,
   onAction,
 }) => {
+  //   *******************************************************
   const navigation = useNavigation();
-
-  const { userToDB, showSuccessSnackbar, snackbar } = useContext(GlobalContext);
-
+  // const [language, setLanguage] = useState(null);
   const [language, setLanguage] = useState(globalLanguage);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
   const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
     useState(false);
 
-  const { user_id } = userToDB;
-
-  const updatedSpecificTextClipData = {
-    user_id,
-    message_id,
-  };
-
-  const routes_names_to_hide_delete_option = [
-    "Type_Message_View",
-    "Voice_and_recent_View",
-    "Quick_Voice_Text_Clip",
-  ];
-
   useEffect(() => {
     setLanguage(globalLanguage);
   }, [globalLanguage]);
+
+  // const onAction = () => {
+  //   navigation.goBack();
+  // };
 
   useEffect(() => {
     const autoCopyMessage = async () => {
@@ -59,7 +53,6 @@ export const Transcripted_Message_Tile = ({
       await Clipboard.setStringAsync(messageToCopy);
       setCopiedMessage(true);
       setShowRegularFooterAfterCopy(false);
-
       showSuccessSnackbar("Copied, Paste it on your chat", onAction, "Ok");
 
       setTimeout(() => {
@@ -70,15 +63,27 @@ export const Transcripted_Message_Tile = ({
     autoCopyMessage();
   }, []);
 
+  const { userToDB, showSuccessSnackbar, snackbar } = useContext(GlobalContext);
+
+  const { user_id } = userToDB;
+
+  const updatedSpecificTextClipData = {
+    user_id: user_id,
+    message_id: message_id,
+  };
+
   const toggleLanguage = async () => {
     const newLanguage = language === "EN" ? "ES" : "EN";
+
     const messageToCopy = newLanguage === "EN" ? message_en : message_es;
 
     try {
       setLanguage(newLanguage);
+
       await Clipboard.setStringAsync(messageToCopy);
 
       setShowRegularFooterAfterCopy(false);
+
       showSuccessSnackbar("Copied, Paste it on your chat", null, "");
 
       setTimeout(() => {
@@ -95,24 +100,40 @@ export const Transcripted_Message_Tile = ({
     showSuccessSnackbar("Copied, Paste it on your chat", null, "");
   };
 
-  const messageToShow =
-    language === "EN"
-      ? message_en
-      : language === "ES"
-      ? message_es
-      : globalLanguage === "EN"
-      ? message_en
-      : message_es;
+  const routes_names_to_hide_delete_option = [
+    "Type_Message_View",
+    "Voice_and_recent_View",
+    "Quick_Voice_Text_Clip",
+  ];
+
+  //   *******************************************************
 
   return (
     <>
       {isLoading && (
         <Container
-          width={width}
-          height="230px"
-          color="#FFFFFF"
+          width="100%"
+          height="55%"
+          color={"#FFFFFF"}
+          //   color={"#FAD"}
           justify="center"
           align="center"
+          style={{
+            position: "absolute",
+            top: 90,
+            bottom: 20,
+          }}
+        >
+          <ActivityIndicator size="small" color="#000000" />
+        </Container>
+      )}
+      {!isLoading && (
+        <Container
+          width={width}
+          height={height}
+          align="center"
+          justify="center"
+          color={theme.colors.bg.elements_bg}
           style={{
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 2 },
@@ -120,81 +141,89 @@ export const Transcripted_Message_Tile = ({
             shadowRadius: 3.84,
             elevation: 5,
           }}
-        >
-          <ActivityIndicator size="small" color="#000000" />
-        </Container>
-      )}
+          // style={{
+          //   shadowColor: "#000",
+          //   shadowOffset: { width: 0, height: 2 },
+          //   shadowOpacity: 0.25,
+          //   shadowRadius: 3.84,
+          //   elevation: 5,
+          //   position: "absolute",
+          //   top: 90,
+          //   bottom: 20,
+          // }}
+          // style={{
+          //   shadowColor: "#000", // iOS shadow color
+          //   shadowOffset: { width: 0, height: 2 }, // iOS shadow offset
+          //   shadowOpacity: 0.25, // iOS shadow opacity
+          //   shadowRadius: 3.84, // iOS shadow radius
+          //   elevation: 5, // Android shadow
+          //   position: "absolute",
+          //   top: 90,
+          //   bottom: 20,
 
-      {!isLoading && (
-        <Container
-          width={width}
-          height="250px"
-          align="center"
-          justify="space-between"
-          color={theme.colors.bg.elements_bg}
-          style={{
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 6 },
-            shadowOpacity: 0.15,
-            shadowRadius: 12,
-            elevation: 10,
-          }}
+          // }}
         >
           <Action_Container
             width="100%"
-            style={{
-              flex: 1,
-              paddingHorizontal: 28,
-              paddingTop: 28,
-              paddingBottom: 12,
-            }}
+            height={showRegularFooterAfterCopy ? "65%" : "70%"}
             align="center"
             justify="center"
             direction="row"
             color={theme.colors.bg.elements_bg}
-            onPress={copy_message_action}
+            onPress={() => copy_message_action()}
           >
-            <Text
-              variant="dm_sans_bold_18"
-              style={{
-                lineHeight: 28,
-                // textAlign: "start",
-              }}
-            >
-              {messageToShow}
-            </Text>
+            {
+              <Container
+                width="90%"
+                height="90%"
+                align="center"
+                justify="center"
+                direction="row"
+                color={theme.colors.bg.elements_bg}
+              >
+                <Text variant={"dm_sans_bold_18_centered"}>
+                  {language === null
+                    ? globalLanguage === "EN"
+                      ? message_en
+                      : message_es
+                    : null}
+                  {language === "EN" ? message_en : null}
+                  {language === "ES" ? message_es : null}
+                </Text>
+              </Container>
+            }
           </Action_Container>
-
+          {/* ***************** FOOTER 1 *********** */}
           {showRegularFooterAfterCopy && (
             <Container
               width="100%"
-              height="58px"
+              height="30%"
               align="center"
               justify="center"
               direction="row"
               color={theme.colors.bg.elements_bg}
-              style={{
-                paddingHorizontal: 28,
-              }}
             >
               <Container
-                width="33%"
-                height="100%"
-                align="center"
+                width="30%"
+                height="55%"
+                align="flex-start"
                 justify="flex-start"
                 direction="row"
                 color={theme.colors.bg.elements_bg}
+                // color={"red"}
               >
                 <EN_ES_CTA_component
+                  //   language={language === "EN" ? "ES" : "EN"}
                   language={language === "EN" ? "ES" : "EN"}
                   action={toggleLanguage}
+                  // isSelected={isSelected}
                 />
               </Container>
 
               {!routes_names_to_hide_delete_option.includes(route_name) && (
                 <Action_Container
-                  width="34%"
-                  height="100%"
+                  width="30%"
+                  height="65%"
                   align="center"
                   justify="center"
                   direction="column"
@@ -217,11 +246,10 @@ export const Transcripted_Message_Tile = ({
                   </Text>
                 </Action_Container>
               )}
-
               {routes_names_to_hide_delete_option.includes(route_name) && (
                 <Container
-                  width="34%"
-                  height="100%"
+                  width="30%"
+                  height="65%"
                   align="center"
                   justify="center"
                   direction="column"
@@ -230,62 +258,91 @@ export const Transcripted_Message_Tile = ({
               )}
 
               <Container
-                width="33%"
-                height="100%"
-                align="center"
+                width="30%"
+                height="65%"
+                align="flex-end"
                 justify="flex-end"
                 direction="row"
                 color={theme.colors.bg.elements_bg}
               >
                 <Action_Container
-                  width="45px"
-                  height="50px"
-                  align="center"
-                  justify="center"
-                  onPress={copy_message_action}
+                  width="65px"
+                  onPress={() => copy_message_action()}
                   color={theme.colors.bg.elements_bg}
-                  style={{
-                    transform: [{ translateY: -8 }],
-                  }}
                 >
                   <CopyPaste_icon
-                    width="28px"
-                    height="28px"
+                    width="30px"
+                    height="30px"
                     fill={theme.colors.text.middle_screens_text}
                   />
                 </Action_Container>
               </Container>
             </Container>
           )}
-
+          {/* ***************** FOOTER 2 *********** */}
           {!showRegularFooterAfterCopy && (
             <Container
               width="100%"
-              height="58px"
+              height="30%"
               align="center"
-              justify="center"
+              justify="flex-start"
               direction="row"
               color={theme.colors.bg.elements_bg}
-            />
+              // color={"lightyellow"}
+            >
+              <Container
+                width="35%"
+                height="100%"
+                justify="center"
+                align="center"
+                color={"transparent"}
+                //color={"red"}
+              >
+                {/* <Action_Container
+                  width="100%"
+                  height="65%"
+                  justify="center"
+                  align="center"
+                  direction="row"
+                  //color={theme.colors.ui.success}
+                  color={"transparent"}
+                  onPress={() => unCopy_message_action()}
+                >
+                  <Spacer position="left" size="large">
+                    <SuccessIcon width="20px" height="20px" />
+                  </Spacer>
+                  <Spacer position="left" size="medium">
+                    <Text
+                      variant="dm_sans_bold_16"
+                      style={{
+                        color: theme.colors.ui.success,
+                        textDecorationLine: "underline",
+                      }}
+                    >
+                      Copied
+                    </Text>
+                  </Spacer>
+                </Action_Container> */}
+              </Container>
+              <Container width="45%" height="100%" color="transparent" />
+            </Container>
           )}
-
-          <Container
-            width="100%"
-            height="6px"
-            color={
-              showRegularFooterAfterCopy
-                ? theme.colors.ui.success
-                : "transparent"
-            }
-          />
-
           <Snack_Bar_Component
             snackbar={snackbar}
             bottom_ios={-25}
             bottom_android={-45}
             minHeight={60}
-            minWidth="100%"
+            minWidth={"100%"}
             duration={1000}
+          />
+          <Container
+            width="100%"
+            height="5%"
+            color={
+              showRegularFooterAfterCopy
+                ? theme.colors.ui.success
+                : "transparent"
+            }
           />
         </Container>
       )}

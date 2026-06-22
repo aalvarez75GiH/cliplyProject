@@ -44,15 +44,7 @@ export const Stored_Message_Tile = ({
     "SPECIFIC TEXT CLIP DATA AT STORED CLIP TILE:",
     specificTextClipData
   );
-  // const toggleLanguage = async () => {
-  //   setIsLoading(true);
-  //   await Clipboard.setStringAsync(messageToCopy);
-  //   showSuccessSnackbar("Message copied", null, "");
-  //   setTimeout(async () => {
-  //     setLanguage((prevLanguage) => (prevLanguage === "EN" ? "ES" : "EN"));
-  //     setIsLoading(false);
-  //   }, 300);
-  // };
+
   const toggleLanguage = async () => {
     const newLanguage = language === "EN" ? "ES" : "EN";
 
@@ -183,22 +175,14 @@ export const Stored_Message_Tile = ({
             >
               {language === "ES" && (
                 <Text
-                  variant={
-                    isSelected
-                      ? "dm_sans_bold_18_centered"
-                      : "dm_sans_bold_26_centered"
-                  }
+                  variant={isSelected ? "dm_sans_bold_18" : "dm_sans_bold_26"}
                 >
                   {!isSelected ? summary.es : body.es}
                 </Text>
               )}
               {language === "EN" && (
                 <Text
-                  variant={
-                    isSelected
-                      ? "dm_sans_bold_18_centered"
-                      : "dm_sans_bold_28_centered"
-                  }
+                  variant={isSelected ? "dm_sans_bold_18" : "dm_sans_bold_28"}
                 >
                   {!isSelected ? summary.en : body.en}
                 </Text>

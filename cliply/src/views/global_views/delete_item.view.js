@@ -95,7 +95,11 @@ export default function Delete_Item_View({ route }) {
             label={globalLanguage === "EN" ? "Back" : "Regresar"}
             action={() => {
               setDeletedStatus(false);
-              navigation.popToTop();
+              if (coming_from === "Recent_Text_Clip_Tile") {
+                navigation.popToTop();
+              } else {
+                navigation.popToTop();
+              }
             }}
             icon_visible={false}
             height="8%"
