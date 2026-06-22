@@ -230,6 +230,13 @@ const dm_sans_regular_16 = (theme) => `
     font-family: ${theme.fonts.regular};
     color: ${theme.colors.text.primary};
     `;
+
+const dm_sans_bold_16_grey = (theme) => `
+    font-size: ${theme.fontSizes.middle_screens_caption};
+    font-family: ${theme.fonts.bold};
+    color: ${theme.colors.text.middle_screens_text};
+    `;
+
 const dm_sans_bold_16_white = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_16};
     font-family: ${theme.fonts.bold};
@@ -264,6 +271,11 @@ const dm_sans_bold_14_disable_not_active = (theme) => `
 const dm_sans_bold_12 = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_12};
     font-family: ${theme.fonts.bold};
+    color: ${theme.colors.text.primary};
+    `;
+const dm_sans_regular_12 = (theme) => `
+    font-size: ${theme.fontSizes.dm_sans_bold_12};
+    font-family: ${theme.fonts.regular};
     color: ${theme.colors.text.primary};
     `;
 const dm_sans_bold_12_error_cancel = (theme) => `
@@ -327,6 +339,7 @@ const variants = {
   dm_sans_bold_18_centered,
   dm_sans_bold_16,
   dm_sans_regular_16,
+  dm_sans_bold_16_grey,
 
   dm_sans_bold_16_white,
   dm_sans_bold_16_white_centered,
@@ -335,6 +348,7 @@ const variants = {
   dm_sans_bold_14_white,
   dm_sans_bold_14_disable_not_active,
   dm_sans_bold_12,
+  dm_sans_regular_12,
   dm_sans_bold_12_white,
   dm_sans_bold_12_disable_not_active,
   dm_sans_bold_12_error_cancel,

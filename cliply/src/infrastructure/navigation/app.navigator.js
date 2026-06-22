@@ -6,14 +6,14 @@ import {
 } from "@react-navigation/bottom-tabs";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
-import { Voice_and_recent_navigator } from "./voice_recent.navigator";
+// import { Voice_and_recent_navigator } from "./voice_recent.navigator";
 import { Type_Message_Navigator } from "./type_message.navigator";
 import { Work_Flow_Navigator } from "./work_flow.navigator";
+import { Talk_and_Paste_navigator } from "./talk_and_paste.navigator";
 
 import KeyBoardIcon from "../../../assets/my-icons/keyboard.svg";
 import MessagesIcon from "../../../assets/my-icons/Messages_icon.svg";
 import MicIcon from "../../../assets/my-icons/micIcon.svg";
-import { Status_Next_Step_Bottom_Bar } from "../../components/bottom_bars/status_next_step.bar";
 
 import { GlobalContext } from "../services/global/global.context";
 const Tab = createBottomTabNavigator();
@@ -21,39 +21,6 @@ const Tab = createBottomTabNavigator();
 const tabBarListeners = ({ navigation, route }) => ({
   tabPress: () => navigation.navigate(route.name),
 });
-
-const getActiveRouteName = (route) => {
-  if (!route) return undefined;
-  // Try the helper first
-  const focused = getFocusedRouteNameFromRoute(route);
-  if (focused) return focused;
-
-  // Fallback: walk nested state (works on RN v6)
-  let r = route;
-  while (r && r.state && r.state.routes && r.state.index != null) {
-    r = r.state.routes[r.state.index];
-  }
-  return r?.name;
-};
-
-// const ConditionalTabBar = (props) => {
-//   const currentTabRoute = props.state.routes[props.state.index];
-//   const nestedName = getActiveRouteName(currentTabRoute);
-
-//   const BottomBar =
-//     (currentTabRoute.name === "Home" &&
-//       nestedName === "Clips_by_Status_View_1") ||
-//     nestedName === "Clips_by_Status_View_2" ||
-//     nestedName === "Clips_by_Status_View_3" ||
-//     nestedName === "Quickies_Text_Clips_View";
-
-//   if (BottomBar) {
-//     // render your custom bar instead of the default one
-//     return <Status_Next_Step_Bottom_Bar />;
-//   }
-
-//   return <BottomTabBar {...props} />;
-// };
 
 export const AppNavigator = () => {
   const { globalLanguage } = React.useContext(GlobalContext);
@@ -97,13 +64,12 @@ export const AppNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Messages"
+        name="Talk&Paste"
         // component={Messages_Navigator}
-        component={Voice_and_recent_navigator}
+        component={Talk_and_Paste_navigator}
         listeners={tabBarListeners}
         options={{
-          title:
-            globalLanguage === "EN" ? "Create & recent" : "Créar & recientes",
+          title: globalLanguage === "EN" ? "Talk & Paste" : "Habla & pega",
           tabBarIcon: ({ color }) => (
             <MicIcon width={25} height={25} fill={color} />
           ),

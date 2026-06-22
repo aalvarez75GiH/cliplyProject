@@ -21,7 +21,7 @@ export const Sound_Wave_Component = ({ width = "100%" }) => {
           height={"100%"}
           justify="center"
           align="center"
-          color={theme.colors.bg.screens_bg}
+          color={theme.colors.bg.elements_bg}
           //   color={"red"}
           direction="row"
         >
