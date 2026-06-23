@@ -208,6 +208,11 @@ const dm_sans_bold_18_white = (theme) => `
     font-family: ${theme.fonts.bold};
     color: ${theme.colors.text.secondary};
     `;
+const dm_sans_bold_18_grey = (theme) => `
+        font-size: ${theme.fontSizes.dm_sans_bold_18};
+        font-family: ${theme.fonts.bold};
+        color: ${theme.colors.text.disabled};
+        `;
 const dm_sans_bold_18_white_centered = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_18};
     font-family: ${theme.fonts.bold};
@@ -335,6 +340,7 @@ const variants = {
   dm_sans_bold_18,
   dm_sans_regular_18,
   dm_sans_bold_18_white,
+  dm_sans_bold_18_grey,
   dm_sans_bold_18_white_centered,
   dm_sans_bold_18_centered,
   dm_sans_bold_16,

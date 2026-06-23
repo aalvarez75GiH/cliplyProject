@@ -61,7 +61,7 @@ export const Talk_And_Recording_Component = ({
             >
               <Spacer position="top" size="medium" />
               <Spacer position="left" size="large">
-                <Text variant="dm_sans_bold_18">Talk, Copy & Paste</Text>
+                <Text variant="dm_sans_bold_22">Talk, Copy & Paste</Text>
               </Spacer>
               <Spacer position="top" size="small" />
               <Spacer position="left" size="large">
@@ -69,7 +69,7 @@ export const Talk_And_Recording_Component = ({
                   variant="dm_sans_bold_14_disable_not_active"
                   style={{ lineHeight: 18 }}
                 >
-                  Talk to our AI, then paste it anywhere you want
+                  Speak naturally and paste anywhere
                 </Text>
               </Spacer>
             </Container>

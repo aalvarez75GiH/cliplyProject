@@ -1,9 +1,9 @@
 import React, { useContext, useCallback } from "react";
-import { FlatList } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { ScrollView, useWindowDimensions } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { HomeHeader } from "../../components/headers/home_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
@@ -15,10 +15,8 @@ import {
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Talk_And_Recording_Component } from "./talk_and_paste_components/talk_and_recording.component.js";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
-import { Transcripted_Message_View } from "./transcripted_message.view.js";
 import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
-import { Text_Tile } from "../../components/tiles/text.tile.js";
 
 import ChevronRightArrow from "../../../assets/my-icons/chevron-right.svg";
 
@@ -44,7 +42,8 @@ export default function Talk_and_paste_View({ navigation }) {
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
 
   const resultAreaHeight = screenHeight * 0.53;
-  const imageSize = screenWidth * 1.5;
+  // const imageSize = screenWidth * 1.5;
+  const imageSize = screenWidth * 0.55;
 
   useFocusEffect(
     useCallback(() => {
@@ -97,18 +96,72 @@ export default function Talk_and_paste_View({ navigation }) {
             width="100%"
             height={`${resultAreaHeight}px`}
             color={theme.colors.bg.elements_bg}
+            //color={"#FAD"}
             justify="center"
             align="center"
           >
             {!response && recordingStatus === "idle" && (
-              <Image
-                source={require("../../../assets/illustrations/create_voice_message.png")}
-                contentFit="contain"
-                style={{
-                  width: imageSize,
-                  height: imageSize,
-                }}
-              />
+              <>
+                <Container
+                  width="100%"
+                  height={"40%"}
+                  //color={"lightblue"}
+                  color={"transparent"}
+                  justify="center"
+                  align="center"
+                  // direction="row"
+                >
+                  <Container
+                    width="100%"
+                    height={"65%"}
+                    //color={"lightblue"}
+                    color={"transparent"}
+                    justify="center"
+                    align="center"
+                  >
+                    <Image
+                      source={require("../../../assets/illustrations/talk_and_paste_doodle.png")}
+                      contentFit="contain"
+                      style={{
+                        width: imageSize,
+                        height: imageSize,
+                      }}
+                    />
+                  </Container>
+                  <Container
+                    width="100%"
+                    height={"70%"}
+                    // /color={"lightgreen"}
+                    color={"transparent"}
+                    justify="center"
+                    align="center"
+                  >
+                    <Container
+                      width="55%"
+                      height={"100%"}
+                      color={"transparent"}
+                      //color={"lightyellow"}
+                      justify="center"
+                      align="center"
+                    >
+                      <Text
+                        variant="dm_sans_bold_18_grey"
+                        style={{
+                          textAlign: "center",
+                          color: "#7A7A7A",
+                        }}
+                      >
+                        {/* Tap, Talk and Paste your message anywhere... */}
+                        Tap the microphone and start speaking...
+                      </Text>
+                    </Container>
+                    {/* <Text variant="dm_sans_bold_18_grey">
+                      Talk to our AI, then paste your message anywhere...
+                    </Text> */}
+                    {/* </Spacer> */}
+                  </Container>
+                </Container>
+              </>
             )}
 
             {recordingStatus === "listening" && !response && (
@@ -151,37 +204,47 @@ export default function Talk_and_paste_View({ navigation }) {
           {/* **************************************** */}
           <Action_Container
             width="100%"
-            height={`${screenHeight * 0.075}px`}
-            justify="center"
-            align="center"
-            color={theme.colors.ui.highlight_color_2}
-            direction="row"
+            height={screenHeight * 0.07}
             onPress={() =>
               navigation.navigate("Temporary_Recent_Messages_View")
             }
           >
-            <Container
-              width="90%"
-              height="100%"
-              justify="center"
-              align="flex-start"
-              color="transparent"
-              style={{ paddingLeft: 24 }}
+            <LinearGradient
+              colors={["#F3E2A6", "#EBD89A"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={{
+                width: "100%",
+                height: screenHeight * 0.075,
+                flexDirection: "row",
+                alignItems: "center",
+                borderTopWidth: 1,
+                borderTopColor: "#E8D794",
+              }}
             >
-              <Text variant="dm_sans_bold_18" style={{ lineHeight: 28 }}>
-                Recent messages
-              </Text>
-            </Container>
+              <Container
+                width="90%"
+                height="100%"
+                justify="center"
+                align="flex-start"
+                color="transparent"
+                style={{ paddingLeft: 24 }}
+              >
+                <Text variant="dm_sans_bold_18">Recent messages</Text>
 
-            <Container
-              width="10%"
-              height="100%"
-              justify="center"
-              align="center"
-              color="transparent"
-            >
-              <ChevronRightArrow width={20} height={20} />
-            </Container>
+                <Text variant="dm_sans_bold_14">Open your recent messages</Text>
+              </Container>
+
+              <Container
+                width="10%"
+                height="100%"
+                justify="center"
+                align="center"
+                color="transparent"
+              >
+                <ChevronRightArrow width={20} height={20} />
+              </Container>
+            </LinearGradient>
           </Action_Container>
         </ScrollView>
       </Container>

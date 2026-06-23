@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Voice_and_recent_View from "../../views/voice_and_recent_views/voice_and_recent.view";
 import Talk_and_paste_View from "../../views/talk_and_paste_views/talk_and_paste.view";
 import Menu_Screen from "../../views/work/menu.view"; // Assuming this is the correct import for the menu screen
 import { Recent_Text_Clip_View } from "../../views/voice_and_recent_views/recent_text_clip.view";
