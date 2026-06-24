@@ -47,10 +47,10 @@ export default function Operations_Work_Flow_Area({ navigation }) {
           //color={"red"}
         >
           <>
-            <Spacer position="left" size="small">
+            <Spacer position="left" size="extraLarge">
               <Text_Tile
-                caption_1={"What are you doing now?"}
-                caption_2={"Select your current stage to see messages"}
+                caption_1={"Do you want to see messages?"}
+                caption_2={"Tap the stage you are working on to see them"}
                 color={theme.colors.ui.highlight_color_2}
                 // color={"#0D965B"}
                 height={"100%"}

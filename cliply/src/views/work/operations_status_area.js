@@ -79,26 +79,6 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
             status="heading_to_pickup_shop"
             step_number={"1"}
           />
-          {/* <Operations_Status_Step_Component
-            caption_1={"Heading to"}
-            caption_2={"pickup"}
-            caption_3={"1"}
-            image_source_1={image_source_1}
-            step_indicator_color={theme.colors.ui.food_delivery_op_color}
-            action={() => {
-              const specificTextClipData = {
-                user_id: user_id,
-                operation_id: process.env.OPERATION_ID_FOOD_DELIVERY,
-              };
-              navigation.navigate("Text_Clips_by_Status_View", {
-                operation_name: "food_delivery",
-                status_name: "heading_to_pickup_shop",
-                specificTextClipData,
-              });
-            }}
-            status="heading_to_pickup_shop"
-            step_number={"1"}
-          /> */}
 
           <Spacer position="top" size="medium" />
           {/* <Operations_Status_Connector_Line side="right" /> */}
@@ -128,30 +108,6 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
             step_number={"2"}
             inverted={true}
           />
-          {/* <Operations_Status_Step_Component
-            caption_1={"Picking up"}
-            caption_2={"Order"}
-            caption_3={"2"}
-            image_source_1={image_source_2}
-            step_indicator_color={theme.colors.ui.food_delivery_theme_color}
-            // action={() => null}
-            action={() => {
-              const specificTextClipData = {
-                user_id: user_id,
-                operation_id: process.env.OPERATION_ID_FOOD_DELIVERY,
-                operation_name: "food_delivery",
-                status_name: "picking_up_shopping",
-              };
-              navigation.navigate("Text_Clips_by_Status_View", {
-                operation_name: "food_delivery",
-                status_name: "picking_up_shopping",
-                specificTextClipData, // Pass the data directly to the next screen
-              });
-            }}
-            status="picking_up_shopping"
-            step_number={"2"}
-            inverted={true}
-          /> */}
 
           <Spacer position="top" size="medium" />
           {/* <Operations_Status_Connector_Line side="left" /> */}
@@ -179,28 +135,6 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
             status="heading_to_drop_off"
             step_number={"3"}
           />
-          {/* <Operations_Status_Step_Component
-            caption_1={"Heading to"}
-            caption_2={"drop off"}
-            caption_3={"3"}
-            image_source_1={image_source_3}
-            step_indicator_color={theme.colors.ui.food_delivery_theme_color}
-            action={() => {
-              const specificTextClipData = {
-                user_id: user_id,
-                operation_id: process.env.OPERATION_ID_FOOD_DELIVERY,
-                operation_name: "food_delivery",
-                status_name: "heading_to_drop_off",
-              };
-              navigation.navigate("Text_Clips_by_Status_View", {
-                operation_name: "food_delivery",
-                specificTextClipData, // Pass the data directly to the next screen
-                status_name: "heading_to_drop_off",
-              });
-            }}
-            status="heading_to_drop_off"
-            step_number={"3"}
-          /> */}
 
           <Container
             width="100%"

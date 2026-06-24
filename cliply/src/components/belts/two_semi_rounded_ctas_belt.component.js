@@ -29,17 +29,17 @@ export const Two_Rounded_Ctas_Belt = ({
     >
       <Action_Container
         width={"40%"}
-        height={"65%"}
+        height={"75%"}
         // color={theme.colors.ui.primary}
         color={
           operation === "food_delivery"
             ? cta_active_color
             : cta_not_active_color
         }
-        border_radius_top_left={24}
-        border_radius_top_right={24}
-        border_radius_bottom_left={24}
-        border_radius_bottom_right={24}
+        border_radius_top_left={34}
+        border_radius_top_right={34}
+        border_radius_bottom_left={34}
+        border_radius_bottom_right={34}
         // border_radius={border_radius}
         onPress={action_1}
       >
@@ -53,20 +53,29 @@ export const Two_Rounded_Ctas_Belt = ({
         >
           Food Delivery
         </Text>
+        <Text
+          variant={
+            operation === "food_delivery"
+              ? cta_caption_active_variant
+              : cta_caption_not_active_variant
+          }
+        >
+          messages
+        </Text>
       </Action_Container>
       <Action_Container
         width={"40%"}
-        height={"65%"}
+        height={"75%"}
         // color={theme.colors.ui.primary}
         color={
           operation === "ride_share" ? cta_active_color : cta_not_active_color
         }
         // border_radius={border_radius}
         onPress={action_2}
-        border_radius_top_left={24}
-        border_radius_top_right={24}
-        border_radius_bottom_left={24}
-        border_radius_bottom_right={24}
+        border_radius_top_left={34}
+        border_radius_top_right={34}
+        border_radius_bottom_left={34}
+        border_radius_bottom_right={34}
       >
         <Text
           variant={
@@ -76,6 +85,15 @@ export const Two_Rounded_Ctas_Belt = ({
           }
         >
           Ride Share
+        </Text>
+        <Text
+          variant={
+            operation === "ride_share"
+              ? cta_caption_active_variant
+              : cta_caption_not_active_variant
+          }
+        >
+          messages
         </Text>
       </Action_Container>
     </Container>

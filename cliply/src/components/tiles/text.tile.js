@@ -25,7 +25,7 @@ export const Text_Tile = ({
         direction="row"
       >
         <Container
-          width={"80%"}
+          width={"90%"}
           height="90%"
           // color="yellow"
           justify="center"
