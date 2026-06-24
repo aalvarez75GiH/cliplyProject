@@ -3,15 +3,11 @@ import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Image } from "expo-image";
 import { ScrollView, useWindowDimensions } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 
 import { HomeHeader } from "../../components/headers/home_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
 import { theme } from "../../infrastructure/theme/index.js";
-import {
-  Action_Container,
-  Container,
-} from "../../components/global_components/containers/general_containers.js";
+import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Talk_And_Recording_Component } from "./talk_and_paste_components/talk_and_recording.component.js";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
@@ -19,14 +15,11 @@ import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_m
 import { Text } from "../../infrastructure/typography/text.component.js";
 import { Navigate_to_Recent_Messages_Tile } from "../../components/tiles/navigate_to_recent_messages.tile.js";
 
-import ChevronRightArrow from "../../../assets/my-icons/chevron-right.svg";
-
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
 export default function Talk_and_paste_View({ navigation }) {
   const {
-    renderRecentClipsTile,
     startRecording,
     recordingStatus,
     response,
@@ -196,8 +189,7 @@ export default function Talk_and_paste_View({ navigation }) {
                 <Transcripted_Message_Tile
                   message_en={response.body.en}
                   message_es={response.body.es}
-                  width="92%"
-                  // height="65%"
+                  width="95%"
                   globalLanguage={globalLanguage}
                   route_name={route.name}
                   onAction={() => setResponse(null)}

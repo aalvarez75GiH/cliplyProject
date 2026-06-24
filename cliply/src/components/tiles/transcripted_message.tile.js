@@ -32,6 +32,7 @@ export const Transcripted_Message_Tile = ({
   const [language, setLanguage] = useState(globalLanguage);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
+  const [showMessageTile, setShowMessageTile] = useState(false);
   const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
     useState(false);
 
@@ -53,22 +54,42 @@ export const Transcripted_Message_Tile = ({
   }, [globalLanguage]);
 
   useEffect(() => {
+    let timer;
+
     const autoCopyMessage = async () => {
       const messageToCopy = globalLanguage === "EN" ? message_en : message_es;
 
       await Clipboard.setStringAsync(messageToCopy);
+
       setCopiedMessage(true);
+      setShowMessageTile(false);
       setShowRegularFooterAfterCopy(false);
 
-      showSuccessSnackbar("Copied, Paste it on your chat", onAction, "Ok");
-
-      setTimeout(() => {
+      timer = setTimeout(() => {
+        setShowMessageTile(true);
         setShowRegularFooterAfterCopy(true);
-      }, 1000);
+      }, 1800);
     };
 
     autoCopyMessage();
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, []);
+
+  // useEffect(() => {
+  //   const autoCopyMessage = async () => {
+  //     const messageToCopy = globalLanguage === "EN" ? message_en : message_es;
+
+  //     await Clipboard.setStringAsync(messageToCopy);
+  //     setCopiedMessage(true);
+  //     setShowMessageTile(false);
+  //     setShowRegularFooterAfterCopy(false);
+  //   };
+
+  //   autoCopyMessage();
+  // }, []);
 
   const toggleLanguage = async () => {
     const newLanguage = language === "EN" ? "ES" : "EN";
@@ -104,41 +125,119 @@ export const Transcripted_Message_Tile = ({
       ? message_en
       : message_es;
 
+  if (!showMessageTile) {
+    return (
+      <Container
+        // width={width}
+        width={width}
+        height="250px"
+        align="center"
+        justify="center"
+        color={theme.colors.ui.success}
+        style={{
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.15,
+          shadowRadius: 12,
+          elevation: 10,
+        }}
+        border_radius_top_left={15}
+        border_radius_top_right={15}
+        border_radius_bottom_left={15}
+        border_radius_bottom_right={15}
+        overflow="hidden"
+      >
+        <Container
+          width="100%"
+          height="30%"
+          align="center"
+          justify="center"
+          color="transparent"
+          // color="#FAA989"
+        ></Container>
+        <Container
+          width="100%"
+          height="40%"
+          align="center"
+          justify="center"
+          color="transparent"
+        >
+          <Text
+            variant="dm_sans_bold_22"
+            style={{
+              color: "#FFFFFF",
+              textAlign: "center",
+            }}
+          >
+            Ready to paste
+          </Text>
+        </Container>
+
+        <Container
+          width="100%"
+          height="30%"
+          align="flex-end"
+          justify="center"
+          color="transparent"
+          //color="#FAD"
+        >
+          <Action_Container
+            width="35%"
+            height="40px"
+            align="center"
+            justify="center"
+            color="transparent"
+            border_radius_top_left={24}
+            border_radius_top_right={24}
+            border_radius_bottom_left={24}
+            border_radius_bottom_right={24}
+            style={{ marginTop: 20, marginRight: 20, marginBottom: 20 }}
+            onPress={() => {
+              setShowMessageTile(true);
+              setShowRegularFooterAfterCopy(true);
+            }}
+          >
+            <Text
+              variant="dm_sans_bold_14"
+              style={{
+                color: "#FFFFFF",
+                textDecorationLine: "underline",
+              }}
+            >
+              View message
+            </Text>
+          </Action_Container>
+        </Container>
+      </Container>
+    );
+  }
+
   return (
     <>
-      {isLoading && (
+      <Container
+        width={width}
+        height="250px"
+        color="transparent"
+        style={{
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.15,
+          shadowRadius: 12,
+          elevation: 10,
+        }}
+      >
         <Container
-          width={width}
-          height="230px"
-          color="#FFFFFF"
-          justify="center"
-          align="center"
-          style={{
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-          }}
-        >
-          <ActivityIndicator size="small" color="#000000" />
-        </Container>
-      )}
-
-      {!isLoading && (
-        <Container
+          // width={width}
           width={width}
           height="250px"
           align="center"
           justify="space-between"
           color={theme.colors.bg.elements_bg}
-          style={{
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 6 },
-            shadowOpacity: 0.15,
-            shadowRadius: 12,
-            elevation: 10,
-          }}
+          border_radius_top_left={15}
+          border_radius_top_right={15}
+          border_radius_bottom_left={15}
+          border_radius_bottom_right={15}
+          overflow="hidden"
         >
           <Action_Container
             width="100%"
@@ -288,7 +387,7 @@ export const Transcripted_Message_Tile = ({
             duration={1000}
           />
         </Container>
-      )}
+      </Container>
     </>
   );
 };
