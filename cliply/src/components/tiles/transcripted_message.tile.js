@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import * as Clipboard from "expo-clipboard";
-import { ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Text } from "../../infrastructure/typography/text.component.js";
@@ -29,9 +28,6 @@ export const Transcripted_Message_Tile = ({
   const { userToDB, showSuccessSnackbar, snackbar } = useContext(GlobalContext);
 
   const [language, setLanguage] = useState(globalLanguage);
-  const [isLoading, setIsLoading] = useState(false);
-  const [copiedMessage, setCopiedMessage] = useState(false);
-  const [showMessageTile, setShowMessageTile] = useState(true);
   const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
     useState(false);
 
@@ -53,21 +49,7 @@ export const Transcripted_Message_Tile = ({
   }, [globalLanguage]);
 
   useEffect(() => {
-    let timer;
-
-    const autoCopyMessage = async () => {
-      const messageToCopy = globalLanguage === "EN" ? message_en : message_es;
-
-      await Clipboard.setStringAsync(messageToCopy);
-
-      setShowRegularFooterAfterCopy(true);
-    };
-
-    autoCopyMessage();
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
+    setShowRegularFooterAfterCopy(true);
   }, []);
 
   const toggleLanguage = async () => {
@@ -90,7 +72,6 @@ export const Transcripted_Message_Tile = ({
   };
 
   const copy_message_action = async () => {
-    setCopiedMessage(true);
     await Clipboard.setStringAsync(language === "EN" ? message_en : message_es);
     showSuccessSnackbar("Copied, Paste it on your chat", null, "");
   };
