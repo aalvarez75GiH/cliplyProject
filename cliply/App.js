@@ -3,6 +3,11 @@ import "react-native-reanimated";
 import { ThemeProvider } from "styled-components/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
+import {
+  PaperProvider,
+  MD3LightTheme as DefaultPaperTheme,
+} from "react-native-paper";
+
 import { Navigation } from "./src/infrastructure/navigation";
 import { theme } from "./src/infrastructure/theme";
 import { VoiceRecentClipsContextProvider } from "./src/infrastructure/services/voice_recents/voice_recent.context";
@@ -29,6 +34,10 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  const paperTheme = {
+    ...DefaultPaperTheme,
+  };
 
   return (
     <ThemeProvider theme={theme}>

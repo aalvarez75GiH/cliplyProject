@@ -42,6 +42,7 @@ export const VoiceRecentClipsContextProvider = ({ children }) => {
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [response, setResponse] = useState(null);
   const [recordingStatus, setRecordingStatus] = useState("idle");
+  const [modalVisible, setModalVisible] = useState(false);
   const [recording, setRecording] = useState(null);
   const [textClip_data_to_upload, setTextClip_data_to_upload] = useState({
     user_id: "",
@@ -290,21 +291,13 @@ Output:
       // Determine MIME type based on file extension
       const fileExtension = fileUri.split(".").pop(); // Get the file extension
       const mime = fileExtension === "mp3" ? "audio/mpeg" : "audio/mp4";
-      // Send to your Firebase function
-
-      // const audioBase64 = await FileSystem.readAsStringAsync(fileUri, {
-      //   encoding: FileSystem.EncodingType.Base64,
-      // });
-      // const audioBuffer = Buffer.from(audioBase64, "base64");
 
       // ****************** REQUEST TO DIRECTLY TO OPEN AI API ******************
-      console.log("USER ID BEFORE  TRANSCRIPTION REQUEST:", user_id);
       const transcribedTextByOpenAI = await transcribeDirectToOpenAI(
         fileUri,
         mime,
         OPENAI_API_KEY
       );
-      console.log("TRANSCRIBED TEXT BY OPEN AI:", transcribedTextByOpenAI);
       const response_from_chatGPT = await translateAndSummarizeWithGPT(
         transcribedTextByOpenAI,
         OPENAI_API_KEY
@@ -316,11 +309,10 @@ Output:
       if (response_from_chatGPT) {
         setResponse(response_from_chatGPT);
         setRecordingStatus("idle");
+        setModalVisible(true);
         // loadUserData(user_id);
-        const response = await post_a_message_Request(
-          user_id,
-          response_from_chatGPT
-        );
+        // *** HERE WE MAKE THE REQUEST TO POST THE NEW MESSAGE TO THE DATABASE ***
+        await post_a_message_Request(user_id, response_from_chatGPT);
         gettingUserDataOnDifferentOperations(user_id);
       }
     } catch (err) {
@@ -412,13 +404,12 @@ Output:
         startTranscription,
         setResponse,
         stopRecording,
-        // delete_one_recent_clip,
-        // deletedStatus,
-        // setDeletedStatus,
         setTextClip_data_to_upload,
         textClip_data_to_upload,
         resetState,
         posting_new_text_clip_to_upload,
+        modalVisible,
+        setModalVisible,
       }}
     >
       {children}
