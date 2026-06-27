@@ -5,13 +5,17 @@ import { useNavigation } from "@react-navigation/native";
 
 import { Text } from "../../../infrastructure/typography/text.component.js";
 import { EN_ES_CTA_component } from "../../calls_to_action/en_es.cta.js";
+import { Short_EN_ES_CTA_CTA } from "../../calls_to_action/short_ES_EN.cta.js";
 import {
   Container,
   Action_Container,
 } from "../../global_components/containers/general_containers.js";
 import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../../infrastructure/theme/index.js";
+
 import SuccessIcon from "../../../../assets/my-icons/success_icon.svg";
+import LanguageIcon from "../../../../assets/my-icons/language_icon.svg";
+import RemoveIcon from "../../../../assets/my-icons/remove_icon.svg";
 
 import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
@@ -45,8 +49,9 @@ export const Stored_Message_Tile = ({
     specificTextClipData
   );
 
-  const toggleLanguage = async () => {
-    const newLanguage = language === "EN" ? "ES" : "EN";
+  const toggleLanguage = async (language) => {
+    console.log("Toggling language to:", language);
+    const newLanguage = language === "English" ? "EN" : "ES";
 
     const messageToCopy = introAdded
       ? `Hey, Your driver here. ${newLanguage === "EN" ? body.en : body.es}`
@@ -72,6 +77,7 @@ export const Stored_Message_Tile = ({
       console.log("Failed to toggle and copy message:", error);
     }
   };
+
   const copy_message_action = async (item) => {
     const { body, message_id } = item;
 
@@ -107,16 +113,6 @@ export const Stored_Message_Tile = ({
     }
   };
 
-  const unCopy_message_action = async () => {
-    try {
-      setLanguage(globalLanguage === "EN" ? "EN" : "ES");
-      onSelect(null);
-      await Clipboard.setStringAsync("");
-      setIntroAdded(false);
-    } catch (error) {
-      console.log("Failed to uncopy message:", error);
-    }
-  };
   const isSelected = selectedItemId === message_id;
   //   *******************************************************
 
@@ -221,51 +217,77 @@ export const Stored_Message_Tile = ({
                 }
               >
                 <Container
-                  width="30%"
+                  width="50%"
                   height="75%"
-                  align="flex-start"
-                  justify="flex-start"
+                  align="center"
+                  justify="center"
                   direction="row"
                   color={theme.colors.bg.elements_bg}
+                  //color="yellow"
+                  style={{
+                    paddingLeft: 20,
+                  }}
                 >
-                  <EN_ES_CTA_component
-                    language={language === "EN" ? "ES" : "EN"}
-                    action={toggleLanguage}
-                    isSelected={isSelected}
+                  <LanguageIcon width="20px" height="20px" fill={"#000000"} />
+                  <Short_EN_ES_CTA_CTA
+                    language_caption={"English"}
+                    language={language}
+                    // language={language === "EN" ? "ES" : "EN"}
+                    action={() => toggleLanguage("English")}
+                  />
+                  <Container width="1%" height="55%" color="grey" />
+                  <Short_EN_ES_CTA_CTA
+                    language_caption={"Español"}
+                    language={language}
+                    // language={language === "EN" ? "ES" : "EN"}
+                    action={() => toggleLanguage("Spanish")}
                   />
                 </Container>
 
-                <Action_Container
-                  width="30%"
+                <Container
+                  width="20%"
                   height="65%"
                   align="center"
                   justify="center"
                   direction="column"
                   color={theme.colors.bg.elements_bg}
-                  onPress={() => {
-                    const updatedSpecificTextClipData = {
-                      ...specificTextClipData,
-                      message_id: item.message_id,
-                    };
-                    setSpecificTextClipData(updatedSpecificTextClipData);
-                    navigation.navigate("Delete_Item_View", {
-                      dataNeededToDeleteTextClip: updatedSpecificTextClipData,
-                      item_to_delete_label: "Text clip",
-                      coming_from: "Stored_Clips_Tile",
-                    });
-                    // deleteStoredTextClip(updatedSpecificTextClipData);
-                  }}
                 >
-                  <Text variant="underlined_small_caption">Delete</Text>
-                </Action_Container>
+                  {/* <Text variant="underlined_small_caption">Delete</Text> */}
+                </Container>
                 <Container
-                  width="30%"
-                  height="65%"
-                  align="flex-end"
-                  justify="flex-end"
+                  width="33%"
+                  // height="65%"
+                  align="center"
+                  justify="center"
                   direction="row"
                   color={theme.colors.bg.elements_bg}
+                  //color={"red"}
                 >
+                  <Action_Container
+                    width="30%"
+                    // height="100%"
+                    align="center"
+                    justify="center"
+                    direction="column"
+                    color={theme.colors.bg.elements_bg}
+                    //color={"lightgreen"}
+                    onPress={() => {
+                      const updatedSpecificTextClipData = {
+                        ...specificTextClipData,
+                        message_id: item.message_id,
+                      };
+                      setSpecificTextClipData(updatedSpecificTextClipData);
+                      navigation.navigate("Delete_Item_View", {
+                        dataNeededToDeleteTextClip: updatedSpecificTextClipData,
+                        item_to_delete_label: "Text clip",
+                        coming_from: "Stored_Clips_Tile",
+                      });
+                      // deleteStoredTextClip(updatedSpecificTextClipData);
+                    }}
+                  >
+                    <RemoveIcon width="20px" height="20px" color={"#000000"} />
+                    {/* <Text variant="underlined_small_caption">Delete</Text> */}
+                  </Action_Container>
                   <Action_Container
                     width="65px"
                     onPress={() => copy_message_action(item)}
@@ -300,7 +322,6 @@ export const Stored_Message_Tile = ({
                   //color={"red"}
                 ></Container>
                 <Container width="45%" height="100%" color="transparent" />
-                {/* </Container> */}
               </Container>
             )}
             {isSelected && (

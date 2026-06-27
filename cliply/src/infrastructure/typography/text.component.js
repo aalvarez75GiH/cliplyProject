@@ -158,6 +158,11 @@ const dm_sans_bold_26_centered = (theme) => `
     color: ${theme.colors.text.primary};
     text-align: center;
     `;
+const dm_sans_bold_26 = (theme) => `
+    font-size: ${theme.fontSizes.dm_sans_bold_26};
+    font-family: ${theme.fonts.bold};
+    color: ${theme.colors.text.primary};
+    `;
 const dm_sans_bold_24 = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_24};
     font-family: ${theme.fonts.bold};
@@ -263,6 +268,11 @@ const dm_sans_bold_14 = (theme) => `
     font-family: ${theme.fonts.bold};
     color: ${theme.colors.text.primary};
     `;
+const dm_sans_regular_14 = (theme) => `
+    font-size: ${theme.fontSizes.dm_sans_bold_14};
+    font-family: ${theme.fonts.regular};
+    color: ${theme.colors.text.primary};
+    `;
 const dm_sans_bold_14_white = (theme) => `
     font-size: ${theme.fontSizes.dm_sans_bold_14};
     font-family: ${theme.fonts.bold};
@@ -330,6 +340,7 @@ const variants = {
   dm_sans_bold_28,
   dm_sans_bold_28_centered,
   dm_sans_bold_26_centered,
+  dm_sans_bold_26,
   dm_sans_bold_24,
   dm_sans_bold_24_white,
   dm_sans_bold_22,
@@ -351,6 +362,7 @@ const variants = {
   dm_sans_bold_16_white_centered,
   dm_sans_bold_16_disable_not_active,
   dm_sans_bold_14,
+  dm_sans_regular_14,
   dm_sans_bold_14_white,
   dm_sans_bold_14_disable_not_active,
   dm_sans_bold_12,

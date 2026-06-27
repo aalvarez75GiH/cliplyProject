@@ -2,40 +2,38 @@
 import React from "react";
 
 import { Text } from "../../infrastructure/typography/text.component";
-
 import { theme } from "../../infrastructure/theme/index";
 import {
   Action_Container,
   Container,
 } from "../global_components/containers/general_containers";
 
-export const Short_EN_ES_CTA_CTA = ({ language, action, isSelected }) => {
+export const Short_EN_ES_CTA_CTA = ({ language_caption, language, action }) => {
   console.log("LANGUAGE AT EN_ES_CTA:", language);
+
+  const isActive =
+    (language === "EN" && language_caption === "English") ||
+    (language === "ES" && language_caption === "Español");
+
   return (
     <Action_Container
-      width={"55%"}
-      height={"100%"}
-      justify="center"
-      align="center"
-      color={isSelected ? theme.colors.ui.success : theme.colors.bg.elements_bg}
+      width={"40%"}
+      height={"60%"}
+      color={theme.colors.ui.secondary}
       onPress={action}
+      //color={"lightblue"}
+      border_radius={"5px"}
+      direction="row"
+      align="center"
+      justify="center"
     >
-      <Container
-        width={"90%"}
-        height={"60%"}
-        color={theme.colors.ui.secondary}
-        border_radius={"5px"}
-        direction="row"
-        align="center"
-        justify="center"
+      <Text
+        variant={isActive ? "dm_sans_bold_14" : "dm_sans_regular_14"}
+        style={{ textDecorationLine: "underline" }}
       >
-        <Text
-          variant="dm_sans_bold_14"
-          style={{ textDecorationLine: "underline" }}
-        >
-          {language === "EN" ? "EN" : "ES"}
-        </Text>
-      </Container>
+        {language_caption}
+        {/* {language === "EN" ? "English" : "Spanish"} */}
+      </Text>
     </Action_Container>
   );
 };
