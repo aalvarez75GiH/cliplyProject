@@ -3,20 +3,20 @@ import * as Clipboard from "expo-clipboard";
 import { ActivityIndicator, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Text } from "../../infrastructure/typography/text.component.js";
-import { EN_ES_CTA_component } from "../calls_to_action/en_es.cta.js";
+import { Text } from "../../../infrastructure/typography/text.component.js";
+import { EN_ES_CTA_component } from "../../calls_to_action/en_es.cta.js";
 import {
   Container,
   Action_Container,
-} from "../global_components/containers/general_containers.js";
-import CopyPaste_icon from "../../../assets/my-icons/copy_paste.svg";
-import { theme } from "../../infrastructure/theme/index.js";
-import SuccessIcon from "../../../assets/my-icons/success_icon.svg";
+} from "../../global_components/containers/general_containers.js";
+import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
+import { theme } from "../../../infrastructure/theme/index.js";
+import SuccessIcon from "../../../../assets/my-icons/success_icon.svg";
 
-import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
-import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
-import { Spacer } from "../global_components/optimized.spacer.component.js";
-import { Snack_Bar_Component } from "../others/snack_bar.component.js";
+import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context.js";
+import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
+import { Spacer } from "../../global_components/optimized.spacer.component.js";
+import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
 
 export const Stored_Message_Tile = ({
   item,
