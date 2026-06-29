@@ -3,7 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Talk_and_paste_View from "../../views/talk_and_paste_views/talk_and_paste.view";
 import Menu_Screen from "../../views/work/menu.view"; // Assuming this is the correct import for the menu screen
-import { Recent_Text_Clip_View } from "../../views/voice_and_recent_views/recent_text_clip.view";
+import { Recent_Messages_View } from "../../views/talk_and_paste_views/recent_messages.view";
+// import { Recent_Text_Clip_View } from "../../views/voice_and_recent_views/recent_text_clip.view";
 import Delete_Item_View from "../../views/global_views/delete_item.view";
 import Selecting_Operation_And_Status_View from "../../views/voice_and_recent_views/selecting_operation_and_status_to_save_text_clip.view";
 import Uploading_Text_Clip_View from "../../views/voice_and_recent_views/uploading_text_clip.view";
@@ -20,13 +21,14 @@ export const Talk_and_Paste_navigator = () => {
       }}
     >
       <TalkStack.Screen
-        name="Voice_and_recent_View"
+        //name="Voice_and_recent_View"
+        name="Talk_and_paste_View"
         component={Talk_and_paste_View}
       />
       <TalkStack.Screen name="Menu_View" component={Menu_Screen} />
       <TalkStack.Screen
         name="Recent_Text_Clip_View"
-        component={Recent_Text_Clip_View}
+        component={Recent_Messages_View}
       />
       <TalkStack.Screen name="Delete_Item_View" component={Delete_Item_View} />
       <TalkStack.Screen

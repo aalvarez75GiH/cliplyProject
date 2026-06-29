@@ -88,10 +88,10 @@ export const Message_transcribed_modal = () => {
 
           <Container
             width="100%"
-            height="58px"
+            height="90px"
             align="center"
             justify="center"
-            direction="row"
+            direction="column"
             color="#E9FBEA"
             border_radius_top_left={18}
             border_radius_top_right={18}
@@ -100,35 +100,20 @@ export const Message_transcribed_modal = () => {
             style={{ alignSelf: "center" }}
           >
             <Text
-              variant="dm_sans_bold_20"
-              style={{ color: "#0DB21E", letterSpacing: 0.3 }}
+              variant="dm_sans_bold_26"
+              style={{ color: "#0DB21E", letterSpacing: 0.3, lineHeight: 34 }}
             >
-              ✓ Created & Copied
+              ✓ Paste your message!
+            </Text>
+            <Text
+              variant="dm_sans_bold_26"
+              style={{ color: "#0DB21E", letterSpacing: 0.3, lineHeight: 34 }}
+            >
+              in your chat
             </Text>
           </Container>
 
           <Spacer position="top" size="large" />
-
-          <Text
-            variant="dm_sans_bold_24"
-            style={{
-              textAlign: "center",
-              color: "#151515",
-              lineHeight: 34,
-            }}
-          >
-            Paste your message!
-          </Text>
-          <Text
-            variant="dm_sans_bold_24"
-            style={{
-              textAlign: "center",
-              color: "#151515",
-              lineHeight: 34,
-            }}
-          >
-            in your chat
-          </Text>
 
           <Spacer position="top" size="large" />
 
@@ -166,7 +151,6 @@ export const Message_transcribed_modal = () => {
               <Text
                 variant="dm_sans_bold_18"
                 style={{
-                  color: theme.colors.ui.success,
                   textDecorationLine: "underline",
                 }}
               >
@@ -189,7 +173,6 @@ export const Message_transcribed_modal = () => {
               <Text
                 variant="dm_sans_bold_16"
                 style={{
-                  color: "#0DB21E",
                   textDecorationLine: "underline",
                 }}
               >

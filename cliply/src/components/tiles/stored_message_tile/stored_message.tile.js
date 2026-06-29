@@ -12,14 +12,13 @@ import {
 } from "../../global_components/containers/general_containers.js";
 import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../../infrastructure/theme/index.js";
+import { Footer_1 } from "./footer_1.component.js";
 
-import SuccessIcon from "../../../../assets/my-icons/success_icon.svg";
 import LanguageIcon from "../../../../assets/my-icons/language_icon.svg";
 import RemoveIcon from "../../../../assets/my-icons/remove_icon.svg";
 
 import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
-import { Spacer } from "../../global_components/optimized.spacer.component.js";
 import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
 
 export const Stored_Message_Tile = ({
@@ -38,8 +37,7 @@ export const Stored_Message_Tile = ({
     useState(false);
   const { summary, body, message_id } = item;
 
-  const { introAdded, setIntroAdded, updatingTextClipsUsedCount } =
-    useContext(TextClipsContext);
+  const { updatingTextClipsUsedCount } = useContext(TextClipsContext);
   const { showSuccessSnackbar } = useContext(GlobalContext);
   // useState(() => {}, []);
   const navigation = useNavigation();
@@ -53,11 +51,7 @@ export const Stored_Message_Tile = ({
     console.log("Toggling language to:", language);
     const newLanguage = language === "English" ? "EN" : "ES";
 
-    const messageToCopy = introAdded
-      ? `Hey, Your driver here. ${newLanguage === "EN" ? body.en : body.es}`
-      : newLanguage === "EN"
-      ? body.en
-      : body.es;
+    const messageToCopy = newLanguage === "EN" ? body.en : body.es;
 
     try {
       setLanguage(newLanguage);
@@ -66,7 +60,6 @@ export const Stored_Message_Tile = ({
 
       onSelect(message_id);
       setShowRegularFooterAfterCopy(false);
-      setIntroAdded(false);
 
       showSuccessSnackbar("Message copied", null, "");
 
@@ -81,18 +74,13 @@ export const Stored_Message_Tile = ({
   const copy_message_action = async (item) => {
     const { body, message_id } = item;
 
-    const messageToCopy = introAdded
-      ? `Hey, Your driver here. ${language === "EN" ? body.en : body.es}`
-      : language === "EN"
-      ? body.en
-      : body.es;
+    const messageToCopy = language === "EN" ? body.en : body.es;
 
     try {
       await Clipboard.setStringAsync(messageToCopy);
 
       onSelect(message_id);
       setShowRegularFooterAfterCopy(false);
-      setIntroAdded(false);
 
       showSuccessSnackbar("Message copied", null, "");
 
@@ -204,103 +192,16 @@ export const Stored_Message_Tile = ({
             </Container>
             {/* ***************** FOOTER 1 ************************** */}
             {(!isSelected || showRegularFooterAfterCopy) && (
-              <Container
-                width={Platform.OS === "ios" ? "410px" : "100%"}
-                height="30%"
-                align="center"
-                justify="center"
-                direction="row"
-                color={
-                  isSelected
-                    ? theme.colors.bg.elements_bg
-                    : theme.colors.bg.elements_bg
-                }
-              >
-                <Container
-                  width="50%"
-                  height="75%"
-                  align="center"
-                  justify="center"
-                  direction="row"
-                  color={theme.colors.bg.elements_bg}
-                  //color="yellow"
-                  style={{
-                    paddingLeft: 20,
-                  }}
-                >
-                  <LanguageIcon width="20px" height="20px" fill={"#000000"} />
-                  <Short_EN_ES_CTA_CTA
-                    language_caption={"English"}
-                    language={language}
-                    // language={language === "EN" ? "ES" : "EN"}
-                    action={() => toggleLanguage("English")}
-                  />
-                  <Container width="1%" height="55%" color="grey" />
-                  <Short_EN_ES_CTA_CTA
-                    language_caption={"Español"}
-                    language={language}
-                    // language={language === "EN" ? "ES" : "EN"}
-                    action={() => toggleLanguage("Spanish")}
-                  />
-                </Container>
-
-                <Container
-                  width="20%"
-                  height="65%"
-                  align="center"
-                  justify="center"
-                  direction="column"
-                  color={theme.colors.bg.elements_bg}
-                >
-                  {/* <Text variant="underlined_small_caption">Delete</Text> */}
-                </Container>
-                <Container
-                  width="33%"
-                  // height="65%"
-                  align="center"
-                  justify="center"
-                  direction="row"
-                  color={theme.colors.bg.elements_bg}
-                  //color={"red"}
-                >
-                  <Action_Container
-                    width="30%"
-                    // height="100%"
-                    align="center"
-                    justify="center"
-                    direction="column"
-                    color={theme.colors.bg.elements_bg}
-                    //color={"lightgreen"}
-                    onPress={() => {
-                      const updatedSpecificTextClipData = {
-                        ...specificTextClipData,
-                        message_id: item.message_id,
-                      };
-                      setSpecificTextClipData(updatedSpecificTextClipData);
-                      navigation.navigate("Delete_Item_View", {
-                        dataNeededToDeleteTextClip: updatedSpecificTextClipData,
-                        item_to_delete_label: "Text clip",
-                        coming_from: "Stored_Clips_Tile",
-                      });
-                      // deleteStoredTextClip(updatedSpecificTextClipData);
-                    }}
-                  >
-                    <RemoveIcon width="20px" height="20px" color={"#000000"} />
-                    {/* <Text variant="underlined_small_caption">Delete</Text> */}
-                  </Action_Container>
-                  <Action_Container
-                    width="65px"
-                    onPress={() => copy_message_action(item)}
-                    color={theme.colors.bg.elements_bg}
-                  >
-                    <CopyPaste_icon
-                      width="30px"
-                      height="30px"
-                      fill={theme.colors.text.middle_screens_text}
-                    />
-                  </Action_Container>
-                </Container>
-              </Container>
+              <Footer_1
+                item={item}
+                language={language}
+                toggleLanguage={toggleLanguage}
+                copy_message_action={copy_message_action}
+                isSelected={isSelected}
+                specificTextClipData={specificTextClipData}
+                setSpecificTextClipData={setSpecificTextClipData}
+                navigation={navigation}
+              />
             )}
             {/* ***************** FOOTER 2 ************************** */}
             {isSelected && !showRegularFooterAfterCopy && (

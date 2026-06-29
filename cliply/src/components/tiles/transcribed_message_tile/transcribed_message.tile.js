@@ -2,19 +2,19 @@ import React, { useState, useContext, useEffect } from "react";
 import * as Clipboard from "expo-clipboard";
 import { useNavigation } from "@react-navigation/native";
 
-import { Text } from "../../infrastructure/typography/text.component.js";
-import { EN_ES_CTA_component } from "../calls_to_action/en_es.cta.js";
+import { Text } from "../../../infrastructure/typography/text.component.js";
+import { EN_ES_CTA_component } from "../../calls_to_action/en_es.cta.js";
 import {
   Container,
   Action_Container,
-} from "../global_components/containers/general_containers.js";
-import CopyPaste_icon from "../../../assets/my-icons/copy_paste.svg";
-import { theme } from "../../infrastructure/theme/index.js";
-import { Snack_Bar_Component } from "../others/snack_bar.component.js";
+} from "../../global_components/containers/general_containers.js";
+import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
+import { theme } from "../../../infrastructure/theme/index.js";
+import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
 
-import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
+import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
 
-export const Transcripted_Message_Tile = ({
+export const Transcribed_Message_Tile = ({
   message_en,
   message_es,
   language_detected,

@@ -4,7 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Transcripted_Clips_Tile } from "../../components/tiles/transcripted_clip.tile.js";
 import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
-import { Recent_Message_Created_Tile } from "../../components/tiles/recent_messages_created.tile.js";
+// import { Recent_Message_Created_Tile } from "../../components/tiles/recent_messages_created.tile.js";
+import { Recent_Message_Created_Tile } from "../../components/tiles/recent_message_tile/recent_messages_created.tile.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
@@ -62,6 +63,7 @@ export const Recent_Text_Clip_View = (route) => {
               language_detected={language_detected}
               message_id={message_id}
               globalLanguage={globalLanguage}
+              item={item}
             />
             <Container
               width={"100%"}

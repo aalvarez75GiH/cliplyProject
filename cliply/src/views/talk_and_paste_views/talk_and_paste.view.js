@@ -7,13 +7,12 @@ import * as Clipboard from "expo-clipboard";
 
 import { HomeHeader } from "../../components/headers/home_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
-import { Action_Container } from "../../components/global_components/containers/general_containers.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Talk_And_Recording_Component } from "./talk_and_paste_components/talk_and_recording.component.js";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
-import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
+import { Transcribed_Message_Tile } from "../../components/tiles/transcribed_message_tile/transcribed_message.tile.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
 import { Navigate_to_Recent_Messages_Tile } from "../../components/tiles/navigate_to_recent_messages.tile.js";
 import { Message_transcribed_modal } from "../../components/others/message_transcribed_modal.component.js";
@@ -200,11 +199,12 @@ export default function Talk_and_paste_View({ navigation }) {
               </Container>
             )}
 
+            {/* <Message_transcribed_modal /> */}
             {response && recordingStatus === "idle" && (
               <>
                 <Message_transcribed_modal />
                 {!modalVisible && (
-                  <Transcripted_Message_Tile
+                  <Transcribed_Message_Tile
                     message_en={response?.body?.en}
                     message_es={response?.body?.es}
                     width="95%"
