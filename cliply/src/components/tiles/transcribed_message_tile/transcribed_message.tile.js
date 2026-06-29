@@ -3,28 +3,23 @@ import * as Clipboard from "expo-clipboard";
 import { useNavigation } from "@react-navigation/native";
 
 import { Text } from "../../../infrastructure/typography/text.component.js";
-import { EN_ES_CTA_component } from "../../calls_to_action/en_es.cta.js";
 import {
   Container,
   Action_Container,
 } from "../../global_components/containers/general_containers.js";
-import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../../infrastructure/theme/index.js";
 import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
+import { Footer_1 } from "./footer_1.component.js";
 
 import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
 
 export const Transcribed_Message_Tile = ({
   message_en,
   message_es,
-  language_detected,
   width = "95%",
   message_id = null,
   globalLanguage,
-  route_name,
 }) => {
-  const navigation = useNavigation();
-
   const { userToDB, showSuccessSnackbar, snackbar } = useContext(GlobalContext);
 
   const [language, setLanguage] = useState(globalLanguage);
@@ -37,12 +32,6 @@ export const Transcribed_Message_Tile = ({
     user_id,
     message_id,
   };
-
-  const routes_names_to_hide_delete_option = [
-    "Type_Message_View",
-    "Voice_and_recent_View",
-    "Quick_Voice_Text_Clip",
-  ];
 
   useEffect(() => {
     setLanguage(globalLanguage);
@@ -60,7 +49,6 @@ export const Transcribed_Message_Tile = ({
       setLanguage(newLanguage);
       await Clipboard.setStringAsync(messageToCopy);
 
-      setShowRegularFooterAfterCopy(false);
       showSuccessSnackbar("Copied, Paste it on your chat", null, "");
 
       setTimeout(() => {
@@ -138,96 +126,12 @@ export const Transcribed_Message_Tile = ({
           </Action_Container>
 
           {showRegularFooterAfterCopy && (
-            <Container
-              width="100%"
-              height="58px"
-              align="center"
-              justify="center"
-              direction="row"
-              color={theme.colors.bg.elements_bg}
-              style={{
-                paddingHorizontal: 28,
-              }}
-            >
-              <Container
-                width="33%"
-                height="100%"
-                align="center"
-                justify="flex-start"
-                direction="row"
-                color={theme.colors.bg.elements_bg}
-              >
-                <EN_ES_CTA_component
-                  language={language === "EN" ? "ES" : "EN"}
-                  action={toggleLanguage}
-                />
-              </Container>
-
-              {!routes_names_to_hide_delete_option.includes(route_name) && (
-                <Action_Container
-                  width="34%"
-                  height="100%"
-                  align="center"
-                  justify="center"
-                  direction="column"
-                  color={theme.colors.bg.elements_bg}
-                  onPress={() => {
-                    navigation.navigate("Delete_Item_View", {
-                      dataNeededToDeleteTextClip: updatedSpecificTextClipData,
-                      item_to_delete_label: "Text clip",
-                      coming_from: "Recent_Text_Clip_Tile",
-                    });
-                  }}
-                >
-                  <Text
-                    variant="dm_sans_bold_12_disable_not_active"
-                    style={{
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    {globalLanguage === "EN" ? "Delete" : "Eliminar"}
-                  </Text>
-                </Action_Container>
-              )}
-
-              {routes_names_to_hide_delete_option.includes(route_name) && (
-                <Container
-                  width="34%"
-                  height="100%"
-                  align="center"
-                  justify="center"
-                  direction="column"
-                  color={theme.colors.bg.elements_bg}
-                />
-              )}
-
-              <Container
-                width="33%"
-                height="100%"
-                align="center"
-                justify="flex-end"
-                direction="row"
-                color={theme.colors.bg.elements_bg}
-              >
-                <Action_Container
-                  width="45px"
-                  height="50px"
-                  align="center"
-                  justify="center"
-                  onPress={copy_message_action}
-                  color={theme.colors.bg.elements_bg}
-                  style={{
-                    transform: [{ translateY: -8 }],
-                  }}
-                >
-                  <CopyPaste_icon
-                    width="28px"
-                    height="28px"
-                    fill={theme.colors.text.middle_screens_text}
-                  />
-                </Action_Container>
-              </Container>
-            </Container>
+            <Footer_1
+              language={language}
+              toggleLanguage={toggleLanguage}
+              copy_message_action={copy_message_action}
+              updatedSpecificTextClipData={updatedSpecificTextClipData}
+            />
           )}
 
           {!showRegularFooterAfterCopy && (
@@ -244,11 +148,7 @@ export const Transcribed_Message_Tile = ({
           <Container
             width="100%"
             height="6px"
-            color={
-              showRegularFooterAfterCopy
-                ? theme.colors.ui.success
-                : "transparent"
-            }
+            color={theme.colors.ui.success}
           />
 
           <Snack_Bar_Component

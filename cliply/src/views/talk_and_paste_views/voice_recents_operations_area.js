@@ -107,7 +107,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "food_delivery",
                 status_name: "heading_to_pickup_shop",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Food Delivery",
                 status_label: "Heading to pickup",
               });
@@ -133,7 +133,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "food_delivery",
                 status_name: "picking_up_shopping",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Food Delivery",
                 status_label: "Picking up",
               });
@@ -157,7 +157,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "food_delivery",
                 status_name: "heading_to_drop_off",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Food Delivery",
                 status_label: "Heading to drop off",
               });
@@ -209,7 +209,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "ride_share",
                 status_name: "heading_to_passenger",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Ride Share",
                 status_label: "Heading to Passenger",
               });
@@ -232,7 +232,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "ride_share",
                 status_name: "close_to_passenger",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Ride Share",
                 status_label: "Close to Passenger",
               });
@@ -256,7 +256,7 @@ export const Voice_Operations_Status_Area = ({
                 operation_name: "ride_share",
                 status_name: "at_passenger_location",
               }));
-              navigation.navigate("Uploading_text_clip", {
+              navigation.navigate("Uploading_Message_View", {
                 operation_label: "Ride Share",
                 status_label: "I am here",
               });

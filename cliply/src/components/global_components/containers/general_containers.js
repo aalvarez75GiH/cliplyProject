@@ -34,6 +34,7 @@ const baseStyles = css`
     props.border_radius_bottom_right ||
     props.border_bottom_right_radius ||
     "0px"};
+  overflow: ${(props) => props.overflow || "visible"};
 `;
 
 export const Container = styled(View).attrs((props) => ({}))`

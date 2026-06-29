@@ -39,7 +39,7 @@ export const Recent_clips_Tile = ({ item, globalLanguage, date_formatted }) => {
             elevation: 5, // Android shadow
           }}
           onPress={() =>
-            navigation.navigate("Recent_Text_Clip_View", {
+            navigation.navigate("Recent_Message_View", {
               item,
             })
           }

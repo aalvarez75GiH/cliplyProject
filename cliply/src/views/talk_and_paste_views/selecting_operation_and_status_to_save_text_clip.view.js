@@ -36,12 +36,6 @@ export default function Selecting_Operation_And_Status_View({ navigation }) {
     JSON.stringify(textClip_data_to_upload, null, 2)
   );
 
-  const text_tile_caption_1 =
-    globalLanguage === "EN" ? "Select the status" : "Seleccione el estado";
-  const text_tile_caption_2 =
-    globalLanguage === "EN"
-      ? "where you want to save the text clip"
-      : "dónde desea guardar el clip de texto";
   return (
     <SafeArea background_color={theme.colors.bg.elements_bg}>
       <Container
@@ -63,12 +57,13 @@ export default function Selecting_Operation_And_Status_View({ navigation }) {
         >
           {operation === "food_delivery" && (
             <>
-              <Spacer position="left" size="small">
+              <Spacer position="left" size="extraLarge">
                 <Text_Tile
-                  caption_1={text_tile_caption_1}
-                  caption_2={text_tile_caption_2}
+                  caption_1={"Select the status"}
+                  caption_2={"where you want to save the text clip"}
                   color={theme.colors.ui.highlight_color_2}
                   // color={"#0D965B"}
+                  width={"100%"}
                   height={"100%"}
                 />
               </Spacer>
@@ -77,10 +72,10 @@ export default function Selecting_Operation_And_Status_View({ navigation }) {
 
           {operation === "ride_share" && (
             <>
-              <Spacer position="left" size="small">
+              <Spacer position="left" size="extraLarge">
                 <Text_Tile
-                  caption_1={text_tile_caption_1}
-                  caption_2={text_tile_caption_2}
+                  caption_1={"Select the status"}
+                  caption_2={"where you want to save the text clip"}
                   color={theme.colors.ui.highlight_color_2}
                   // color={"#5C8FD6"}
                   height={"100%"}

@@ -12,26 +12,16 @@ import { Container } from "../../components/global_components/containers/general
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export default function Temporary_Recent_Messages_View({ navigation }) {
-  const {
-    renderRecentClipsTile,
-    startRecording,
-    recordingStatus,
-    response,
-    startTranscription,
-    setResponse,
-    stopRecording,
-    setRecordingStatus,
-  } = useContext(VoiceRecentClipsContext);
-  const { globalLanguage, userData } = useContext(GlobalContext);
+export default function Listing_Recent_Messages_View({ navigation }) {
+  const { renderRecentClipsTile, setResponse, setRecordingStatus } = useContext(
+    VoiceRecentClipsContext
+  );
+  const { userData } = useContext(GlobalContext);
   const { recent_messages } = userData || { recent_messages: [] };
   const route = useRoute();
   console.log("ACTUAL ROUTE AT VOICE: ", route.name);
 
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
-
-  const resultAreaHeight = screenHeight * 0.53;
-  const imageSize = screenWidth * 1.5;
 
   useFocusEffect(
     useCallback(() => {

@@ -15,6 +15,10 @@ export const Circular_Step_Indicator = ({ width, height, caption, color }) => {
       direction="row"
       align="center"
       justify="center"
+      border_radius_top_left={"60px"}
+      border_radius_top_right={"60px"}
+      border_radius_bottom_left={"60px"}
+      border_radius_bottom_right={"60px"}
     >
       <Text variant="dm_sans_bold_16_white" color="#FFFFFF">
         {caption}

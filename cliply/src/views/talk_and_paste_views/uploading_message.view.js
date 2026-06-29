@@ -1,27 +1,23 @@
-import React, { useState, useContext } from "react";
-import { Platform } from "react-native";
+import React, { useContext } from "react";
 
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { Container } from "../../components/global_components/containers/general_containers.js";
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
-import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
-import { Text } from "../../infrastructure/typography/text.component.js";
 import { Uploading_text_clip_Tile } from "../../components/tiles/uploading_text_clip.tile.js";
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
 import CloudIcon from "../../../assets/my-icons/cloud_1.svg";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
+import { Regular_With_Icon_CTA } from "../../components/calls_to_action/regular_with_icon.cta.js";
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
 
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export default function Uploading_Text_Clip_View({ navigation, route }) {
-  const { operation, setOperation } = useContext(TextClipsContext);
+export default function Uploading_Message_View({ navigation, route }) {
   const {
-    setTextClip_data_to_upload,
     textClip_data_to_upload,
-    resetState,
     posting_new_text_clip_to_upload,
     isLoading,
   } = useContext(VoiceRecentClipsContext);
@@ -49,9 +45,6 @@ export default function Uploading_Text_Clip_View({ navigation, route }) {
         justify="center"
         align="center"
       >
-        {/* <Spacer position="top" size="large" />
-        <Spacer position="top" size="large" /> */}
-        {/* <Spacer position="top" size="large" /> */}
         <ExitHeader action={() => navigation.goBack()} />
         {isLoading && <Loading_Spinner_area />}
         {!isLoading && (
@@ -78,7 +71,7 @@ export default function Uploading_Text_Clip_View({ navigation, route }) {
               direction="column"
               color={theme.colors.bg.screens_bg}
             >
-              <Squared_action_CTA_component
+              <Regular_With_Icon_CTA
                 // action={null}
                 action={() => action_after_posting(textClip_data_to_upload)}
                 label={globalLanguage === "EN" ? "Upload" : "Subir"}
@@ -88,15 +81,14 @@ export default function Uploading_Text_Clip_View({ navigation, route }) {
                 text_variant={"dm_sans_bold_16_white"}
                 Icon={<CloudIcon width={35} height={35} fill={"white"} />}
               />
+
               <Spacer position="top" size="medium" />
-              <Squared_action_CTA_component
-                // label="Exit"
-                label={globalLanguage === "EN" ? "Exit" : "Salir"}
+              <Regular_CTA
                 width="95%"
-                height={"17%"}
-                color={theme.colors.ui.highlight_color}
-                text_variant={"dm_sans_bold_16"}
-                icon_visible={false}
+                height="17%"
+                color="transparent"
+                caption="Exit"
+                caption_variant="dm_sans_bold_16"
                 action={() => navigation.goBack()}
               />
             </Container>

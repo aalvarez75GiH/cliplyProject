@@ -2,9 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { Container } from "../../components/global_components/containers/general_containers.js";
-import { Transcripted_Clips_Tile } from "../../components/tiles/transcripted_clip.tile.js";
-import { Transcripted_Message_Tile } from "../../components/tiles/transcripted_message.tile.js";
-// import { Recent_Message_Created_Tile } from "../../components/tiles/recent_messages_created.tile.js";
 import { Recent_Message_Created_Tile } from "../../components/tiles/recent_message_tile/recent_messages_created.tile.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
@@ -12,11 +9,14 @@ import { SafeArea } from "../../components/global_components/safe-area.component
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Platform } from "react-native";
+import { Action_Container } from "../../components/global_components/containers/general_containers.js";
+import { Text } from "../../infrastructure/typography/text.component.js";
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
 
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export const Recent_Text_Clip_View = (route) => {
+export default function Recent_Messages_View(route) {
   const { item } = route.route.params;
   const { globalLanguage } = useContext(GlobalContext);
   //   const { message_en, message_es, language_detected, message_id } = item;
@@ -63,20 +63,19 @@ export const Recent_Text_Clip_View = (route) => {
               language_detected={language_detected}
               message_id={message_id}
               globalLanguage={globalLanguage}
-              item={item}
             />
             <Container
               width={"100%"}
-              height={"12%"}
+              height={"20%"}
               justify="center"
               align="center"
               direction="column"
-              //color={"red"}
+              color={"transparent"}
               style={{
                 position: "absolute",
                 top: 450,
               }}
-              color={theme.colors.bg.screens_bg}
+              //color={theme.colors.bg.screens_bg}
             >
               {Platform.OS === "ios" ? null : (
                 <>
@@ -86,27 +85,22 @@ export const Recent_Text_Clip_View = (route) => {
                 </>
               )}
               <Spacer position="top" size="large" />
-              <Squared_action_CTA_component
-                // action={null}
-                action={() => navigation.navigate("Saving_text_clip_1")}
-                label={
-                  globalLanguage === "EN"
-                    ? "Save text clip"
-                    : "Guardar clip de texto"
-                }
-                width="95%"
-                height={"65%"}
-                color={theme.colors.ui.primary}
-                text_variant={"dm_sans_bold_16_white"}
-              />
+
               <Spacer position="top" size="medium" />
-              <Squared_action_CTA_component
-                label={globalLanguage === "EN" ? "Exit" : "Salir"}
+              <Regular_CTA
                 width="95%"
-                height={"65%"}
-                color={theme.colors.ui.highlight_color}
-                text_variant={"dm_sans_bold_16"}
-                icon_visible={false}
+                height="45%"
+                caption="Save text clip"
+                caption_variant="dm_sans_bold_16_white"
+                color="#000000"
+                action={() => navigation.navigate("Saving_message_to_status")}
+              />
+              <Regular_CTA
+                width="95%"
+                height="45%"
+                caption="Exit"
+                caption_variant="dm_sans_bold_16"
+                color="transparent"
                 action={() => {
                   resetState();
                   navigation.goBack();
@@ -118,4 +112,4 @@ export const Recent_Text_Clip_View = (route) => {
       </SafeArea>
     </>
   );
-};
+}

@@ -17,7 +17,7 @@ export const Navigate_to_Recent_Messages_Tile = () => {
     <Action_Container
       width="100%"
       height={screenHeight * 0.07}
-      onPress={() => navigation.navigate("Temporary_Recent_Messages_View")}
+      onPress={() => navigation.navigate("Listing_Recent_Messages_View")}
     >
       <LinearGradient
         colors={["#F3E2A6", "#EBD89A"]}
