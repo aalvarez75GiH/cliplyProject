@@ -9,8 +9,6 @@ import { AppNavigator } from "./app.navigator";
 import { Login_Register_Navigator } from "./login_register.navigator";
 
 import { GlobalContext } from "../services/global/global.context";
-import { TextClipsContext } from "../services/home/text_clips.context";
-// import { AuthenticationContext } from "../services/authentication/authentication.context";
 
 const paperTheme = {
   ...DefaultPaperTheme,

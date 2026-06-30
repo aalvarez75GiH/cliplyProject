@@ -1,12 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
-import {
-  createBottomTabNavigator,
-  BottomTabBar,
-} from "@react-navigation/bottom-tabs";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-// import { Voice_and_recent_navigator } from "./voice_recent.navigator";
 import { Type_Message_Navigator } from "./type_message.navigator";
 import { Work_Flow_Navigator } from "./work_flow.navigator";
 import { Talk_and_Paste_navigator } from "./talk_and_paste.navigator";

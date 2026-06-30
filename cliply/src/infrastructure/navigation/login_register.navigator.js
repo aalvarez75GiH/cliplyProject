@@ -9,8 +9,6 @@ import Preference_Language_View from "../../views/global_views/selecting_prefere
 import Menu_Screen from "../../views/work/menu.view";
 import Multiple_Emails_LoginIn_View from "../../views/global_views/multiple_emails_login.view";
 import Generating_New_Automatic_Pin_View from "../../views/global_views/generating_new_automatic_pin.view";
-import Text_Clips_View from "../../views/text_clips_views/text_clips.view";
-import Work_Flow_View from "../../views/work/work_flow.view";
 import Welcome_To_Cliply_View from "../../views/global_views/welcome_to_cliply.view";
 const LoginRegisterStack = createNativeStackNavigator();
 
