@@ -13,6 +13,7 @@ import LogOutIcon from "../../../assets/my-icons/logout_exit_out_icon.svg";
 import PasswordIcon from "../../../assets/my-icons/password_icon.svg";
 import { Menu_Sub_title_Tile } from "../../components/tiles/menu_sub_title.tile.js";
 import { Menu_Tile } from "../../components/tiles/menu.tile.js";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
@@ -51,13 +52,14 @@ export default function Menu_Screen({ navigation }) {
           // color={theme.colors.bg.elements_bg}
           color={theme.colors.bg.screens_bg}
         >
-          <ExitHeader
+          <Button_Go_Back_Header
             action={() => {
-              // setPin("");
               setNew_pin("");
               navigation.goBack();
             }}
+            caption="Back"
           />
+
           <Menu_Sub_title_Tile
             caption={globalLanguage === "EN" ? "Account" : "Pérfil"}
             // variant={"menu_sub_title_text"}

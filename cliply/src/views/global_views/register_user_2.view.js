@@ -24,6 +24,7 @@ import { SafeArea } from "../../components/global_components/safe-area.component
 import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { Whole_Screen_Loading_Spinner_Component } from "../../components/global_components/whole_screen_loading_spinner.component.js";
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
@@ -182,9 +183,12 @@ export default function Register_User_View_2({ navigation, route }) {
                 keyboardType="default"
               />
             </Container>
-
-            <Squared_action_CTA_component
-              label="Register"
+            <Regular_CTA
+              width="95%"
+              height="10%"
+              caption="Register"
+              caption_variant="dm_sans_bold_16_white"
+              color="#000000"
               action={async () => {
                 const emailValidated = validatingEmail(email);
                 console.log("EMAIL_VALIDATED:", emailValidated);
@@ -199,8 +203,12 @@ export default function Register_User_View_2({ navigation, route }) {
                   if (res?.ok) {
                     setIsLoading(false);
                     navigation.navigate("Successful_View", {
-                      label: "Registration done!",
-                      cta_label: "Go to Login",
+                      caption_1: "We have sent you an Email",
+                      caption_2: "Check your email",
+                      caption_3: "You'll find a PIN number, use it to login",
+                      email_to_show: email,
+                      // label: "Registration done!",
+                      // cta_label: "Go to Login",
                     });
                   } else {
                     // Handle case where email already exists
@@ -211,8 +219,6 @@ export default function Register_User_View_2({ navigation, route }) {
                   setEmailError("An error occurred. Please try again.");
                 }
               }}
-              icon_visible={false}
-              height="12%"
             />
           </Container>
         </KeyboardAvoidingView>

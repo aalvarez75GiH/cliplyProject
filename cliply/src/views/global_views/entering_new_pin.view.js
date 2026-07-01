@@ -16,7 +16,7 @@ import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
-
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
 export default function Entering_New_PIN_View({ route }) {
@@ -185,46 +185,95 @@ export default function Entering_New_PIN_View({ route }) {
               justify="flex-end"
               align="center"
               color={theme.colors.bg.elements_bg}
-              //   color={"yellow"}
+              //color={"yellow"}
             >
               {loadedCTA && (
-                <Squared_action_CTA_component
-                  label="Update PIN"
-                  action={async () => {
-                    console.log("NEW PIN AT ON CTA:", new_pin);
-                    try {
-                      const res = await updatingPINOnDemandAndUpdatingUserAtFB(
-                        new_pin
-                      );
+                <>
+                  <Regular_CTA
+                    width="95%"
+                    height="15%"
+                    caption="Continue"
+                    caption_variant="dm_sans_bold_16_white"
+                    color="#000000"
+                    action={async () => {
+                      console.log("NEW PIN AT ON CTA:", new_pin);
 
-                      if (res.success) {
-                        setIsNavigating(true);
-                        Keyboard.dismiss();
-                        await new Promise((r) => requestAnimationFrame(r));
-                        await InteractionManager.runAfterInteractions();
-                        navigation.navigate("Successful_View", {
-                          label:
-                            globalLanguage === "EN"
-                              ? "PIN updated Successfully..."
-                              : "PIN actualizado con éxito...",
-                          cta_label:
-                            globalLanguage === "EN"
-                              ? "Go to Home"
-                              : "Ir a Inicio",
-                        });
-                      } else {
-                        isProcessing = false; // Reset the flag if not successful
+                      try {
+                        const res =
+                          await updatingPINOnDemandAndUpdatingUserAtFB(new_pin);
+
+                        if (res.success) {
+                          setIsNavigating(true);
+                          Keyboard.dismiss();
+
+                          await new Promise((resolve) =>
+                            requestAnimationFrame(resolve)
+                          );
+
+                          await new Promise((resolve) => {
+                            InteractionManager.runAfterInteractions(() => {
+                              resolve();
+                            });
+                          });
+
+                          navigation.navigate("Successful_View", {
+                            caption_1: "We have sent you an Email",
+                            caption_2: "Check your email",
+                            caption_3:
+                              "You'll find your updated PIN number, use it to login next time",
+                          });
+                        }
+                      } catch (error) {
+                        console.error(
+                          "An error occurred during updating pin:",
+                          error
+                        );
                       }
-                    } catch (error) {
-                      console.error(
-                        "An error occurred during updating pin:",
-                        error
-                      );
-                    }
-                  }}
-                  icon_visible={false}
-                  height="15%"
-                />
+                    }}
+                  />
+                  <Spacer position="bottom" size="large" />
+                </>
+                // <Squared_action_CTA_component
+                //   label="Update PIN"
+                //   action={async () => {
+                //     console.log("NEW PIN AT ON CTA:", new_pin);
+
+                //     try {
+                //       const res = await updatingPINOnDemandAndUpdatingUserAtFB(
+                //         new_pin
+                //       );
+
+                //       if (res.success) {
+                //         setIsNavigating(true);
+                //         Keyboard.dismiss();
+
+                //         await new Promise((resolve) =>
+                //           requestAnimationFrame(resolve)
+                //         );
+
+                //         await new Promise((resolve) => {
+                //           InteractionManager.runAfterInteractions(() => {
+                //             resolve();
+                //           });
+                //         });
+
+                //         navigation.navigate("Successful_View", {
+                //           caption_1: "We have sent you an Email",
+                //           caption_2: "Check your email",
+                //           caption_3:
+                //             "You'll find your updated PIN number, use it to login next time",
+                //         });
+                //       }
+                //     } catch (error) {
+                //       console.error(
+                //         "An error occurred during updating pin:",
+                //         error
+                //       );
+                //     }
+                //   }}
+                //   icon_visible={false}
+                //   height="15%"
+                // />
               )}
             </Container>
             <Spacer size="large" />

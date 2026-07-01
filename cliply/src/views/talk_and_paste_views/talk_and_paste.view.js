@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import { ScrollView, useWindowDimensions } from "react-native";
 import * as Clipboard from "expo-clipboard";
 
-import { HomeHeader } from "../../components/headers/home_header.component.js";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { Container } from "../../components/global_components/containers/general_containers.js";
@@ -78,7 +78,10 @@ export default function Talk_and_paste_View({ navigation }) {
         justify="center"
         align="center"
       >
-        <HomeHeader action={() => navigation.navigate("Menu_View")} />
+        <Button_Go_Back_Header
+          action={() => navigation.navigate("Home")}
+          caption="Home"
+        />
         <ScrollView
           style={{ width: "100%", flex: 1 }}
           contentContainerStyle={{

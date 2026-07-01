@@ -18,6 +18,9 @@ import { Type_Message_Header } from "../../components/headers/type_message.heade
 import { Message_Input } from "../../components/inputs/message.input";
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta";
 import { Text } from "../../infrastructure/typography/text.component";
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header";
+import { Splitter_Component } from "../../components/others/grey_splitter.component";
 
 export default function Type_Message_View() {
   const [textInputValue, setTextInputvalue] = useState("");
@@ -33,9 +36,9 @@ export default function Type_Message_View() {
   const { globalLanguage, userToDB } = useContext(GlobalContext);
   const { user_id } = userToDB;
 
-  const navigation = useNavigation();
   const route = useRoute();
   const inputRef = useRef(null);
+  const navigation = useNavigation();
 
   console.log("ROUTE AT TYPE MESSAGE VIEW:", route.name);
 
@@ -79,10 +82,15 @@ export default function Type_Message_View() {
           </Container>
         ) : response ? (
           <>
-            <HomeHeader />
-
+            {/* <HomeHeader /> */}
+            <Button_Go_Back_Header
+              action={() => {
+                setResponse(null);
+                navigation.goBack();
+              }}
+              caption="Exit"
+            />
             <Spacer position="top" size="extraLarge" />
-
             <Container
               width="100%"
               height="80%"
@@ -117,23 +125,16 @@ export default function Type_Message_View() {
               >
                 <Spacer position="top" size="medium" />
 
-                <Action_Container
+                <Regular_CTA
                   width="95%"
                   height="45%"
-                  justify="center"
-                  align="center"
-                  direction="column"
+                  caption="Exit"
+                  caption_variant="dm_sans_bold_16_white"
                   color="#000000"
-                  onPress={() => {
+                  action={() => {
                     setResponse(null);
                   }}
-                  border_radius_top_left={15}
-                  border_radius_top_right={15}
-                  border_radius_bottom_left={15}
-                  border_radius_bottom_right={15}
-                >
-                  <Text variant="dm_sans_bold_16_white">Exit</Text>
-                </Action_Container>
+                />
 
                 <Text variant="dm_sans_bold_14" style={{ padding: 10 }}>
                   {globalLanguage === "EN"
@@ -142,7 +143,6 @@ export default function Type_Message_View() {
                 </Text>
               </Container>
             </Container>
-
             <Container
               width="100%"
               height="10%"
@@ -159,6 +159,15 @@ export default function Type_Message_View() {
             justify="flex-start"
             color={theme.colors.bg.elements_bg}
           >
+            <Button_Go_Back_Header
+              action={() => navigation.navigate("Home")}
+              caption="Home"
+            />
+            <Splitter_Component
+              width={"100%"}
+              height={"0.3%"}
+              color={theme.colors.bg.screens_bg}
+            />
             <Type_Message_Header globalLanguage={globalLanguage} />
 
             <Message_Input

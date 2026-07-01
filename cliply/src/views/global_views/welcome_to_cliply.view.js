@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
+import { Image } from "expo-image";
 
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
@@ -10,12 +11,12 @@ import { theme } from "../../infrastructure/theme/index.js";
 import { Outlined_CTA } from "../../components/calls_to_action/outlined.cta.js";
 import { Whole_Screen_Loading_Spinner_Component } from "../../components/global_components/whole_screen_loading_spinner.component.js";
 import CliplyLogo from "../../../assets/my-icons/text_messages.svg";
+import Logo from "../../../assets/illustrations/logos/header_logo_thiker.png";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
 export default function Welcome_To_Cliply_View({ route }) {
-  const { globalLanguage, setIsAuthenticated, isLoading } =
-    useContext(GlobalContext);
+  const { setIsAuthenticated, isLoading } = useContext(GlobalContext);
 
   return (
     <SafeArea backgroundColor={theme.colors.bg.elements_bg}>
@@ -52,18 +53,22 @@ export default function Welcome_To_Cliply_View({ route }) {
               //color={"blue"}
               color={theme.colors.bg.elements_bg}
             >
-              <Text variant="dm_sans_bold_40">Welcome to </Text>
+              <Spacer position="left" size="extraLarge">
+                <Text variant="dm_sans_bold_40">Welcome to </Text>
+              </Spacer>
               <Container
                 width="85%"
-                height="30%"
+                height="50%"
                 justify="center"
                 align="center"
                 direction="row"
-                color={theme.colors.bg.elements_bg}
-                //color={"yellow"}
+                //color={theme.colors.bg.elements_bg}
+                color={"yellow"}
               >
-                <Text variant="dm_sans_bold_40">Cliply </Text>
-                <CliplyLogo width={40} height={40} />
+                <Image
+                  source={require("../../../assets/illustrations/logos/header_logo_smaller.png")}
+                  style={{ width: 300, height: "100%" }}
+                />
               </Container>
             </Container>
             <Spacer position="bottom" size="large" />
@@ -83,7 +88,7 @@ export default function Welcome_To_Cliply_View({ route }) {
             <Outlined_CTA
               width={"70%"}
               height={"25%"}
-              label={globalLanguage === "EN" ? "Start" : "Comiénza"}
+              label={"Start"}
               border_radius="30px"
               border_width="2px"
               label_variant="dm_sans_bold_16"
