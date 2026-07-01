@@ -111,7 +111,7 @@ export default function Talk_and_paste_View({ navigation }) {
             width="100%"
             height={`${resultAreaHeight}px`}
             color={theme.colors.bg.elements_bg}
-            //color={"#FAD"}
+            // color={"#FAD"}
             justify="center"
             align="center"
           >
@@ -217,9 +217,18 @@ export default function Talk_and_paste_View({ navigation }) {
             )}
           </Container>
 
-          {recordingStatus === "idle" && recent_messages.length > 0 && (
-            <Navigate_to_Recent_Messages_Tile />
-          )}
+          <Container
+            width="100%"
+            height="70px"
+            color={theme.colors.bg.elements_bg}
+            // color={"red"}
+            justify="center"
+            align="center"
+          >
+            {recordingStatus === "idle" && recent_messages.length > 0 && (
+              <Navigate_to_Recent_Messages_Tile />
+            )}
+          </Container>
         </ScrollView>
       </Container>
     </SafeArea>

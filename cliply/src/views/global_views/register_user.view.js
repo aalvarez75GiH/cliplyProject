@@ -37,25 +37,6 @@ export default function Register_User({ navigation }) {
   // const hiddenInputRef = useRef(null);
   const isFocused = useIsFocused();
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     firstNameRef.current?.focus();
-  //   }, 100); // slight delay ensures focus sticks
-  //   return () => clearTimeout(timer);
-  // }, []);
-
-  // const handleBlur = () => {
-  //   setTimeout(() => inputRef.current?.focus(), 60);
-  // };
-  // const handleBlur = () => {
-  //   setTimeout(() => {
-  //     if (lastNameRef.current && !lastNameRef.current.isFocused()) {
-  //       firstNameRef.current?.focus();
-  //     }
-  //   }, 60);
-  // };
-  // Only refocus on blur if THIS screen is currently focused
-
   // Focus when screen becomes active; blur both when it loses focus
   useFocusEffect(
     useCallback(() => {
@@ -142,6 +123,7 @@ export default function Register_User({ navigation }) {
               underlineColor={"#dedede"}
               onFocus={() => setError(null)}
               style={{
+                width: "95%",
                 height: 80,
               }}
               onBlur={handleBlur}
@@ -160,6 +142,7 @@ export default function Register_User({ navigation }) {
               underlineColor={"#dedede"}
               onFocus={() => setError(null)}
               style={{
+                width: "95%",
                 height: 80,
               }}
               onBlur={handleBlur}
@@ -190,13 +173,6 @@ export default function Register_User({ navigation }) {
                 </Spacer>
               </Container>
             )}
-
-            {/*   <FormInput
-              ref={hiddenInputRef}
-              style={{ opacity: 0, height: 0 }} // keep invisible
-              // autoFocus
-              keyboardType="default"
-            /> */}
           </Container>
 
           <Squared_action_CTA_component

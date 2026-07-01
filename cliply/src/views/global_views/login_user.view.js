@@ -27,7 +27,7 @@ export default function Login_User({ route }) {
     isLoading,
     setErrorInAuthentication,
     checkAuthentication,
-    logAsyncStorage,
+    // logAsyncStorage,
     isUserDataLoading,
     globalLanguage,
     setGlobalLanguage,
@@ -41,7 +41,7 @@ export default function Login_User({ route }) {
     }, 100); // slight delay ensures focus sticks
 
     checkAuthentication();
-    logAsyncStorage();
+    // logAsyncStorage();
 
     return () => clearTimeout(timer);
   }, []);

@@ -15,8 +15,6 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import * as FileSystem from "expo-file-system";
 import FormData from "form-data";
-// import RNFS from "react-native-fs";
-// import { FFmpegKit } from "ffmpeg-kit-react-native";
 
 import { Spacer } from "../../../components/global_components/optimized.spacer.component";
 import { Recent_clips_Tile } from "../../../components/tiles/recent_clips.tile";
@@ -71,10 +69,6 @@ export const VoiceRecentClipsContextProvider = ({ children }) => {
     new_message: {},
   };
 
-  // console.log(
-  //   "TEXT CLIP DATA TO UPLOAD INITIAL STATE AT CONTEXT:",
-  //   textClip_data_to_upload
-  // );
   const resetState = () => {
     setTextClip_data_to_upload(text_clip_data_initialState);
   };

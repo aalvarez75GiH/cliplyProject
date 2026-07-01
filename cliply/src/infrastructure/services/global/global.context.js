@@ -109,7 +109,7 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   useEffect(() => {
     const checkingAuthenticationAndLoggingAsyncStorage = async () => {
       checkAuthentication();
-      logAsyncStorage();
+      // logAsyncStorage();
       logSecureStorage();
     };
 
@@ -118,19 +118,7 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   }, []);
 
   // **************** AUTHENTICATION CHECKERS ****************
-  const logAsyncStorage = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      const items = await AsyncStorage.multiGet(keys);
 
-      console.log("AsyncStorage contents:");
-      items.forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-      });
-    } catch (error) {
-      console.error("Error reading AsyncStorage:", error);
-    }
-  };
   const logSecureStorage = async () => {
     try {
       const old_pin = await SecureStore.getItemAsync("user_pin");
@@ -949,7 +937,7 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         handlePinChange,
         setIsAuthenticated,
         checkAuthentication,
-        logAsyncStorage,
+        // logAsyncStorage,
         settingPreferenceLanguage,
         signingInWithEmailAndPasswordFunction,
         renderEmailForLoginTile,

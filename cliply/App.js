@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "react-native-reanimated";
 import { ThemeProvider } from "styled-components/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   PaperProvider,
   MD3LightTheme as DefaultPaperTheme,
 } from "react-native-paper";
+import * as SecureStore from "expo-secure-store";
 
 import { Navigation } from "./src/infrastructure/navigation";
 import { theme } from "./src/infrastructure/theme";
@@ -26,6 +27,40 @@ import {
 // ***************************************************
 
 export default function App() {
+  // useEffect(() => {
+  //   const devReset = async () => {
+  //     try {
+  //       if (__DEV__) {
+  //         await AsyncStorage.clear();
+  //         await SecureStore.deleteItemAsync("user_pin");
+
+  //         console.log("🧹 Fresh install reset complete");
+  //       }
+  //     } catch (error) {
+  //       console.log("❌ Error clearing storage:", error);
+  //     }
+  //   };
+
+  //   devReset();
+  // }, []);
+
+  useEffect(() => {
+    const logAsyncStorageKeys = async () => {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        console.log("📦 AsyncStorage KEYS:", JSON.stringify(keys, null, 2));
+        const entries = await AsyncStorage.multiGet(keys);
+        entries.forEach(([key, value]) => {
+          console.log(`🧩 ${key}:`, JSON.stringify(value, null, 2));
+        });
+      } catch (e) {
+        console.log("❌ Error reading AsyncStorage keys:", e);
+      }
+    };
+
+    logAsyncStorageKeys();
+  }, []);
+
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
     DMSans_500Medium,
@@ -37,21 +72,29 @@ export default function App() {
 
   const paperTheme = {
     ...DefaultPaperTheme,
+    colors: {
+      ...DefaultPaperTheme.colors,
+      primary: theme.colors.ui.primary,
+      onSurface: theme.colors.text.primary,
+      onSurfaceVariant: theme.colors.text.secondary,
+      background: "#ffffff",
+    },
   };
-
   return (
-    <ThemeProvider theme={theme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <GlobalContextProvider>
-          <TextClipsContextProvider>
-            <VoiceRecentClipsContextProvider>
-              <Type_Message_ContextProvider>
-                <Navigation />
-              </Type_Message_ContextProvider>
-            </VoiceRecentClipsContextProvider>
-          </TextClipsContextProvider>
-        </GlobalContextProvider>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+    <PaperProvider theme={paperTheme}>
+      <ThemeProvider theme={theme}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <GlobalContextProvider>
+            <TextClipsContextProvider>
+              <VoiceRecentClipsContextProvider>
+                <Type_Message_ContextProvider>
+                  <Navigation />
+                </Type_Message_ContextProvider>
+              </VoiceRecentClipsContextProvider>
+            </TextClipsContextProvider>
+          </GlobalContextProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </PaperProvider>
   );
 }
