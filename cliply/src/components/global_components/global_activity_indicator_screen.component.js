@@ -10,7 +10,7 @@ import {
 } from "../global_components/containers/general_containers.js";
 import { Squared_action_CTA_component } from "../calls_to_action/squared_action.cta.js";
 
-export const Global_activity_indicator = ({ action, caption = "Wait..." }) => {
+export const Global_activity_indicator = ({ caption = "Wait..." }) => {
   return (
     <>
       <Container

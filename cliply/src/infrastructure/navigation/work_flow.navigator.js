@@ -5,7 +5,7 @@ import Menu_Screen from "../../views/work/menu.view";
 import Quickies_Text_Clips_View from "../../views/work/quickies_text_clips.view";
 import Operations_Work_Flow_Area from "../../views/work/operations_work_flow_area";
 
-import Text_Clips_by_Status_View from "../../views/work/text_clips_by_status.view";
+import Messages_by_Status_View from "../../views/work/messages_by_status.view";
 import Quick_Voice_Text_Clip from "../../views/work/status_views/quick_voice_text_clip";
 import Multiple_Emails_LoginIn_View from "../../views/global_views/multiple_emails_login.view";
 import Entering_New_PIN_View from "../../views/global_views/entering_new_pin.view";
@@ -29,8 +29,8 @@ export const Work_Flow_Navigator = () => {
 
       <WorkFlowStack.Screen name="Menu_View" component={Menu_Screen} />
       <WorkFlowStack.Screen
-        name="Text_Clips_by_Status_View"
-        component={Text_Clips_by_Status_View}
+        name="Messages_by_Status_View"
+        component={Messages_by_Status_View}
       />
 
       <WorkFlowStack.Screen

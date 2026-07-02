@@ -15,7 +15,7 @@ import { Outlined_CTA } from "../calls_to_action/outlined.cta.js";
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
-export const Restart_flow_operation_status_process_header = ({ snackbar }) => {
+export const Messages_By_Status_header = ({ snackbar }) => {
   const { setSelectedItemId } = useContext(TextClipsContext);
 
   const { globalLanguage } = useContext(GlobalContext);

@@ -70,7 +70,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 user_id: user_id,
                 operation_id: process.env.OPERATION_ID_FOOD_DELIVERY,
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "food_delivery",
                 status_name: "heading_to_pickup_shop",
                 specificTextClipData,
@@ -98,7 +98,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 operation_name: "food_delivery",
                 status_name: "picking_up_shopping",
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "food_delivery",
                 status_name: "picking_up_shopping",
                 specificTextClipData, // Pass the data directly to the next screen
@@ -126,7 +126,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 operation_name: "food_delivery",
                 status_name: "heading_to_drop_off",
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "food_delivery",
                 specificTextClipData, // Pass the data directly to the next screen
                 status_name: "heading_to_drop_off",
@@ -169,7 +169,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 operation_name: "ride_share",
                 status_name: "heading_to_passenger",
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "ride_share",
                 specificTextClipData, // Pass the data directly to the next screen
                 status_name: "heading_to_passenger",
@@ -194,7 +194,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 operation_name: "ride_share",
                 status_name: "close_to_passenger",
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "ride_share",
                 specificTextClipData, // Pass the data directly to the next screen
                 status_name: "close_to_passenger",
@@ -220,7 +220,7 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
                 operation_name: "ride_share",
                 status_name: "at_passenger_location",
               };
-              navigation.navigate("Text_Clips_by_Status_View", {
+              navigation.navigate("Messages_by_Status_View", {
                 operation_name: "ride_share",
                 specificTextClipData, // Pass the data directly to the next screen
                 status_name: "at_passenger_location",

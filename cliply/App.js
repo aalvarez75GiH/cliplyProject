@@ -15,6 +15,7 @@ import { VoiceRecentClipsContextProvider } from "./src/infrastructure/services/v
 import { TextClipsContextProvider } from "./src/infrastructure/services/home/text_clips.context";
 import { Type_Message_ContextProvider } from "./src/infrastructure/services/type_message/type_message.context";
 import { GlobalContextProvider } from "./src/infrastructure/services/global/global.context";
+import { TalkAndPasteContextProvider } from "./src/infrastructure/services/talk_and_paste/talk_and_paste.context";
 // ***************************************************
 
 import {
@@ -86,11 +87,13 @@ export default function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <GlobalContextProvider>
             <TextClipsContextProvider>
-              <VoiceRecentClipsContextProvider>
-                <Type_Message_ContextProvider>
-                  <Navigation />
-                </Type_Message_ContextProvider>
-              </VoiceRecentClipsContextProvider>
+              <TalkAndPasteContextProvider>
+                <VoiceRecentClipsContextProvider>
+                  <Type_Message_ContextProvider>
+                    <Navigation />
+                  </Type_Message_ContextProvider>
+                </VoiceRecentClipsContextProvider>
+              </TalkAndPasteContextProvider>
             </TextClipsContextProvider>
           </GlobalContextProvider>
         </GestureHandlerRootView>

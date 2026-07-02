@@ -95,6 +95,10 @@ export const Talk_And_Recording_Component = ({
               <Animated_Voice_Indicator recordingStatus={recordingStatus} />
             </Container>
             <Transcribe_CTA
+              width="55px"
+              height="55px"
+              icon_width="25px"
+              icon_height="25px"
               action={action3}
               recordingStatus={recordingStatus}
             />

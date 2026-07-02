@@ -7,7 +7,7 @@ import { Container } from "../../components/global_components/containers/general
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { quickies_food_delivery } from "../../infrastructure/local_data/clips_by_operations.data.js";
 import { quickies_ride_share } from "../../infrastructure/local_data/clips_by_operations.data.js";
-import { Restart_flow_operation_status_process_header } from "../../components/headers/restart_flow_operation_status_process.header.js";
+import { Messages_By_Status_header } from "../../components/headers/messages_by_status.header.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
 
@@ -44,7 +44,7 @@ export default function Quickies_Text_Clips_View({ navigation, route }) {
         // color={theme.colors.bg.elements_bg}
         color={theme.colors.bg.screens_bg}
       >
-        <Restart_flow_operation_status_process_header />
+        <Messages_By_Status_header />
         {/* ******************* FOOD DELIVERY ***************************** */}
         {operation === "food_delivery" &&
           status === "heading_to_pickup_shop" && (

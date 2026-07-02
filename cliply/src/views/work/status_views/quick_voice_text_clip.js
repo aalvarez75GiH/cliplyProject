@@ -17,7 +17,9 @@ import Main_mic_icon from "../../../../assets/my-icons/micIcon.svg";
 import { Squared_action_CTA_component } from "../../../components/calls_to_action/squared_action.cta";
 import { Loading_Spinner_area } from "../../../components/global_components/global_loading_spinner_area.component";
 import { Transcripted_Clips_Tile } from "../../../components/tiles/transcripted_clip.tile";
+import { Transcribed_Message_Tile } from "../../../components/tiles/transcribed_message_tile/transcribed_message.tile";
 import StopRecordingIcon from "../../../../assets/my-icons/stop_icon.svg";
+import { Animated_Voice_Indicator } from "../../../components/others/animated_voice_indicator.component";
 
 import { VoiceRecentClipsContext } from "../../../infrastructure/services/voice_recents/voice_recent.context";
 import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context";
@@ -42,7 +44,7 @@ export default function Quick_Voice_Text_Clip() {
       <Container
         width="100%"
         height={"100%"}
-        color={theme.colors.bg.screens_bg}
+        color={theme.colors.bg.elements_bg}
         justify="center"
         align="center"
       >
@@ -61,7 +63,7 @@ export default function Quick_Voice_Text_Clip() {
               <Container
                 width="100%"
                 height={"40%"}
-                color={theme.colors.bg.screens_bg}
+                color={theme.colors.bg.elements_bg}
                 justify="center"
                 align="center"
                 // color={"blue"}
@@ -69,7 +71,7 @@ export default function Quick_Voice_Text_Clip() {
               <Action_Container
                 width="100%"
                 height={"15%"}
-                // color={"lightblue"}
+                //color={"lightblue"}
                 color={theme.colors.bg.screens_bg}
                 justify="center"
                 align="center"
@@ -80,29 +82,51 @@ export default function Quick_Voice_Text_Clip() {
                 border_radius_bottom_left={100}
                 border_radius_bottom_right={100}
               >
-                <StopRecordingIcon
-                  width="25px"
-                  height="25px"
-                  fill={theme.colors.ui.error}
-                  style={{
-                    borderRadius: 100,
-                  }}
-                />
+                <Container
+                  width="10%"
+                  height={"35%"}
+                  //color={"lightgreen"}
+                  color={theme.colors.bg.screens_bg}
+                  justify="center"
+                  align="center"
+                  direction="row"
+                  // onPress={() => stopRecording()}
+                >
+                  <StopRecordingIcon
+                    width="25px"
+                    height="25px"
+                    fill={theme.colors.ui.error}
+                    style={{
+                      borderRadius: 100,
+                    }}
+                  />
+                </Container>
+                <Container
+                  width="60%"
+                  height={"35%"}
+                  //color={"lightgreen"}
+                  color={theme.colors.bg.screens_bg}
+                  justify="center"
+                  align="center"
+                  direction="row"
+                >
+                  <Animated_Voice_Indicator recordingStatus={recordingStatus} />
+                </Container>
 
-                <Sound_Wave_Component width={"50%"} />
+                {/* <Sound_Wave_Component width={"50%"} /> */}
               </Action_Container>
               <Container
                 width="100%"
                 height={"12%"}
-                color={theme.colors.bg.screens_bg}
+                //color={theme.colors.bg.screens_bg}
                 justify="flex-start"
                 align="center"
-                //color={"red"}
+                color={"transparent"}
               ></Container>
               <Container
                 width="100%"
                 height={"25%"}
-                color={theme.colors.bg.screens_bg}
+                color={theme.colors.bg.elements_bg5tr8}
                 justify="flex-start"
                 align="center"
                 //color={"blue"}
@@ -198,7 +222,7 @@ export default function Quick_Voice_Text_Clip() {
                 align="center"
                 justify="flex-end"
               >
-                <Transcripted_Clips_Tile
+                {/* <Transcripted_Clips_Tile
                   width="95%"
                   height="65%"
                   message_en={response.body.en}
@@ -207,6 +231,14 @@ export default function Quick_Voice_Text_Clip() {
                   // height="60%"
                   globalLanguage={globalLanguage}
                   route_name={route.name}
+                /> */}
+                <Transcribed_Message_Tile
+                  width="95%"
+                  message_en={response?.body?.en}
+                  message_es={response?.body?.es}
+                  globalLanguage={globalLanguage}
+                  route_name={route.name}
+                  onAction={() => setResponse(null)}
                 />
               </Container>
               <Container

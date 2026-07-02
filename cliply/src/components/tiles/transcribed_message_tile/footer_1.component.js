@@ -24,12 +24,13 @@ export const Footer_1 = ({
   const navigation = useNavigation();
   return (
     <Container
-      width={Platform.OS === "ios" ? "410px" : "100%"}
+      width={Platform.OS === "ios" ? "100%" : "100%"}
       height="30%"
       align="center"
       justify="center"
       direction="row"
       color={theme.colors.bg.elements_bg}
+      //   color={"red"}
     >
       <Container
         width="50%"
