@@ -133,7 +133,14 @@ export const Talk_And_Recording_Component = ({
               </Text>
             </Container>
 
-            <Transcribe_CTA action={null} recordingStatus={recordingStatus} />
+            <Transcribe_CTA
+              width="55px"
+              height="55px"
+              icon_width="25px"
+              icon_height="25px"
+              recordingStatus={recordingStatus}
+              action={null}
+            />
           </>
         )}
       </Container>

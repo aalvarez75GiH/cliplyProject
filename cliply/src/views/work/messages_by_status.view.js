@@ -155,12 +155,10 @@ export default function Messages_by_Status_View({ route }) {
           align="center"
         >
           <Quick_Voice_Transcription_header
-            snackbar={snackbar}
             recordingStatus={recordingStatus}
             startRecording={startRecording}
             stopRecording={stopRecording}
             startTranscription={startTranscription}
-            response={response}
             setResponse={setResponse}
             action={() => setResponse(null)}
           />
@@ -192,7 +190,6 @@ export default function Messages_by_Status_View({ route }) {
         >
           <Quick_Voice_Transcription_header
             snackbar={snackbar}
-            //   recordingStatus={"listening"}
             recordingStatus={recordingStatus}
             startRecording={startRecording}
             stopRecording={stopRecording}
@@ -200,10 +197,8 @@ export default function Messages_by_Status_View({ route }) {
             response={response}
             setResponse={setResponse}
             action={() => {
-              // setNextStep(nextStepInitialState);
               navigation.popToTop("Home_View");
             }}
-            // action={() => setResponse(null)}
           />
 
           <View style={{ flex: 1, width: "100%", position: "relative" }}>

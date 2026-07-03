@@ -59,7 +59,7 @@ export const Operations_Status_Step_Component = ({
           align="center"
           direction="column"
           onPress={() =>
-            navigation.navigate("Quickies_Text_Clips_View", {
+            navigation.navigate("Quickies_Messages_View", {
               operation: operation_name,
               status: status_name,
             })

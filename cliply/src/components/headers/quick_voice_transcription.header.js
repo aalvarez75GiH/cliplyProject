@@ -23,7 +23,6 @@ export const Quick_Voice_Transcription_header = ({
   startRecording,
   stopRecording,
   startTranscription,
-  response,
   setResponse,
   action,
 }) => {
@@ -32,13 +31,7 @@ export const Quick_Voice_Transcription_header = ({
 
   const { globalLanguage } = useContext(GlobalContext);
 
-  const navigation = useNavigation();
-
-  // const action1={() => {
-  //   setResponse(null);
-  //   startRecording();
-  // }}
-  // const action2={() => stopRecording()}
+  // const navigation = useNavigation();
 
   return recordingStatus === "listening" ? (
     <Container

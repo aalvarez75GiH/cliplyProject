@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Menu_Screen from "../../views/work/menu.view";
-import Quickies_Text_Clips_View from "../../views/work/quickies_text_clips.view";
+import Quickies_Messages_View from "../../views/work/quickies_messages.view";
 import Operations_Work_Flow_Area from "../../views/work/operations_work_flow_area";
 
 import Messages_by_Status_View from "../../views/work/messages_by_status.view";
@@ -25,7 +25,6 @@ export const Work_Flow_Navigator = () => {
         name="Home_View"
         component={Operations_Work_Flow_Area}
       />
-      {/* <WorkFlowStack.Screen name="Home_View" component={Work_Flow_View} /> */}
 
       <WorkFlowStack.Screen name="Menu_View" component={Menu_Screen} />
       <WorkFlowStack.Screen
@@ -34,9 +33,10 @@ export const Work_Flow_Navigator = () => {
       />
 
       <WorkFlowStack.Screen
-        name="Quickies_Text_Clips_View"
-        component={Quickies_Text_Clips_View}
+        name="Quickies_Messages_View"
+        component={Quickies_Messages_View}
       />
+
       <WorkFlowStack.Screen
         name="Quick_Voice_Text_Clip"
         component={Quick_Voice_Text_Clip}
