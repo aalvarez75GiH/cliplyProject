@@ -1,14 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import { theme } from "../../../infrastructure/theme/index";
-import {
-  Container,
-  Action_Container,
-} from "../../../components/global_components/containers/general_containers";
-// import { Mic_CTA_component } from "./main_mic_cta.component";
+import { Container } from "../../../components/global_components/containers/general_containers";
 import { Spacer } from "../../../components/global_components/optimized.spacer.component";
-import StopIcon from "../../../../assets/my-icons/stop_icon.svg";
-import RightArrow from "../../../../assets/my-icons/arrow_next_icon.svg";
 import { Animated_Voice_Indicator } from "../../../components/others/animated_voice_indicator.component.js";
 import { Text } from "../../../infrastructure/typography/text.component.js";
 import { Mic_CTA } from "../../../components/calls_to_action/mic.cta.js";

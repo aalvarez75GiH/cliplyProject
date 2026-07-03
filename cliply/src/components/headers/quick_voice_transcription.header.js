@@ -48,8 +48,8 @@ export const Quick_Voice_Transcription_header = ({
           recordingStatus={recordingStatus}
           width="40px"
           height="40px"
-          icon_width="25px"
-          icon_height="25px"
+          icon_width="20px"
+          icon_height="20px"
         />
 
         <Container
@@ -70,8 +70,8 @@ export const Quick_Voice_Transcription_header = ({
         <Transcribe_CTA
           width="40px"
           height="40px"
-          icon_width="20px"
-          icon_height="20px"
+          icon_width="15px"
+          icon_height="15px"
           action={() => startTranscription()}
           recordingStatus={recordingStatus}
         />
