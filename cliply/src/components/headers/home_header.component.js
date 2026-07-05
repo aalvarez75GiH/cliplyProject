@@ -41,7 +41,7 @@ export const HomeHeader = ({ action }) => {
       >
         <Spacer position="top" size="medium" />
         <Image
-          source={require("../../../assets/illustrations/logos/header_logo_smaller.png")}
+          source={require("../../../assets/illustrations/logos/new_name_logo_small.png")}
           style={{ width: 100, height: 65 }}
         />
       </Container>
