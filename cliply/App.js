@@ -29,20 +29,22 @@ import {
 
 export default function App() {
   // useEffect(() => {
-  //   const devReset = async () => {
+  //   const resetStorage = async () => {
   //     try {
-  //       if (__DEV__) {
-  //         await AsyncStorage.clear();
-  //         await SecureStore.deleteItemAsync("user_pin");
+  //       await AsyncStorage.clear();
 
-  //         console.log("🧹 Fresh install reset complete");
-  //       }
+  //       await SecureStore.deleteItemAsync("user_pin");
+  //       await SecureStore.deleteItemAsync("activeEmail");
+  //       await SecureStore.deleteItemAsync("isAuthenticated");
+  //       await SecureStore.deleteItemAsync("userEmails");
+
+  //       console.log("🧹 Fresh install reset complete");
   //     } catch (error) {
   //       console.log("❌ Error clearing storage:", error);
   //     }
   //   };
 
-  //   devReset();
+  //   resetStorage();
   // }, []);
 
   useEffect(() => {

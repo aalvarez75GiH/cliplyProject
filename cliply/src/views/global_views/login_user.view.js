@@ -150,6 +150,9 @@ export default function Login_User({ route }) {
                   digitColor="#000000"
                   size={18}
                 />
+                <Text variant="dm_sans_bold_12">
+                  Build check: Clypli preview 2026-07-06 4:00am
+                </Text>
               </Container>
               <Container
                 width="100%"
