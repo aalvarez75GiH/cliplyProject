@@ -15,6 +15,7 @@ import { theme } from "../../infrastructure/theme/index.js";
 import { Not_Registered_Sign_Up_CTA } from "../../components/calls_to_action/not_registered_sign_up.cta.js";
 import { Outlined_CTA } from "../../components/calls_to_action/outlined.cta.js";
 import { Whole_Screen_Loading_Spinner_Component } from "../../components/global_components/whole_screen_loading_spinner.component.js";
+import { FormInput } from "../../components/inputs/form.input.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
@@ -31,9 +32,16 @@ export default function Login_User({ route }) {
     isUserDataLoading,
     globalLanguage,
     setGlobalLanguage,
+    hasStoredEmail,
+    storedEmail,
+    email,
+    setEmail,
+    setEmailError,
+    emailError,
   } = useContext(GlobalContext);
   const navigation = useNavigation();
   const inputRef = useRef(null);
+  const emailInputRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -97,6 +105,7 @@ export default function Login_User({ route }) {
               <Spacer position="bottom" size="large" />
               <Spacer position="bottom" size="large" />
             </Container>
+            <Spacer position="top" size="large" />
 
             <Container
               width="80%"
@@ -104,8 +113,39 @@ export default function Login_User({ route }) {
               justify="center"
               align="center"
               color={theme.colors.bg.elements_bg}
-              //color={"yellow"}
+              // color={"yellow"}
             >
+              {/* {!hasStoredEmail && (
+                <>
+                  <Spacer position="top" size="extraLarge" />
+                  <FormInput
+                    ref={emailInputRef}
+                    label={
+                      globalLanguage === "EN" ? "Email" : "Correo eléctronico"
+                    }
+                    value={email}
+                    textContentType={"emailAddress"}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    onChangeText={(value) => {
+                      setEmailError(null);
+                      setEmail(value);
+                    }}
+                    // theme={{ colors: { primary: "#6200ee" } }}
+                    theme={{ colors: { primary: theme.colors.brand.primary } }}
+                    underlineColor={"#dedede"}
+                    onFocus={() => {
+                      if (emailError) {
+                        setEmailError(null);
+                      }
+                    }}
+                    style={{
+                      height: 80,
+                      width: "90%",
+                    }}
+                  />
+                </>
+              )} */}
               <Container
                 width="100%"
                 height="50%"
@@ -119,9 +159,9 @@ export default function Login_User({ route }) {
                   value={pin}
                   onChange={(newPin) => {
                     setPin(newPin); // Update the pin state
-                    if (newPin.length === 6) {
-                      loginUser(newPin); // Pass the updated pin directly
-                    }
+                    // if (newPin.length === 6) {
+                    //   loginUser(newPin); // Pass the updated pin directly
+                    // }
                     if (newPin === "") {
                       setErrorInAuthentication(null); // Set error when PIN is cleared
                     } else {
@@ -130,7 +170,11 @@ export default function Login_User({ route }) {
                   }}
                   onFulfill={async (pin) => {
                     try {
-                      const res = await loginUser(pin);
+                      // const res = await loginUser(pin);
+                      const res = await loginUser(
+                        pin,
+                        hasStoredEmail ? storedEmail : email
+                      );
                       if (res?.ok && res?.next) {
                         console.log("DATA TO PASS TO NEXT VIEW:", res.data);
                         navigation.navigate(res.next, {
@@ -150,9 +194,9 @@ export default function Login_User({ route }) {
                   digitColor="#000000"
                   size={18}
                 />
-                <Text variant="dm_sans_bold_12">
+                {/* <Text variant="dm_sans_bold_12">
                   Build check: Clypli preview 2026-07-06 4:00am
-                </Text>
+                </Text> */}
               </Container>
               <Container
                 width="100%"

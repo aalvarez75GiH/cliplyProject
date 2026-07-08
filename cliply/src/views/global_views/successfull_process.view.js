@@ -119,7 +119,8 @@ export default function Successful_Process_View({ route }) {
             setEmail("");
             setFirst_name("");
             setLast_name("");
-            navigation.popToTop();
+            navigation.navigate("Login_user_View");
+            // navigation.popToTop();
           }}
         />
         <Spacer position="top" size="large" />

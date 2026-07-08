@@ -32,11 +32,7 @@ export default function App() {
   //   const resetStorage = async () => {
   //     try {
   //       await AsyncStorage.clear();
-
   //       await SecureStore.deleteItemAsync("user_pin");
-  //       await SecureStore.deleteItemAsync("activeEmail");
-  //       await SecureStore.deleteItemAsync("isAuthenticated");
-  //       await SecureStore.deleteItemAsync("userEmails");
 
   //       console.log("🧹 Fresh install reset complete");
   //     } catch (error) {

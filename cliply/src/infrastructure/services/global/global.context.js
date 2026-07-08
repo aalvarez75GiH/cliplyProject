@@ -93,6 +93,9 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   const [userData, setUserData] = useState(null);
   const [userDataError, setUserDataError] = useState(null);
   const [deletedStatus, setDeletedStatus] = useState(false);
+  const [hasStoredEmail, setHasStoredEmail] = useState(false);
+  const [storedEmail, setStoredEmail] = useState(null);
+  const [authHasBeenChecked, setAuthHasBeenChecked] = useState(false);
 
   const [emailError, setEmailError] = useState(null);
   const [errorInAuthentication, setErrorInAuthentication] = useState(null);
@@ -147,61 +150,99 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     }
   };
 
-  const checkAuthentication = async () => {
-    setIsLoading(true); // General loading state for the authentication process
+  const clearLocalAuth = async ({ forgetEmails = false } = {}) => {
+    await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+    await AsyncStorage.removeItem(UID_KEY);
+    await AsyncStorage.removeItem(ACTIVE_EMAIL);
+    await AsyncStorage.removeItem(PREFERENCE_LANGUAGE_KEY);
+    await SecureStore.deleteItemAsync("user_pin");
+
+    if (forgetEmails) {
+      await AsyncStorage.removeItem(USER_EMAIL_KEY);
+      setStoredEmail(null);
+      setHasStoredEmail(false);
+    } else {
+      await getStoredEmailState();
+    }
+
+    setIsUserDataLoading(false);
+    setIsAuthenticated(false);
+    setUserToDB(null);
+    setUserData(null);
+    setPin("");
+    setEmail("");
+    setFirst_name("");
+    setLast_name("");
+  };
+
+  const getStoredEmailState = async () => {
+    const activeEmail = await AsyncStorage.getItem("activeEmail");
+    const userEmailsRaw = await AsyncStorage.getItem("userEmails");
+
+    let userEmails = [];
+
     try {
-      const isAuthenticated = await AsyncStorage.getItem("isAuthenticated");
-
-      if (isAuthenticated === "true") {
-        const email = await AsyncStorage.getItem(ACTIVE_EMAIL);
-        // setActiveEmail(email);
-        setIsAuthenticated(true);
-        console.log("USER IS AUTHENTICATED:", isAuthenticated);
-
-        const uid = await AsyncStorage.getItem("uid");
-        if (uid) {
-          // Only set isUserDataLoading(true) when user data needs to be fetched
-          setIsUserDataLoading(true);
-
-          const dataFromBackend = await get_user_by_uid_and_user_data_Request(
-            uid
-          );
-
-          setUserToDB({
-            first_name: dataFromBackend.data.first_name,
-            last_name: dataFromBackend.data.last_name,
-            email: dataFromBackend.data.email,
-            display_name: dataFromBackend.data.display_name,
-            isFirstTime: dataFromBackend.data.isFirstTime,
-            role: dataFromBackend.data.role,
-            uid: dataFromBackend.data.uid,
-            updatedAt: dataFromBackend.data.updatedAt,
-            createdAt: dataFromBackend.data.createdAt,
-            user_id: dataFromBackend.data.user_id,
-            preference_language: dataFromBackend.data.preference_language,
-          });
-
-          setUserData(dataFromBackend.data.user_data);
-
-          // Set isUserDataLoading(false) only after user data is loaded
-          if (dataFromBackend.data.user_data) {
-            setIsUserDataLoading(false);
-            // console.log(
-            //   "USER DATA LOADED AT AUTH CHECK:",
-            //   JSON.stringify(dataFromBackend.data.user_data, null, 2)
-            // );
-          }
-
-          setGlobalLanguage(dataFromBackend.data.preference_language);
-        }
-      } else {
-        console.log("USER NOT AUTHENTICATED:", isAuthenticated);
-        setIsAuthenticated(false);
-      }
+      userEmails = userEmailsRaw ? JSON.parse(userEmailsRaw) : [];
     } catch (error) {
-      console.error("Error checking authentication:", error);
+      userEmails = [];
+    }
+
+    const emailToUse = activeEmail || userEmails[0] || null;
+
+    setStoredEmail(emailToUse);
+    setHasStoredEmail(Boolean(emailToUse));
+
+    return { activeEmail, userEmails, emailToUse };
+  };
+
+  const checkAuthentication = async () => {
+    setIsLoading(true);
+    setIsUserDataLoading(false);
+
+    try {
+      await getStoredEmailState();
+
+      const storedAuth = await AsyncStorage.getItem("isAuthenticated");
+      const uid = await AsyncStorage.getItem("uid");
+
+      if (storedAuth !== "true" || !uid) {
+        await clearLocalAuth();
+        return;
+      }
+
+      setIsUserDataLoading(true);
+
+      const dataFromBackend = await get_user_by_uid_and_user_data_Request(uid);
+
+      if (!dataFromBackend?.data?.uid) {
+        await clearLocalAuth({ forgetEmails: false });
+        return;
+      }
+
+      setUserToDB({
+        first_name: dataFromBackend.data.first_name,
+        last_name: dataFromBackend.data.last_name,
+        email: dataFromBackend.data.email,
+        display_name: dataFromBackend.data.display_name,
+        isFirstTime: dataFromBackend.data.isFirstTime,
+        role: dataFromBackend.data.role,
+        uid: dataFromBackend.data.uid,
+        updatedAt: dataFromBackend.data.updatedAt,
+        createdAt: dataFromBackend.data.createdAt,
+        user_id: dataFromBackend.data.user_id,
+        preference_language: dataFromBackend.data.preference_language,
+      });
+
+      setUserData(dataFromBackend.data.user_data || null);
+      setGlobalLanguage(dataFromBackend.data.preference_language || "EN");
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.log("Error checking authentication:", error.message);
+      await clearLocalAuth();
     } finally {
-      setIsLoading(false); // Always stop the general loading state
+      setIsLoading(false);
+      setIsUserDataLoading(false);
+      setAuthHasBeenChecked(true);
     }
   };
   // ****************** ENCRYPTION HELPERS **********************
@@ -392,35 +433,40 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     }
   };
 
-  const loginUser = async (pin) => {
+  const loginUser = async (pin, emailFromInput = null) => {
     console.log("PIN BEFORE LOGIN:", pin);
+
     const PIN_LENGTH = 6;
     setIsLoading(true);
-    if (pin.length === PIN_LENGTH) {
-      console.log("PIN BEFORE LOGIN:", pin);
-      let email;
-      // const email = await AsyncStorage.getItem("userEmail");
+    // setIsUserDataLoading(true);
+
+    try {
+      if (pin.length !== PIN_LENGTH) return;
+
+      const cleanEmail = emailFromInput?.trim().toLowerCase();
+
+      if (cleanEmail) {
+        const res = await signingInWithEmailAndPasswordFunction(
+          cleanEmail,
+          pin
+        );
+
+        if (res?.success || res?.ok) {
+          await addEmailToAsyncStorage(cleanEmail);
+        }
+
+        return res;
+      }
+
       const Emails_array_checked =
         await checking_for_array_of_multiple_emails();
 
       if (Emails_array_checked.length === 1) {
-        console.log("EXISTING EMAILS:", Emails_array_checked[0]);
-        email = Emails_array_checked[0];
-        const res = await signingInWithEmailAndPasswordFunction(email, pin);
-        if (res?.ok && res?.next) {
-          console.log("RES DATA ON LOGIN USER:", res.data);
-          setIsLoading(false);
-          return res;
-        }
-        // setIsLoading(false);
-        if (res?.success) {
-          setIsLoading(false);
-        }
-        return;
+        const email = Emails_array_checked[0];
+        return await signingInWithEmailAndPasswordFunction(email, pin);
       }
 
       if (Emails_array_checked.length > 1) {
-        setIsLoading(false);
         return {
           ok: true,
           next: "Multiple_Emails_LoginIn_View",
@@ -428,12 +474,11 @@ export const GlobalContextProvider = ({ children, navigation }) => {
           action_type: "login",
         };
       }
-      if (Emails_array_checked.length === 0) {
-        setIsLoading(false);
-        setErrorInAuthentication(
-          "You don't have an account with us, please register first"
-        );
-      }
+
+      setErrorInAuthentication("Please enter your email");
+    } finally {
+      // setIsUserDataLoading(true);
+      setIsLoading(false);
     }
   };
 
@@ -461,34 +506,14 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   };
 
   // ****************** LOGOUT USER LOGIC ************************
-
   const loggingOutUser = async () => {
     setIsLoading(true);
     try {
-      // Simulate a delay (if needed)
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Perform logout operations
-      await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
-      await AsyncStorage.removeItem(UID_KEY);
-      await AsyncStorage.setItem(ACTIVE_EMAIL, "");
-      await AsyncStorage.setItem(PREFERENCE_LANGUAGE_KEY, "");
-      // await AsyncStorage.removeItem("userEmails");
-      await SecureStore.deleteItemAsync("user_pin");
-      // await AsyncStorage.removeItem(
-      //   "firebase:authUser:AIzaSyCnf4GGhTXxqMersW4ufM5zayh3BRYLyoM:[DEFAULT]"
-      // );
-
-      setIsUserDataLoading(false);
-      setIsAuthenticated(false);
-      setPin("");
-      setEmail("");
-      setFirst_name("");
-      setLast_name("");
+      await clearLocalAuth({ forgetEmails: false });
     } catch (error) {
       console.error("Logout error:", error.message);
     } finally {
-      // Ensure loading state is updated
       setIsLoading(false);
     }
   };
@@ -966,6 +991,9 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         showSuccessSnackbar,
         snackbar,
         hideSnackbar,
+        hasStoredEmail,
+        storedEmail,
+        authHasBeenChecked,
       }}
     >
       {children}
