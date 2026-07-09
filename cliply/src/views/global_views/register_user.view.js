@@ -4,24 +4,18 @@ import React, {
   useRef,
   useEffect,
   useCallback,
-  useHea,
 } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  InteractionManager,
-} from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
 import { FormInput } from "../../components/inputs/form.input.js";
 import { Container } from "../../components/global_components/containers/general_containers.js";
-import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
 import { SafeArea } from "../../components/global_components/safe-area.component.js";
 import { theme } from "../../infrastructure/theme/index.js";
 import { ExitHeader } from "../../components/headers/exit_header.component.js";
-import { New_FormInput } from "../../components/inputs/new_form_input.js";
+import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
 
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
@@ -31,10 +25,8 @@ export default function Register_User({ navigation }) {
   const { first_name, setFirst_name, last_name, setLast_name, globalLanguage } =
     useContext(GlobalContext);
 
-  // const inputRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
-  // const hiddenInputRef = useRef(null);
   const isFocused = useIsFocused();
 
   // Focus when screen becomes active; blur both when it loses focus
@@ -174,23 +166,29 @@ export default function Register_User({ navigation }) {
               </Container>
             )}
           </Container>
-
-          <Squared_action_CTA_component
-            label="Next"
-            action={() => {
-              if (!first_name.length || !last_name.length) {
-                setError("Please fill in first name & last name to continue");
-                return;
-              }
-              navigation.navigate("Register_User_View_2");
-            }}
-            icon_visible={false}
+          <Container
+            width="100%"
             height="12%"
-          />
-          <Spacer position="top" size="small" />
-          <Spacer position="top" size="small" />
-          <Spacer position="top" size="small" />
-          <Spacer position="top" size="small" />
+            justify="flex-start"
+            align="center"
+            color={theme.colors.bg.elements_bg}
+          >
+            <Regular_CTA
+              width="95%"
+              height="80%"
+              caption="Next"
+              caption_variant="dm_sans_bold_16_white"
+              color="#000000"
+              action={() => {
+                if (!first_name.length || !last_name.length) {
+                  setError("Please fill in first name & last name to continue");
+                  return;
+                }
+                navigation.navigate("Register_User_View_2");
+              }}
+            />
+          </Container>
+          <Spacer position="bottom" size="large" />
         </Container>
       </KeyboardAvoidingView>
     </SafeArea>

@@ -73,14 +73,7 @@ export default function Initial_Sign_Up_View({ navigation }) {
         >
           <Spacer position="top" size="large" />
           <Spacer position="top" size="large" />
-          {/* <ExitHeader
-            action={() => {
-              setFirst_name("");
-              setLast_name("");
-              setError(null);
-              navigation.goBack();
-            }}
-          /> */}
+
           <Container
             width="100%"
             height="12%"

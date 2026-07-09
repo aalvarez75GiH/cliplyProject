@@ -112,12 +112,10 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   useEffect(() => {
     const checkingAuthenticationAndLoggingAsyncStorage = async () => {
       checkAuthentication();
-      // logAsyncStorage();
       logSecureStorage();
     };
 
     checkingAuthenticationAndLoggingAsyncStorage();
-    // retrievePin();
   }, []);
 
   // **************** AUTHENTICATION CHECKERS ****************
@@ -265,18 +263,17 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   const togglingGlobalLanguage = async () => {
     setLanguageIsLoading(true);
     try {
-      const language_chosen = globalLanguage === "EN" ? "ES" : "EN";
+      const nextLanguage = globalLanguage === "EN" ? "ES" : "EN";
       const toggling_language_at_DB_response =
-        await put_preference_language_Request(
-          userToDB.user_id,
-          language_chosen
-        );
+        // Persisting at user DB
+        await put_preference_language_Request(userToDB.user_id, nextLanguage);
 
       const { status, user_updated } = toggling_language_at_DB_response.data;
       const { preference_language } = user_updated;
 
       if (status === "200") {
         setGlobalLanguage(preference_language);
+        // await i18n.changeLanguage(nextLanguage);
         await AsyncStorage.setItem(
           PREFERENCE_LANGUAGE_KEY,
           preference_language
@@ -285,6 +282,14 @@ export const GlobalContextProvider = ({ children, navigation }) => {
           ok: true,
         };
       } else {
+        console.error(
+          "Failed to update preference language in DB:",
+          toggling_language_at_DB_response
+        );
+        return {
+          ok: false,
+          error: "Failed to update preference language in DB",
+        };
       }
     } catch (error) {
       console.error("Error toggling language:", error);
@@ -584,36 +589,16 @@ export const GlobalContextProvider = ({ children, navigation }) => {
   const settingPreferenceLanguage = async (data_to_change) => {
     const language_chosen = data_to_change.language;
     const user_id = data_to_change.user_id;
-    console.log("LANGUAGE CHOOSEN:", language_chosen);
-    // console.log("USER ID TO UPDATE PREFERENCE LANGUAGE:", user_id);
     setIsLoading(true);
-    // setTimeout(async () => {
     try {
       const set_preference_language_response =
         await put_preference_language_Request(user_id, language_chosen);
 
       if (set_preference_language_response.status === 200) {
-        setUserToDB({
-          first_name:
-            set_preference_language_response.data.user_updated.first_name,
-          last_name:
-            set_preference_language_response.data.user_updated.last_name,
-          email: set_preference_language_response.data.user_updated.email,
-          display_name:
-            set_preference_language_response.data.user_updated.display_name,
-          isFirstTime:
-            set_preference_language_response.data.user_updated.isFirstTime,
-          role: set_preference_language_response.data.user_updated.role,
-          uid: set_preference_language_response.data.user_updated.uid,
-          updatedAt:
-            set_preference_language_response.data.user_updated.updatedAt,
-          createdAt:
-            set_preference_language_response.data.user_updated.createdAt,
-          user_id: set_preference_language_response.data.user_updated.user_id,
-          preference_language:
-            set_preference_language_response.data.user_updated
-              .preference_language,
-        });
+        const updatedUser = set_preference_language_response.data.user_updated;
+
+        setUserToDB(updatedUser);
+
         await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "true");
 
         await AsyncStorage.setItem(
@@ -632,8 +617,6 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         setGlobalLanguage(
           set_preference_language_response.data.user_updated.preference_language
         );
-        // setIsAuthenticated(true);
-        // return { ok: true, next: "Home_View" };
         return { ok: true, next: "Welcome_To_Cliply_View" };
       } else {
         setIsAuthenticated(false);
@@ -645,7 +628,6 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     } finally {
       setIsLoading(false);
     }
-    // }, 500);
   };
 
   const renderEmailForLoginTile = ({ item, action }) => {

@@ -70,28 +70,69 @@ export default function Login_User({ route }) {
             justify={"flex-start"}
             align={"center"}
             color={theme.colors.bg.elements_bg}
-            //   color="red"
+            //color="red"
           >
-            <Action_Container
-              width={"100%"}
-              height={"8%"}
-              justify={"center"}
-              align={"flex-start"}
+            <Container
+              width="100%"
+              height="12%"
+              justify="center"
+              align="center"
               color={theme.colors.bg.elements_bg}
-              // color={"red"}
-              onPress={() =>
-                setGlobalLanguage(globalLanguage === "EN" ? "ES" : "EN")
-              }
+              //color={"red"}
+              direction="row"
             >
-              <Spacer position="left" size="large">
-                <Text
-                  variant="dm_sans_bold_16"
-                  style={{ textDecorationLine: "underline" }}
-                >
-                  {globalLanguage === "EN" ? "Español" : "English"}
-                </Text>
-              </Spacer>
-            </Action_Container>
+              <Action_Container
+                width={"30%"}
+                height={"100%"}
+                justify={"center"}
+                align={"flex-start"}
+                // color={theme.colors.bg.elements_bg}
+                color={"transparent"}
+                // color={"red"}
+                onPress={() =>
+                  setGlobalLanguage(globalLanguage === "EN" ? "ES" : "EN")
+                }
+              >
+                <Spacer position="left" size="extraLarge">
+                  <Text
+                    variant="dm_sans_bold_16"
+                    style={{ textDecorationLine: "underline" }}
+                  >
+                    {globalLanguage === "EN" ? "Español" : "English"}
+                  </Text>
+                </Spacer>
+              </Action_Container>
+              <Action_Container
+                width="70%"
+                height="100%"
+                justify="center"
+                align="flex-end"
+                // color={theme.colors.bg.elements_bg}
+                color={"transparent"}
+                onPress={() => {
+                  navigation.navigate("Switch_Account_Login_View", {
+                    data: null,
+                    loading_area_caption:
+                      globalLanguage === "EN"
+                        ? "Wait, we are switching accounts..."
+                        : "Espera, estamos cambiando de cuenta...",
+                  });
+                }}
+                // color={"yellow"}
+              >
+                <Spacer position="right" size="extraLarge">
+                  <Text
+                    variant="dm_sans_bold_16"
+                    style={{
+                      textAlign: "center",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Switch{" "}
+                  </Text>
+                </Spacer>
+              </Action_Container>
+            </Container>
             <Container
               width="100%"
               height="40%"
@@ -155,6 +196,7 @@ export default function Login_User({ route }) {
                 //color={"green"}
               >
                 <PinDotsInput
+                  ref={inputRef}
                   length={6}
                   value={pin}
                   onChange={(newPin) => {
@@ -232,17 +274,23 @@ export default function Login_User({ route }) {
               </Container>
             </Container>
 
-            <Container
+            <Action_Container
               width="100%"
               height="40%"
               justify="center"
               align="center"
               color={theme.colors.bg.elements_bg}
+              onPress={() => {
+                navigation.navigate("Switch_Account_Login_View", {
+                  data: null,
+                  loading_area_caption:
+                    globalLanguage === "EN"
+                      ? "Wait, we are switching accounts..."
+                      : "Espera, estamos cambiando de cuenta...",
+                });
+              }}
               // color={"yellow"}
             >
-              <Spacer position="bottom" size="large" />
-              <Spacer position="bottom" size="large" />
-              <Spacer position="bottom" size="extraLarge" />
               <Outlined_CTA
                 width={"70%"}
                 height={"25%"}
@@ -263,7 +311,7 @@ export default function Login_User({ route }) {
                 }
               />
               <Not_Registered_Sign_Up_CTA language={globalLanguage} />
-            </Container>
+            </Action_Container>
 
             <Spacer size="large" />
           </Container>

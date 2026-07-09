@@ -11,6 +11,7 @@ import Multiple_Emails_LoginIn_View from "../../views/global_views/multiple_emai
 import Generating_New_Automatic_Pin_View from "../../views/global_views/generating_new_automatic_pin.view";
 import Welcome_To_Cliply_View from "../../views/global_views/welcome_to_cliply.view";
 import Initial_Sign_Up_View from "../../views/global_views/initial_sign_up.view";
+import Switch_Account_Login_View from "../../views/global_views/switch_account_login.view";
 
 const LoginRegisterStack = createNativeStackNavigator();
 
@@ -28,6 +29,10 @@ export const Login_Register_Navigator = ({ hasStoredEmail }) => {
       <LoginRegisterStack.Screen
         name="Login_user_View"
         component={Login_User}
+      />
+      <LoginRegisterStack.Screen
+        name="Switch_Account_Login_View"
+        component={Switch_Account_Login_View}
       />
       <LoginRegisterStack.Screen
         name="Initial_Sign_Up_View"
