@@ -1,0 +1,13 @@
+import styled from "styled-components/native";
+
+export const DataInput = styled(TextInput).attrs((props) => ({
+  contentStyle: {
+    fontFamily: props.fontFamily || "DMSans_400Bold",
+  },
+}))`
+  width: 95%;
+  height: 80px;
+  border-bottom-width: ${(props) => props.border_width || "1px"};
+  border-color: ${(props) => props.border_color} !important;
+  background-color: ${(props) => props.theme.colors.bg.elements_bg} !important;
+`;

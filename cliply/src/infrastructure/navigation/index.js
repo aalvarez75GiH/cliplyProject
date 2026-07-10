@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   PaperProvider,
@@ -26,18 +26,24 @@ export const Navigation = () => {
     hasStoredEmail,
     authHasBeenChecked,
   } = useContext(GlobalContext);
-  // const { isUserDataLoading } = useContext(TextClipsContext);
-  console.log("isAuthenticated at navigation:", isUserDataLoading);
-  console.log("isUserDataLoading at navigation:", isUserDataLoading);
-  // const isUserDataLoading = false;
+
+  useEffect(() => {
+    console.log("NAVIGATION STATE:", {
+      isAuthenticated,
+      isUserDataLoading,
+      authHasBeenChecked,
+      hasStoredEmail,
+    });
+  }, [isAuthenticated, isUserDataLoading, authHasBeenChecked, hasStoredEmail]);
+
   if (!authHasBeenChecked || isUserDataLoading) {
     return (
-      <SafeArea background_color={theme.colors.bg.elements_bg}>
+      <SafeArea backgroundColor={theme.colors.bg.elements_bg}>
         <Container
-          width={"100%"}
-          height={"100%"}
-          justify={"center"}
-          align={"center"}
+          width="100%"
+          height="100%"
+          justify="center"
+          align="center"
           color={theme.colors.bg.elements_bg}
         >
           <Text variant="dm_sans_bold_18">Checking auth...</Text>
@@ -45,15 +51,16 @@ export const Navigation = () => {
       </SafeArea>
     );
   }
+
   return (
-    <NavigationContainer>
-      <PaperProvider theme={paperTheme}>
+    <PaperProvider theme={paperTheme}>
+      <NavigationContainer>
         {isAuthenticated ? (
           <AppNavigator />
         ) : (
           <Login_Register_Navigator hasStoredEmail={hasStoredEmail} />
         )}
-      </PaperProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };

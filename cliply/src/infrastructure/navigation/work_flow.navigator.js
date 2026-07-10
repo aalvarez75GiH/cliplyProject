@@ -11,6 +11,7 @@ import Multiple_Emails_LoginIn_View from "../../views/global_views/multiple_emai
 import Entering_New_PIN_View from "../../views/global_views/entering_new_pin.view";
 import Successful_View from "../../views/global_views/successfull_process.view";
 import Delete_Item_View from "../../views/global_views/delete_item.view";
+import Login_User from "../../views/global_views/login_user.view";
 
 const WorkFlowStack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ export const Work_Flow_Navigator = () => {
         name="Entering_New_PIN_View"
         component={Entering_New_PIN_View}
       />
+      <WorkFlowStack.Screen name="Login_user_View" component={Login_User} />
       <WorkFlowStack.Screen
         name="Successful_View"
         component={Successful_View}

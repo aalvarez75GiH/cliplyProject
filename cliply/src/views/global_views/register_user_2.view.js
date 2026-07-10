@@ -201,18 +201,22 @@ export default function Register_User_View_2({ navigation, route }) {
                 try {
                   const res = await registerUser();
                   if (res?.ok) {
-                    setIsLoading(false);
                     navigation.navigate("Successful_View", {
-                      caption_1: "We have sent you an Email",
-                      caption_2: "Check your email",
-                      caption_3: "You'll find a PIN number, use it to login",
-                      email_to_show: email,
-                      // label: "Registration done!",
-                      // cta_label: "Go to Login",
+                      flowType: "register",
+                      caption_1:
+                        globalLanguage === "EN"
+                          ? "Your account was created"
+                          : "Tu cuenta fue creada",
+                      caption_2:
+                        globalLanguage === "EN"
+                          ? "Check your email"
+                          : "Revisa tu correo electrónico",
+                      caption_3:
+                        globalLanguage === "EN"
+                          ? "Use your new PIN to log in"
+                          : "Usa tu nuevo PIN para iniciar sesión",
+                      email_to_show: res.email,
                     });
-                  } else {
-                    // Handle case where email already exists
-                    setEmailError("Email already exists");
                   }
                 } catch (error) {
                   console.log("REGISTER_USER_ERROR:", error);

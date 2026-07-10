@@ -54,9 +54,13 @@ export const PinDotsInput = ({
   const handleDelete = () => {
     setPin((prev) => prev.slice(0, -1));
   };
-  // const handleBlur = () => {
-  //   setTimeout(() => inputRef.current?.focus(), 60);
-  // };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 50);
+  };
+
   const focus = () => inputRef.current?.focus();
   // inputRef.current?.blur();
   const cells = Array.from({ length }).map((_, i) => {
@@ -110,6 +114,7 @@ export const PinDotsInput = ({
             // onBlur={handleBlur}
             maxLength={length}
             caretHidden
+            onBlur={handleBlur}
             selection={{ start: pin.length, end: pin.length }}
             style={styles.hiddenInput}
           />

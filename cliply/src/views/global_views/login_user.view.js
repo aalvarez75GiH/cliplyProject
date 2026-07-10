@@ -1,8 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { Platform } from "react-native";
+import React, {
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Platform, InteractionManager } from "react-native";
 import { KeyboardAvoidingView, ActivityIndicator } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
 import { PinDotsInput } from "../../components/inputs/pin_dots.input.js";
@@ -27,32 +32,37 @@ export default function Login_User({ route }) {
     loginUser,
     isLoading,
     setErrorInAuthentication,
-    checkAuthentication,
-    // logAsyncStorage,
     isUserDataLoading,
     globalLanguage,
     setGlobalLanguage,
     hasStoredEmail,
     storedEmail,
     email,
-    setEmail,
-    setEmailError,
-    emailError,
   } = useContext(GlobalContext);
   const navigation = useNavigation();
   const inputRef = useRef(null);
-  const emailInputRef = useRef(null);
+  useFocusEffect(
+    useCallback(() => {
+      let timer;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100); // slight delay ensures focus sticks
+      setPin("");
+      setErrorInAuthentication(null);
 
-    checkAuthentication();
-    // logAsyncStorage();
+      const interaction = InteractionManager.runAfterInteractions(() => {
+        timer = setTimeout(() => {
+          inputRef.current?.focus();
+        }, 150);
+      });
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => {
+        interaction.cancel();
+
+        if (timer) {
+          clearTimeout(timer);
+        }
+      };
+    }, [setPin, setErrorInAuthentication])
+  );
 
   return (
     <SafeArea backgroundColor={theme.colors.bg.elements_bg}>
@@ -111,11 +121,7 @@ export default function Login_User({ route }) {
                 color={"transparent"}
                 onPress={() => {
                   navigation.navigate("Switch_Account_Login_View", {
-                    data: null,
-                    loading_area_caption:
-                      globalLanguage === "EN"
-                        ? "Wait, we are switching accounts..."
-                        : "Espera, estamos cambiando de cuenta...",
+                    storedEmail: hasStoredEmail ? storedEmail : email,
                   });
                 }}
                 // color={"yellow"}
@@ -128,7 +134,7 @@ export default function Login_User({ route }) {
                       textDecorationLine: "underline",
                     }}
                   >
-                    Switch{" "}
+                    Switch account?
                   </Text>
                 </Spacer>
               </Action_Container>
@@ -156,37 +162,6 @@ export default function Login_User({ route }) {
               color={theme.colors.bg.elements_bg}
               // color={"yellow"}
             >
-              {/* {!hasStoredEmail && (
-                <>
-                  <Spacer position="top" size="extraLarge" />
-                  <FormInput
-                    ref={emailInputRef}
-                    label={
-                      globalLanguage === "EN" ? "Email" : "Correo eléctronico"
-                    }
-                    value={email}
-                    textContentType={"emailAddress"}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    onChangeText={(value) => {
-                      setEmailError(null);
-                      setEmail(value);
-                    }}
-                    // theme={{ colors: { primary: "#6200ee" } }}
-                    theme={{ colors: { primary: theme.colors.brand.primary } }}
-                    underlineColor={"#dedede"}
-                    onFocus={() => {
-                      if (emailError) {
-                        setEmailError(null);
-                      }
-                    }}
-                    style={{
-                      height: 80,
-                      width: "90%",
-                    }}
-                  />
-                </>
-              )} */}
               <Container
                 width="100%"
                 height="50%"
@@ -201,31 +176,33 @@ export default function Login_User({ route }) {
                   value={pin}
                   onChange={(newPin) => {
                     setPin(newPin); // Update the pin state
-                    // if (newPin.length === 6) {
-                    //   loginUser(newPin); // Pass the updated pin directly
-                    // }
+
                     if (newPin === "") {
                       setErrorInAuthentication(null); // Set error when PIN is cleared
                     } else {
                       setErrorInAuthentication(null); // Clear error when PIN is not empty
                     }
                   }}
-                  onFulfill={async (pin) => {
+                  onFulfill={async (enteredPin) => {
                     try {
-                      // const res = await loginUser(pin);
-                      const res = await loginUser(
-                        pin,
-                        hasStoredEmail ? storedEmail : email
-                      );
+                      const loginEmail = hasStoredEmail ? storedEmail : email;
+
+                      const res = await loginUser(enteredPin, loginEmail);
+
+                      console.log("COMPLETE LOGIN RESULT:", res);
+
+                      if (res?.success) {
+                        setPin("");
+                        setErrorInAuthentication(null);
+                        return;
+                      }
+
                       if (res?.ok && res?.next) {
-                        console.log("DATA TO PASS TO NEXT VIEW:", res.data);
+                        setPin("");
+
                         navigation.navigate(res.next, {
                           data: res.data,
-                          action_type: res.action_type, // Ensure 'data' is defined
-                          loading_area_caption:
-                            globalLanguage === "EN"
-                              ? "Wait, we are sining you in..."
-                              : "Espera, estamos iniciando sesión...",
+                          action_type: res.action_type,
                         });
                       }
                     } catch (error) {
@@ -236,9 +213,6 @@ export default function Login_User({ route }) {
                   digitColor="#000000"
                   size={18}
                 />
-                {/* <Text variant="dm_sans_bold_12">
-                  Build check: Clypli preview 2026-07-06 4:00am
-                </Text> */}
               </Container>
               <Container
                 width="100%"

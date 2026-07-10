@@ -11,7 +11,6 @@ import {
 import { theme } from "../../infrastructure/theme/index.js";
 
 export const ExitHeader = ({ label = "", action }) => {
-  const navigation = useNavigation();
   return (
     <Container
       width="100%"
@@ -20,11 +19,12 @@ export const ExitHeader = ({ label = "", action }) => {
       direction="row"
       justify="center"
       color={theme.colors.bg.elements_bg}
+      // color="blue"
     >
       <Container
         width="80%"
         height="100%"
-        color={theme.colors.bg.elements_bg}
+        color={"transparent"}
         justify="center"
         align="flex-end"
         style={{ paddingRight: "5%" }}
@@ -34,7 +34,8 @@ export const ExitHeader = ({ label = "", action }) => {
       <Action_Container
         width="20%"
         height="100%"
-        color={theme.colors.bg.elements_bg}
+        color={"transparent"}
+        // color={theme.colors.bg.elements_bg}
         onPress={action}
       >
         <ExitIcon width={20} height={20} fill={"#000000"} />

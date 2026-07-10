@@ -95,3 +95,101 @@ export const Flex_Container = styled(View)`
   justify-content: ${(props) => props.justify || "center"};
   background-color: ${(props) => props.color || "#FADADD"};
 `;
+
+const normalizeDimension = (value) => {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+
+  // React Native accepts numbers directly.
+  if (typeof value === "number") {
+    return value;
+  }
+
+  // Keep percentages such as "100%".
+  if (typeof value === "string" && value.includes("%")) {
+    return value;
+  }
+
+  // Convert strings such as "64px" to 64.
+  if (typeof value === "string" && value.endsWith("px")) {
+    const parsedValue = Number.parseFloat(value);
+
+    return Number.isNaN(parsedValue) ? undefined : parsedValue;
+  }
+
+  return value;
+};
+
+export const Box = styled(View)((props) => ({
+  width: normalizeDimension(props.width),
+  height: normalizeDimension(props.height),
+
+  minWidth: normalizeDimension(props.min_width),
+  maxWidth: normalizeDimension(props.max_width),
+  minHeight: normalizeDimension(props.min_height),
+  maxHeight: normalizeDimension(props.max_height),
+
+  flex: props.flex,
+  flexGrow: props.flex_grow,
+  flexShrink: props.flex_shrink,
+  flexBasis: normalizeDimension(props.flex_basis),
+
+  flexDirection: props.direction ?? "column",
+  justifyContent: props.justify ?? "center",
+  alignItems: props.align ?? "center",
+  alignSelf: props.align_self,
+
+  backgroundColor: props.color ?? "transparent",
+
+  padding: normalizeDimension(props.padding),
+  paddingTop: normalizeDimension(props.padding_top),
+  paddingBottom: normalizeDimension(props.padding_bottom),
+  paddingLeft: normalizeDimension(props.padding_left),
+  paddingRight: normalizeDimension(props.padding_right),
+  paddingHorizontal: normalizeDimension(props.padding_horizontal),
+  paddingVertical: normalizeDimension(props.padding_vertical),
+
+  margin: normalizeDimension(props.margin),
+  marginTop: normalizeDimension(props.margin_top),
+  marginBottom: normalizeDimension(props.margin_bottom),
+  marginLeft: normalizeDimension(props.margin_left),
+  marginRight: normalizeDimension(props.margin_right),
+  marginHorizontal: normalizeDimension(props.margin_horizontal),
+  marginVertical: normalizeDimension(props.margin_vertical),
+
+  borderWidth: normalizeDimension(props.border_width) ?? 0,
+  borderColor: props.border_color ?? "transparent",
+  borderStyle: props.border_style ?? "solid",
+
+  borderRadius: normalizeDimension(props.border_radius),
+
+  borderTopLeftRadius: normalizeDimension(
+    props.border_radius_top_left ?? props.border_top_left_radius
+  ),
+
+  borderTopRightRadius: normalizeDimension(
+    props.border_radius_top_right ?? props.border_top_right_radius
+  ),
+
+  borderBottomLeftRadius: normalizeDimension(
+    props.border_radius_bottom_left ?? props.border_bottom_left_radius
+  ),
+
+  borderBottomRightRadius: normalizeDimension(
+    props.border_radius_bottom_right ?? props.border_bottom_right_radius
+  ),
+
+  overflow: props.overflow ?? "visible",
+
+  position: props.position,
+  top: normalizeDimension(props.top),
+  bottom: normalizeDimension(props.bottom),
+  left: normalizeDimension(props.left),
+  right: normalizeDimension(props.right),
+
+  zIndex: props.z_index,
+  gap: normalizeDimension(props.gap),
+
+  // etc...
+}));

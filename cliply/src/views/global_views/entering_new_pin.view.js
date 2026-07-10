@@ -17,6 +17,8 @@ import { ExitHeader } from "../../components/headers/exit_header.component.js";
 import { Loading_Spinner_area } from "../../components/global_components/global_loading_spinner_area.component.js";
 import { Squared_action_CTA_component } from "../../components/calls_to_action/squared_action.cta.js";
 import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header.js";
+
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
 
 export default function Entering_New_PIN_View({ route }) {
@@ -45,6 +47,7 @@ export default function Entering_New_PIN_View({ route }) {
     }
   }, [isNavigating]);
   console.log("ERROR UPDATING PING IS: ", errorInUpdatingPIN);
+  console.log("IS LOADING IN ENTERING NEW PIN VIEW IS: ", isLoading);
   return (
     <SafeArea backgroundColor={theme.colors.bg.elements_bg}>
       {isLoading && (
@@ -93,16 +96,19 @@ export default function Entering_New_PIN_View({ route }) {
             color={theme.colors.bg.elements_bg}
             // color="red"
           >
-            <ExitHeader
+            <Button_Go_Back_Header
               action={() => {
                 setIsLoading(false);
                 navigation.goBack();
               }}
+              caption="Back"
+              height="12%"
             />
+
             <Container
               width="100%"
-              //   height="40%"
-              height={loadedCTA ? "20%" : "40%"}
+              height="40%"
+              // height={loadedCTA ? "20%" : "40%"}
               justify="flex-end"
               align="center"
               //   color={"blue"}
@@ -148,7 +154,7 @@ export default function Entering_New_PIN_View({ route }) {
                     }
                   }}
                   onFulfill={() => {
-                    Keyboard.dismiss(); // Dismiss the keyboard when PIN is fulfilled
+                    // Keyboard.dismiss(); // Dismiss the keyboard when PIN is fulfilled
                     setLoadedCTA(true); // Enable the CTA button
                   }}
                   blurOnSubmit={true} // Ensure the input loses focus after submission
@@ -180,18 +186,18 @@ export default function Entering_New_PIN_View({ route }) {
 
             <Container
               width="100%"
-              //   height="40%"
-              height={loadedCTA ? "52%" : "40%"}
-              justify="flex-end"
+              height="20%"
+              // height={loadedCTA ? "52%" : "40%"}
+              justify="center"
               align="center"
               color={theme.colors.bg.elements_bg}
-              //color={"yellow"}
+              // color={"yellow"}
             >
               {loadedCTA && (
                 <>
                   <Regular_CTA
                     width="95%"
-                    height="15%"
+                    height="50%"
                     caption="Continue"
                     caption_variant="dm_sans_bold_16_white"
                     color="#000000"
@@ -201,22 +207,16 @@ export default function Entering_New_PIN_View({ route }) {
                       try {
                         const res =
                           await updatingPINOnDemandAndUpdatingUserAtFB(new_pin);
-
-                        if (res.success) {
+                        if (res?.success) {
                           setIsNavigating(true);
                           Keyboard.dismiss();
 
-                          await new Promise((resolve) =>
-                            requestAnimationFrame(resolve)
-                          );
-
-                          await new Promise((resolve) => {
-                            InteractionManager.runAfterInteractions(() => {
-                              resolve();
-                            });
-                          });
-
+                          setNew_pin("");
+                          setLoadedCTA(false);
+                          setErrorInUpdatingPIN(null);
+                          setIsLoading(false);
                           navigation.navigate("Successful_View", {
+                            flowType: "pin_change",
                             caption_1: "We have sent you an Email",
                             caption_2: "Check your email",
                             caption_3:
@@ -233,47 +233,6 @@ export default function Entering_New_PIN_View({ route }) {
                   />
                   <Spacer position="bottom" size="large" />
                 </>
-                // <Squared_action_CTA_component
-                //   label="Update PIN"
-                //   action={async () => {
-                //     console.log("NEW PIN AT ON CTA:", new_pin);
-
-                //     try {
-                //       const res = await updatingPINOnDemandAndUpdatingUserAtFB(
-                //         new_pin
-                //       );
-
-                //       if (res.success) {
-                //         setIsNavigating(true);
-                //         Keyboard.dismiss();
-
-                //         await new Promise((resolve) =>
-                //           requestAnimationFrame(resolve)
-                //         );
-
-                //         await new Promise((resolve) => {
-                //           InteractionManager.runAfterInteractions(() => {
-                //             resolve();
-                //           });
-                //         });
-
-                //         navigation.navigate("Successful_View", {
-                //           caption_1: "We have sent you an Email",
-                //           caption_2: "Check your email",
-                //           caption_3:
-                //             "You'll find your updated PIN number, use it to login next time",
-                //         });
-                //       }
-                //     } catch (error) {
-                //       console.error(
-                //         "An error occurred during updating pin:",
-                //         error
-                //       );
-                //     }
-                //   }}
-                //   icon_visible={false}
-                //   height="15%"
-                // />
               )}
             </Container>
             <Spacer size="large" />

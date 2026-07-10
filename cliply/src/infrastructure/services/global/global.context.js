@@ -13,6 +13,7 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  signOut,
 } from "firebase/auth";
 import { initializeApp, getApps } from "firebase/app";
 
@@ -108,6 +109,10 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     onAction: null,
     bgColor: theme.colors.ui.primary,
   });
+
+  useEffect(() => {
+    console.log("GLOBAL CONTEXT AUTH STATE ACTUALLY CHANGED:", isAuthenticated);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const checkingAuthenticationAndLoggingAsyncStorage = async () => {
@@ -416,7 +421,9 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         await AsyncStorage.setItem(ACTIVE_EMAIL, dataFromBackend.data.email);
 
         setGlobalLanguage(dataFromBackend.data.preference_language);
+        console.log("ABOUT TO SET AUTHENTICATED TRUE");
         setIsAuthenticated(true);
+        console.log("SET AUTHENTICATED TRUE WAS CALLED");
         return { success: true };
       } else {
         setIsAuthenticated(false);
@@ -532,58 +539,370 @@ export const GlobalContextProvider = ({ children, navigation }) => {
 
   const registerUser = async () => {
     setIsLoading(true);
+    setEmailError(null);
+    setErrorInAuthentication(null);
+
     const pinGenerated = generatePin();
+
     console.log("PIN BEFORE REGISTERING:", pinGenerated);
 
     try {
+      const cleanEmail = email?.trim().toLowerCase();
+
+      if (!cleanEmail) {
+        throw new Error("Email is required.");
+      }
+
+      if (!first_name?.trim() || !last_name?.trim()) {
+        throw new Error("First name and last name are required.");
+      }
+
+      /*
+       * Firebase automatically signs the user in after account creation.
+       */
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
+        cleanEmail,
         pinGenerated
       );
 
-      console.log("USER CREDENTIALS:", JSON.stringify(userCredential, null, 2));
+      const createdFirebaseUser = userCredential?.user;
+
+      if (!createdFirebaseUser?.uid || !createdFirebaseUser?.email) {
+        throw new Error("Firebase did not return a valid user.");
+      }
+
+      console.log("FIREBASE USER CREATED:", createdFirebaseUser.uid);
+
       const encrypted_pin = encryptPinWithServerPublicKey(pinGenerated);
-      console.log("ENCRYPTED PIN:", encrypted_pin);
 
-      await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
-      await AsyncStorage.setItem(UID_KEY, userCredential.user.uid);
+      const now = new Date().toISOString();
 
-      await addEmailToAsyncStorage(userCredential.user.email);
-
-      setIsAuthenticated(false);
       const userToCreateAtFirebase = {
-        first_name: first_name,
-        last_name: last_name,
-        email: userCredential.user.email,
+        first_name: first_name.trim(),
+        last_name: last_name.trim(),
+        email: createdFirebaseUser.email,
         role: "user",
-        uid: userCredential.user.uid,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        display_name: first_name,
-        encrypted_pin: encrypted_pin,
+        uid: createdFirebaseUser.uid,
+        createdAt: now,
+        updatedAt: now,
+        display_name: first_name.trim(),
+        encrypted_pin,
       };
+
       console.log(
-        "USER TO CREATE AT FIREBASE AT CONTEXT:",
+        "USER TO CREATE AT BACKEND:",
         JSON.stringify(userToCreateAtFirebase, null, 2)
       );
+
       const res = await post_user_Request(userToCreateAtFirebase);
-      if (res) {
-        return { ok: true };
-      }
-    } catch (error) {
-      // console.error("Error creating user:", error.message);
-      if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-        setEmailError(
-          globalLanguage === "EN"
-            ? "This account already exists"
-            : "Esta cuenta ya existe"
+
+      if (!res || res.status < 200 || res.status >= 300) {
+        throw new Error(
+          res?.response?.data?.message ||
+            "The user could not be created on the server."
         );
       }
+
+      /*
+       * Keep the account in the local account list.
+       */
+      await addEmailToAsyncStorage(createdFirebaseUser.email);
+
+      /*
+       * Make the newly registered account the currently selected account.
+       * This ensures Login_User uses the correct email.
+       */
+      await AsyncStorage.setItem(ACTIVE_EMAIL, createdFirebaseUser.email);
+
+      setStoredEmail(createdFirebaseUser.email);
+      setHasStoredEmail(true);
+
+      /*
+       * Registration does not count as a completed app login.
+       */
+      await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+
+      await AsyncStorage.removeItem(UID_KEY);
+      await AsyncStorage.removeItem(PREFERENCE_LANGUAGE_KEY);
+
+      /*
+       * Clear any previous local session data.
+       */
+      setIsAuthenticated(false);
+      setPin("");
+      setNew_pin("");
+      setUserToDB(null);
+      setUserData(null);
+      setErrorInAuthentication(null);
+
+      /*
+       * Do not save the generated PIN in SecureStore here.
+       * The user should enter it manually on the login screen.
+       * Save it only after signInWithEmailAndPassword succeeds.
+       */
+      await SecureStore.deleteItemAsync("user_pin");
+
+      /*
+       * createUserWithEmailAndPassword signs the user into Firebase.
+       * Sign out so the user must complete the normal PIN login flow.
+       */
+      await signOut(auth);
+
+      console.log(
+        "REGISTRATION COMPLETED. USER SIGNED OUT AND READY TO LOGIN."
+      );
+
+      return {
+        ok: true,
+        success: true,
+        flowType: "register",
+        email: createdFirebaseUser.email,
+        generatedPin: pinGenerated,
+        data: res.data,
+      };
+    } catch (error) {
+      console.error(
+        "Error creating user:",
+        error?.response?.data || error?.message
+      );
+
+      /*
+       * If Firebase created the user but the backend request failed,
+       * Firebase may still have an authenticated session.
+       */
+      try {
+        if (auth.currentUser) {
+          await signOut(auth);
+        }
+      } catch (signOutError) {
+        console.error(
+          "Error signing out after failed registration:",
+          signOutError.message
+        );
+      }
+
+      setIsAuthenticated(false);
+
+      await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+
+      await AsyncStorage.removeItem(UID_KEY);
+
+      if (
+        error?.code === "auth/email-already-in-use" ||
+        error?.message === "Firebase: Error (auth/email-already-in-use)."
+      ) {
+        const message =
+          globalLanguage === "EN"
+            ? "This account already exists"
+            : "Esta cuenta ya existe";
+
+        setEmailError(message);
+
+        return {
+          ok: false,
+          success: false,
+          error: message,
+          code: error.code,
+        };
+      }
+
+      if (error?.code === "auth/invalid-email") {
+        const message =
+          globalLanguage === "EN"
+            ? "Please enter a valid email."
+            : "Ingresa un correo electrónico válido.";
+
+        setEmailError(message);
+
+        return {
+          ok: false,
+          success: false,
+          error: message,
+          code: error.code,
+        };
+      }
+
+      if (error?.code === "auth/weak-password") {
+        const message =
+          globalLanguage === "EN"
+            ? "The generated PIN could not be used. Please try again."
+            : "No se pudo usar el PIN generado. Inténtalo nuevamente.";
+
+        setEmailError(message);
+
+        return {
+          ok: false,
+          success: false,
+          error: message,
+          code: error.code,
+        };
+      }
+
+      const fallbackMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        (globalLanguage === "EN"
+          ? "We could not create your account."
+          : "No pudimos crear tu cuenta.");
+
+      setEmailError(fallbackMessage);
+
+      return {
+        ok: false,
+        success: false,
+        error: fallbackMessage,
+        code: error?.code,
+      };
     } finally {
       setIsLoading(false);
     }
   };
+  // const generatePin = () => {
+  //   return Math.floor(100000 + Math.random() * 900000).toString();
+  // };
+  // const registerUser = async () => {
+  //   setIsLoading(true);
+
+  //   const pinGenerated = generatePin();
+
+  //   console.log("PIN BEFORE REGISTERING:", pinGenerated);
+
+  //   try {
+  //     const cleanEmail = email.trim().toLowerCase();
+
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       cleanEmail,
+  //       pinGenerated
+  //     );
+
+  //     const encrypted_pin = encryptPinWithServerPublicKey(pinGenerated);
+
+  //     const userToCreateAtFirebase = {
+  //       first_name,
+  //       last_name,
+  //       email: userCredential.user.email,
+  //       role: "user",
+  //       uid: userCredential.user.uid,
+  //       createdAt: new Date().toISOString(),
+  //       updatedAt: new Date().toISOString(),
+  //       display_name: first_name,
+  //       encrypted_pin,
+  //     };
+
+  //     const res = await post_user_Request(userToCreateAtFirebase);
+
+  //     if (!res || res.status < 200 || res.status >= 300) {
+  //       throw new Error("The user could not be created on the server.");
+  //     }
+
+  //     // Keep this account available on this device
+  //     await addEmailToAsyncStorage(userCredential.user.email);
+
+  //     // Make the newly registered account the selected account
+  //     await AsyncStorage.setItem(ACTIVE_EMAIL, userCredential.user.email);
+
+  //     setStoredEmail(userCredential.user.email);
+  //     setHasStoredEmail(true);
+
+  //     // The user must still enter the generated PIN
+  //     await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+
+  //     await AsyncStorage.removeItem(UID_KEY);
+
+  //     setIsAuthenticated(false);
+  //     setPin("");
+
+  //     // createUserWithEmailAndPassword automatically signs in.
+  //     // End that Firebase session so the user must log in.
+  //     await signOut(auth);
+
+  //     return {
+  //       ok: true,
+  //       flowType: "register",
+  //       email: userCredential.user.email,
+  //       generatedPin: pinGenerated,
+  //     };
+  //   } catch (error) {
+  //     console.error(
+  //       "Error creating user:",
+  //       error.response?.data || error.message
+  //     );
+
+  //     if (
+  //       error.code === "auth/email-already-in-use" ||
+  //       error.message === "Firebase: Error (auth/email-already-in-use)."
+  //     ) {
+  //       setEmailError(
+  //         globalLanguage === "EN"
+  //           ? "This account already exists"
+  //           : "Esta cuenta ya existe"
+  //       );
+  //     }
+
+  //     return {
+  //       ok: false,
+  //       error: error.message,
+  //     };
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  // const registerUser = async () => {
+  //   setIsLoading(true);
+  //   const pinGenerated = generatePin();
+  //   console.log("PIN BEFORE REGISTERING:", pinGenerated);
+
+  //   try {
+  //     const userCredential = await createUserWithEmailAndPassword(
+  //       auth,
+  //       email,
+  //       pinGenerated
+  //     );
+
+  //     console.log("USER CREDENTIALS:", JSON.stringify(userCredential, null, 2));
+  //     const encrypted_pin = encryptPinWithServerPublicKey(pinGenerated);
+  //     console.log("ENCRYPTED PIN:", encrypted_pin);
+
+  //     await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+  //     await AsyncStorage.setItem(UID_KEY, userCredential.user.uid);
+
+  //     await addEmailToAsyncStorage(userCredential.user.email);
+
+  //     setIsAuthenticated(false);
+  //     const userToCreateAtFirebase = {
+  //       first_name: first_name,
+  //       last_name: last_name,
+  //       email: userCredential.user.email,
+  //       role: "user",
+  //       uid: userCredential.user.uid,
+  //       createdAt: new Date().toISOString(),
+  //       updatedAt: new Date().toISOString(),
+  //       display_name: first_name,
+  //       encrypted_pin: encrypted_pin,
+  //     };
+  //     console.log(
+  //       "USER TO CREATE AT FIREBASE AT CONTEXT:",
+  //       JSON.stringify(userToCreateAtFirebase, null, 2)
+  //     );
+  //     const res = await post_user_Request(userToCreateAtFirebase);
+  //     if (res) {
+  //       return { ok: true };
+  //     }
+  //   } catch (error) {
+  //     // console.error("Error creating user:", error.message);
+  //     if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+  //       setEmailError(
+  //         globalLanguage === "EN"
+  //           ? "This account already exists"
+  //           : "Esta cuenta ya existe"
+  //       );
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // ****************** SET PREFERENCE LANGUAGE  LOGIC *********************
   const settingPreferenceLanguage = async (data_to_change) => {
@@ -914,6 +1233,39 @@ export const GlobalContextProvider = ({ children, navigation }) => {
     });
   };
 
+  const requireLoginAfterPinChange = async () => {
+    try {
+      // End the Firebase authenticated session
+      await signOut(auth);
+
+      // Mark the local app session as unauthenticated
+      await AsyncStorage.setItem(IS_AUTHENTICATED_KEY, "false");
+
+      // Keep activeEmail and userEmails.
+      // They are needed to know which account should log in.
+      setIsAuthenticated(false);
+
+      setPin("");
+      setNew_pin("");
+
+      setErrorInAuthentication(null);
+      setErrorInUpdatingPIN(null);
+
+      setUserToDB(null);
+      setUserData(null);
+
+      setIsLoading(false);
+
+      console.log("USER MUST LOG IN AGAIN AFTER PIN CHANGE");
+    } catch (error) {
+      console.error("Error ending session after PIN change:", error);
+
+      // Still force the local navigator to show login
+      setIsAuthenticated(false);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -976,6 +1328,7 @@ export const GlobalContextProvider = ({ children, navigation }) => {
         hasStoredEmail,
         storedEmail,
         authHasBeenChecked,
+        requireLoginAfterPinChange,
       }}
     >
       {children}
