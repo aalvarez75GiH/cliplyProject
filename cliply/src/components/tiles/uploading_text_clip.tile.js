@@ -53,9 +53,7 @@ export const Uploading_text_clip_Tile = ({
         >
           <Spacer position="top" size="extraLarge">
             <Spacer position={"left"} size="large">
-              <Text variant={"dm_sans_bold_22"}>
-                {globalLanguage === "EN" ? "Text clip:" : "Clip de téxto"}
-              </Text>
+              <Text variant={"dm_sans_bold_22"}>Message:</Text>
             </Spacer>
           </Spacer>
         </Container>
@@ -84,14 +82,13 @@ export const Uploading_text_clip_Tile = ({
         </Container>
         {/* ***************** FOOTER  ************************** */}
         <Spacer position={"top"} size="small" />
-        {/* <Spacer position={"top"} size="small"> */}
         <Container
           width={Platform.OS === "ios" ? "400px" : "100%"}
           height="40%"
           align="flex-start"
           direction="row"
           color={theme.colors.bg.elements_bg}
-          //color={"lightblue"}
+          // color={"lightblue"}
           justify="space-around"
         >
           <Container
@@ -100,7 +97,7 @@ export const Uploading_text_clip_Tile = ({
             align="flex-start"
             justify="center"
             direction="column"
-            color={theme.colors.bg.elements_bg}
+            color={"transparent"}
             //color={"blue"}
           >
             <Spacer position={"left"} size="large">
@@ -118,12 +115,13 @@ export const Uploading_text_clip_Tile = ({
             align="flex-start"
             justify="center"
             direction="column"
-            color={theme.colors.bg.elements_bg}
+            color={"transparent"}
             //color={"yellow"}
           >
             <Spacer position={"left"} size="large">
               <Text variant={"dm_sans_regular_16"}>{operation_label}</Text>
             </Spacer>
+            <Spacer position={"top"} size="small" />
             <Spacer position={"left"} size="large">
               <Text variant={"dm_sans_regular_16"}>{status_label}</Text>
             </Spacer>

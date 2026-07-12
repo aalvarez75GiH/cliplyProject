@@ -4,22 +4,17 @@ import { ActivityIndicator, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Text } from "../../../infrastructure/typography/text.component.js";
-import { EN_ES_CTA_component } from "../../calls_to_action/en_es.cta.js";
-import { Short_EN_ES_CTA_CTA } from "../../calls_to_action/short_ES_EN.cta.js";
 import {
   Container,
   Action_Container,
 } from "../../global_components/containers/general_containers.js";
-import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
 import { theme } from "../../../infrastructure/theme/index.js";
 import { Footer_1 } from "./footer_1.component.js";
-
-import LanguageIcon from "../../../../assets/my-icons/language_icon.svg";
-import RemoveIcon from "../../../../assets/my-icons/remove_icon.svg";
+import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
+import { Messages_Tile_Snack_Bar_Component } from "../../others/messages_tiles_snack_bar.component.js";
 
 import { TextClipsContext } from "../../../infrastructure/services/home/text_clips.context.js";
 import { GlobalContext } from "../../../infrastructure/services/global/global.context.js";
-import { Snack_Bar_Component } from "../../others/snack_bar.component.js";
 
 export const Stored_Message_Tile = ({
   item,
@@ -237,13 +232,13 @@ export const Stored_Message_Tile = ({
                     left: 0,
                   }}
                 />
-                <Snack_Bar_Component
+                <Messages_Tile_Snack_Bar_Component
                   snackbar={snackbar}
                   bottom_ios={-25}
                   bottom_android={-45}
                   minHeight={60}
                   minWidth={"100%"}
-                  duration={1000}
+                  duration={500}
                 />
               </>
             )}

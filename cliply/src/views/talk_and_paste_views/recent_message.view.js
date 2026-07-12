@@ -12,6 +12,7 @@ import { Platform } from "react-native";
 import { Action_Container } from "../../components/global_components/containers/general_containers.js";
 import { Text } from "../../infrastructure/typography/text.component.js";
 import { Regular_CTA } from "../../components/calls_to_action/regular.cta.js";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header.js";
 
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context.js";
@@ -48,7 +49,11 @@ export default function Recent_Messages_View(route) {
           justify="center"
           align="center"
         >
-          <ExitHeader action={() => navigation.goBack()} />
+          <Button_Go_Back_Header
+            action={() => navigation.goBack()}
+            caption="Back"
+          />
+          {/* <ExitHeader action={() => navigation.goBack()} /> */}
           <Container
             width={"100%"}
             height={"92%"}
@@ -89,8 +94,8 @@ export default function Recent_Messages_View(route) {
               <Regular_CTA
                 width="95%"
                 height="45%"
-                caption="Save text clip"
-                caption_variant="dm_sans_bold_16_white"
+                caption="Save"
+                caption_variant="dm_sans_bold_18_white"
                 color="#000000"
                 action={() => navigation.navigate("Saving_message_to_status")}
               />

@@ -187,6 +187,7 @@ export default function Messages_by_Status_View({ route }) {
           width="100%"
           height={"100%"}
           color={theme.colors.bg.screens_bg}
+          //color="blue"
         >
           <Quick_Voice_Transcription_header
             snackbar={snackbar}
@@ -230,8 +231,9 @@ export default function Messages_by_Status_View({ route }) {
 
             <Container
               width="100%"
-              height={"75%"}
+              height={"85%"}
               color={theme.colors.bg.screens_bg}
+              // color="red"
             >
               <Spacer position="top" size="medium" />
               {dataToRender.length === 0 && (

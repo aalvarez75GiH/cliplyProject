@@ -8,6 +8,7 @@ import { Container } from "../../components/global_components/containers/general
 import { Spacer } from "../../components/global_components/optimized.spacer.component.js";
 import { Voice_Operations_Status_Area } from "./voice_recents_operations_area.js";
 import { Text_Tile } from "../../components/tiles/text.tile.js";
+import { Button_Go_Back_Header } from "../../components/headers/button_go_back_header.js";
 
 import { TextClipsContext } from "../../infrastructure/services/home/text_clips.context.js";
 import { VoiceRecentClipsContext } from "../../infrastructure/services/voice_recents/voice_recent.context.js";
@@ -45,7 +46,10 @@ export default function Selecting_Operation_And_Status_View({ navigation }) {
         justify="center"
         align="center"
       >
-        <ExitHeader action={() => navigation.goBack()} />
+        <Button_Go_Back_Header
+          action={() => navigation.goBack()}
+          caption="Back"
+        />
         <Spacer position="top" size="small" />
         <Container
           width="100%"

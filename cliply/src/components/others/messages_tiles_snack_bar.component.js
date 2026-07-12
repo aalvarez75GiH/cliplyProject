@@ -11,7 +11,7 @@ import { theme } from "../../infrastructure/theme/index.js";
 import { GlobalContext } from "../../infrastructure/services/global/global.context";
 import { Text } from "../../infrastructure/typography/text.component";
 
-export const Snack_Bar_Component = ({
+export const Messages_Tile_Snack_Bar_Component = ({
   snackbar,
   bottom_ios,
   bottom_android,
@@ -24,7 +24,7 @@ export const Snack_Bar_Component = ({
     <Snackbar
       visible={snackbar.visible}
       // onDismiss={hideSnackbar}
-      onDismiss={() => {}}
+      onDismiss={hideSnackbar}
       duration={duration}
       style={{
         minHeight: minHeight,

@@ -8,7 +8,6 @@ import {
   Action_Container,
 } from "../../global_components/containers/general_containers";
 import { Short_EN_ES_CTA_CTA } from "../../calls_to_action/short_ES_EN.cta";
-import { Spacer } from "../../global_components/optimized.spacer.component";
 
 import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
 import RemoveIcon from "../../../../assets/my-icons/remove_icon.svg";

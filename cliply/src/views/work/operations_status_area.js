@@ -49,7 +49,6 @@ export const Operations_Status_Area = ({ operation, isLoading }) => {
       ) : operation === "food_delivery" ? (
         <Scrollable_Container
           width="100%"
-          // height={"85%"}
           justify="flex-start"
           color={theme.colors.bg.elements_bg}
           // color={"blue"}
