@@ -90,16 +90,17 @@ export const Footer_1 = ({
           direction="column"
           color={theme.colors.bg.elements_bg}
           //color={"lightgreen"}
+
           onPress={() => {
             const updatedSpecificTextClipData = {
               ...specificTextClipData,
               message_id: item.message_id,
             };
             setSpecificTextClipData(updatedSpecificTextClipData);
-            navigation.navigate("Delete_Item_View", {
+            navigation.navigate("Delete_Overlay_View", {
               dataNeededToDeleteTextClip: updatedSpecificTextClipData,
-              item_to_delete_label: "Text clip",
-              coming_from: "Stored_Clips_Tile",
+              item_to_delete_label: "Message",
+              coming_from: "Stored_Message_Tile",
             });
           }}
         >

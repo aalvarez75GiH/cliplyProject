@@ -21,7 +21,6 @@ export const Recent_Message_Created_Tile = ({
   message_id = null,
   globalLanguage,
   route_name,
-  onAction,
 }) => {
   const [language, setLanguage] = useState(globalLanguage);
   const [showRegularFooterAfterCopy, setShowRegularFooterAfterCopy] =
@@ -37,19 +36,6 @@ export const Recent_Message_Created_Tile = ({
   useEffect(() => {
     setLanguage(globalLanguage);
   }, [globalLanguage]);
-
-  // This effect runs only once when the component mounts, automatically copying the message to the clipboard and showing a success snackbar.
-  // useEffect(() => {
-  //   const autoCopyMessage = async () => {
-  //     const messageToCopy = globalLanguage === "EN" ? message_en : message_es;
-
-  //     await Clipboard.setStringAsync(messageToCopy);
-  //     // setCopiedMessage(true);
-  //     showSuccessSnackbar("Just paste it on your chat", onAction, "Ok");
-  //   };
-
-  //   autoCopyMessage();
-  // }, []);
 
   const toggleLanguage = async (language) => {
     console.log("Toggling language to:", language);

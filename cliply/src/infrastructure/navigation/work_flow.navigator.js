@@ -10,7 +10,7 @@ import Quick_Voice_Text_Clip from "../../views/work/status_views/quick_voice_tex
 import Multiple_Emails_LoginIn_View from "../../views/global_views/multiple_emails_login.view";
 import Entering_New_PIN_View from "../../views/global_views/entering_new_pin.view";
 import Successful_View from "../../views/global_views/successfull_process.view";
-import Delete_Item_View from "../../views/global_views/delete_item.view";
+import Delete_Overlay_View from "../../views/global_views/delete_overlay.view";
 import Login_User from "../../views/global_views/login_user.view";
 
 const WorkFlowStack = createNativeStackNavigator();
@@ -56,9 +56,16 @@ export const Work_Flow_Navigator = () => {
         name="Successful_View"
         component={Successful_View}
       />
+
       <WorkFlowStack.Screen
-        name="Delete_Item_View"
-        component={Delete_Item_View}
+        name="Delete_Overlay_View"
+        component={Delete_Overlay_View}
+        options={{
+          presentation: "transparentModal",
+          animation: "slide_from_bottom",
+          headerShown: false,
+          contentStyle: { backgroundColor: "transparent" },
+        }}
       />
     </WorkFlowStack.Navigator>
   );

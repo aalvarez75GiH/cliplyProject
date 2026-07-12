@@ -85,7 +85,6 @@ export default function Recent_Messages_View(route) {
                 </>
               )}
               <Spacer position="top" size="large" />
-
               <Spacer position="top" size="medium" />
               <Regular_CTA
                 width="95%"

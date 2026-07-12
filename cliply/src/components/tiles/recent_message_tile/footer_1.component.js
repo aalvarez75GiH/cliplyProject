@@ -7,7 +7,6 @@ import {
   Action_Container,
 } from "../../global_components/containers/general_containers";
 import { Text } from "../../../infrastructure/typography/text.component.js";
-// import { EN_ES_CTA_component } from "../../../components/calls_to_action/en_es.cta.js";
 import { Short_EN_ES_CTA_CTA } from "../../calls_to_action/short_ES_EN.cta";
 
 import CopyPaste_icon from "../../../../assets/my-icons/copy_paste.svg";
@@ -60,12 +59,6 @@ export const Footer_1 = ({
           // language={language === "EN" ? "ES" : "EN"}
           action={() => toggleLanguage("Spanish")}
         />
-        {/* <EN_ES_CTA_component
-          //   language={language === "EN" ? "ES" : "EN"}
-          language={language === "EN" ? "ES" : "EN"}
-          action={toggleLanguage}
-          // isSelected={isSelected}
-        /> */}
       </Container>
 
       {!routes_names_to_hide_delete_option.includes(route_name) && (
@@ -106,10 +99,10 @@ export const Footer_1 = ({
           direction="column"
           color={theme.colors.bg.elements_bg}
           onPress={() => {
-            navigation.navigate("Delete_Item_View", {
+            navigation.navigate("Delete_Overlay_View", {
               dataNeededToDeleteTextClip: updatedSpecificTextClipData,
-              item_to_delete_label: "Text clip",
-              coming_from: "Recent_Text_Clip_Tile",
+              item_to_delete_label: "Recent message",
+              coming_from: "Recent_Message_Created_Tile",
             });
           }}
         >
